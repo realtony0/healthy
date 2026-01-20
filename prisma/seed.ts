@@ -533,7 +533,9 @@ async function main() {
   if (bowlCategory) {
     await prisma.product.upsert({
       where: { slug: 'bowl-personnalise' },
-      update: {},
+      update: {
+        image: '/img/bowl-poulet-mais.jpeg',
+      },
       create: {
         name: 'Bowl Personnalisé',
         slug: 'bowl-personnalise',
