@@ -12,47 +12,47 @@ export default function HomePage() {
   return (
     <div className="bg-[#fffdfa]">
       {/* Hero Section - Minimalist & Premium */}
-      <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+      <section className="relative pt-24 pb-16 md:pt-48 md:pb-32 overflow-hidden">
         <div className="container-wide">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
-            <div className="space-y-10">
-              <div className="inline-flex items-center gap-2 bg-emerald-50 text-[#1a472a] px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest border border-emerald-100">
+            <div className="space-y-8 md:space-y-10 text-center lg:text-left">
+              <div className="inline-flex items-center gap-2 bg-emerald-50 text-[#1a472a] px-4 py-2 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-widest border border-emerald-100">
                 <Sparkles size={14} className="text-emerald-500" />
                 Cuisiné ce matin à Dakar
               </div>
               
-              <h1 className="text-6xl lg:text-8xl font-black text-[#1a472a] leading-[0.9] tracking-tighter">
+              <h1 className="text-5xl md:text-6xl lg:text-8xl font-black text-[#1a472a] leading-[0.9] tracking-tighter">
                 Sain. <br />
                 Frais. <br />
                 <span className="text-emerald-500 italic font-serif">Prêt.</span>
               </h1>
               
-              <p className="text-xl text-gray-500 max-w-lg leading-relaxed font-medium">
+              <p className="text-lg md:text-xl text-gray-500 max-w-lg mx-auto lg:mx-0 leading-relaxed font-medium">
                 L'excellence nutritionnelle livrée chez vous. Des repas frais, équilibrés et 100% halal préparés chaque jour.
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-5 pt-4">
-                <Link href="/menu" className="btn btn-primary btn-lg px-12 py-6 text-xl shadow-2xl shadow-emerald-900/20 group">
+              <div className="flex flex-col sm:flex-row gap-4 pt-4 px-4 sm:px-0">
+                <Link href="/menu" className="btn btn-primary btn-lg px-12 py-5 md:py-6 text-lg md:text-xl shadow-2xl shadow-emerald-900/20 group">
                   Commander
                   <ArrowRight className="ml-2 group-hover:translate-x-2 transition-transform" />
                 </Link>
-                <Link href="/abonnements" className="btn btn-outline btn-lg px-12 py-6 text-xl border-emerald-100">
+                <Link href="/abonnements" className="btn btn-outline btn-lg px-12 py-5 md:py-6 text-lg md:text-xl border-emerald-100">
                   S'abonner
                 </Link>
               </div>
 
-              <div className="flex items-center gap-6 pt-6 text-gray-400">
+              <div className="flex items-center justify-center lg:justify-start gap-6 pt-6 text-gray-400">
                 <div className="flex -space-x-3">
                   {[1,2,3,4].map(i => (
-                    <div key={i} className="w-10 h-10 rounded-full border-4 border-white bg-gray-100" />
+                    <div key={i} className="w-8 h-8 md:w-10 md:h-10 rounded-full border-4 border-white bg-gray-100" />
                   ))}
                 </div>
-                <p className="text-sm font-bold italic">Rejoint par +500 clients à Dakar</p>
+                <p className="text-xs md:text-sm font-bold italic">Rejoint par +500 clients à Dakar</p>
               </div>
             </div>
 
-            <div className="relative">
-              <div className="relative aspect-square rounded-[4rem] overflow-hidden shadow-2xl border-[12px] border-white rotate-2 hover:rotate-0 transition-transform duration-700">
+            <div className="relative px-4 md:px-0">
+              <div className="relative aspect-square rounded-[3rem] md:rounded-[4rem] overflow-hidden shadow-2xl border-[8px] md:border-[12px] border-white md:rotate-2 md:hover:rotate-0 transition-transform duration-700">
                 <Image 
                   src="/img/bowl-poulet-mais.jpeg" 
                   alt="Plat Healthy" 
@@ -113,18 +113,18 @@ export default function HomePage() {
       {/* Categories / Best Sellers */}
       <section className="py-24">
         <div className="container-wide">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
-            <div className="space-y-4">
-              <div className="food-badge">Best-sellers</div>
-              <h2 className="text-5xl lg:text-7xl font-black text-[#1a472a] leading-none tracking-tighter">Nos plats <br /><span className="text-emerald-500 italic font-serif">favoris.</span></h2>
+          <div className="flex flex-col md:flex-row justify-between items-end mb-12 md:mb-16 gap-8 px-4 md:px-0">
+            <div className="space-y-4 text-center md:text-left w-full md:w-auto">
+              <div className="food-badge mx-auto md:mx-0">Best-sellers</div>
+              <h2 className="text-4xl md:text-5xl lg:text-7xl font-black text-[#1a472a] leading-none tracking-tighter">Nos plats <br className="hidden md:block" /><span className="text-emerald-500 italic font-serif">favoris.</span></h2>
             </div>
-            <Link href="/menu" className="btn btn-outline btn-lg px-10 group">
+            <Link href="/menu" className="btn btn-outline btn-lg px-10 group w-full md:w-auto">
               Voir toute la carte
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 px-4 md:px-0">
             {bestSellers.map((p, i) => (
               <div key={i} className="group">
                 <Link href="/menu" className="block space-y-6">

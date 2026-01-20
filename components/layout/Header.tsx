@@ -32,90 +32,121 @@ export default function Header() {
 
   return (
     <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-      scrolled ? 'bg-white/80 backdrop-blur-md border-b border-gray-100 py-2' : 'bg-transparent py-4'
+      scrolled ? 'bg-white/90 backdrop-blur-md border-b border-gray-100 py-2' : 'bg-transparent py-4 md:py-6'
     }`}>
-      <div className="container-wide h-16 flex items-center justify-between">
+      <div className="container-wide h-12 md:h-16 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center">
+        <Link href="/" className="flex items-center active:scale-95 transition-transform">
           <Image
             src="/img/logo.jpeg"
             alt="Healthy"
-            width={100}
-            height={40}
-            className="h-9 w-auto mix-blend-multiply"
+            width={120}
+            height={48}
+            className="h-8 md:h-10 w-auto mix-blend-multiply"
             priority
           />
         </Link>
 
         {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden lg:flex items-center gap-10">
           {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-gray-600 hover:text-black transition-colors"
+              className="text-sm font-black text-gray-500 hover:text-[#1a472a] uppercase tracking-widest transition-colors relative group"
             >
               {link.label}
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#1a472a] transition-all group-hover:w-full" />
             </Link>
           ))}
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-4">
-          <Link href="/panier" className="p-2 text-gray-600 hover:text-black transition-colors relative">
-            <ShoppingCart className="w-5 h-5" />
-            <span className="absolute top-0 right-0 w-4 h-4 bg-[#1a472a] text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white">
+        <div className="flex items-center gap-2 md:gap-4">
+          <Link href="/panier" className="p-2.5 md:p-3 text-gray-600 hover:text-[#1a472a] bg-gray-50 md:bg-transparent rounded-2xl transition-all relative active:scale-90">
+            <ShoppingCart className="w-5 h-5 md:w-6 md:h-6" />
+            <span className="absolute top-1 right-1 w-4 h-4 md:w-5 md:h-5 bg-[#1a472a] text-white text-[10px] font-black rounded-full flex items-center justify-center border-2 border-white shadow-lg">
               0
             </span>
           </Link>
           
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden lg:flex items-center gap-4">
             {session ? (
-              <Link href={accountLink} className="flex items-center gap-2 text-sm font-bold bg-gray-50 px-4 py-2 rounded-full hover:bg-gray-100 transition-colors">
-                {session.user.role === 'ADMIN' ? <LayoutDashboard size={16} className="text-[#1a472a]" /> : <User size={16} className="text-[#1a472a]" />}
+              <Link href={accountLink} className="flex items-center gap-2 text-xs font-black uppercase tracking-widest bg-gray-50 px-5 py-3 rounded-2xl hover:bg-emerald-50 hover:text-[#1a472a] transition-all">
+                {session.user.role === 'ADMIN' ? <LayoutDashboard size={16} /> : <User size={16} />}
                 {accountLabel}
               </Link>
             ) : (
-              <Link href="/auth/signin" className="text-sm font-medium hover:underline">
+              <Link href="/auth/signin" className="text-xs font-black uppercase tracking-widest text-gray-500 hover:text-black transition-colors px-4">
                 Connexion
               </Link>
             )}
-            <Link href="/commander" className="btn btn-primary px-5 py-2 text-sm rounded-full">
+            <Link href="/commander" className="btn btn-primary px-8 py-3 text-xs uppercase font-black tracking-widest rounded-2xl shadow-xl shadow-emerald-900/10">
               Commander
             </Link>
           </div>
 
-          <button className="md:hidden p-2" onClick={() => setIsOpen(!isOpen)}>
-            {isOpen ? <X /> : <Menu />}
+          <button 
+            className="lg:hidden p-2.5 bg-gray-50 rounded-2xl text-[#1a472a] active:scale-90 transition-all" 
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label="Menu"
+          >
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu - Enhanced */}
       {isOpen && (
-        <div className="md:hidden bg-white border-b border-gray-100 p-4 space-y-4 shadow-xl">
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="block text-lg font-medium"
+        <div className="lg:hidden fixed inset-0 top-[60px] bg-white z-[60] flex flex-col p-6 animate-in fade-in slide-in-from-top-5 duration-300">
+          <div className="flex flex-col gap-4">
+            <p className="text-[10px] font-black text-gray-300 uppercase tracking-[0.2em] mb-2 px-4">Navigation</p>
+            {links.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-3xl font-black text-[#1a472a] tracking-tighter px-4 py-3 rounded-3xl active:bg-emerald-50 transition-colors"
+                onClick={() => setIsOpen(false)}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+          
+          <div className="mt-auto space-y-4 pt-8 border-t border-gray-100">
+            <Link 
+              href="/commander" 
+              className="btn btn-primary w-full py-6 text-xl font-black shadow-2xl shadow-emerald-900/20" 
               onClick={() => setIsOpen(false)}
             >
-              {link.label}
-            </Link>
-          ))}
-          <div className="pt-4 border-t border-gray-100 flex flex-col gap-4">
-            <Link href="/commander" className="btn btn-primary w-full" onClick={() => setIsOpen(false)}>
-              Commander
+              Commander maintenant
             </Link>
             {session ? (
-              <Link href={accountLink} className="text-center font-bold" onClick={() => setIsOpen(false)}>
+              <Link 
+                href={accountLink} 
+                className="w-full flex items-center justify-center gap-3 py-5 text-lg font-black text-gray-600 bg-gray-50 rounded-[2rem]" 
+                onClick={() => setIsOpen(false)}
+              >
+                {session.user.role === 'ADMIN' ? <LayoutDashboard size={20} /> : <User size={20} />}
                 {accountLabel}
               </Link>
             ) : (
-              <Link href="/auth/signin" className="text-center font-bold" onClick={() => setIsOpen(false)}>
-                Se connecter
-              </Link>
+              <div className="grid grid-cols-2 gap-4">
+                <Link 
+                  href="/auth/signin" 
+                  className="py-5 text-center font-black text-gray-500 bg-gray-50 rounded-[2rem]" 
+                  onClick={() => setIsOpen(false)}
+                >
+                  Connexion
+                </Link>
+                <Link 
+                  href="/auth/signup" 
+                  className="py-5 text-center font-black text-emerald-600 bg-emerald-50 rounded-[2rem]" 
+                  onClick={() => setIsOpen(false)}
+                >
+                  S'inscrire
+                </Link>
+              </div>
             )}
           </div>
         </div>
