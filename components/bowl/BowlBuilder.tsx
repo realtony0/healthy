@@ -94,18 +94,24 @@ export default function BowlBuilder({ ingredients, onComplete }: BowlBuilderProp
 
     if (type === 'SAUCE') {
       // Pour les sauces : on remplace systématiquement la sauce actuelle (1 seule autorisée)
-      // et cela ne consomme pas d'unités
+      // et cela ne consomme pas d'unités - TOUJOURS AUTORISÉ même si crédits épuisés
       ingredientsByType.SAUCE.forEach(s => newMap.delete(s.id))
       newMap.set(ingredientId, 1)
     } else if (type === 'PROTEINE_PREMIUM') {
       if (currentQty === 0) {
-        if (specialProteinsCount < 2 && (remainingUnits > 0 || extraUnits > 0)) newMap.set(ingredientId, 1)
+        // Maximum 2 protéines premium ET il faut avoir des unités disponibles
+        if (specialProteinsCount < 2 && remainingUnits > 0) {
+          newMap.set(ingredientId, 1)
+        }
       } else {
         newMap.delete(ingredientId)
       }
     } else {
+      // Pour les autres ingrédients : besoin d'unités disponibles
       if (currentQty === 0) {
-        if (remainingUnits > 0) newMap.set(ingredientId, 1)
+        if (remainingUnits > 0) {
+          newMap.set(ingredientId, 1)
+        }
       } else {
         newMap.delete(ingredientId)
       }
@@ -219,7 +225,9 @@ export default function BowlBuilder({ ingredients, onComplete }: BowlBuilderProp
                    "Votre sauce (Offerte)"}
                 </h3>
                 <p className="text-gray-400 font-bold italic text-sm underline decoration-emerald-100 decoration-4 underline-offset-4 decoration-skip-ink-none">
-                  {currentStep === 4 ? "Le choix d'une sauce est obligatoire." : `Il vous reste ${remainingUnits} unités.`}
+                  {currentStep === 4 
+                    ? "Le choix d'une sauce est obligatoire et gratuit (ne consomme pas d'unités)." 
+                    : `Il vous reste ${remainingUnits} unités.`}
                 </p>
               </div>
 
@@ -230,7 +238,11 @@ export default function BowlBuilder({ ingredients, onComplete }: BowlBuilderProp
                   ingredientsByType.SAUCE).map((ing) => {
                   const qty = selectedIngredients.get(ing.id) || 0
                   const isPremium = ing.type === 'PROTEINE_PREMIUM'
-                  const disabled = (isPremium && specialProteinsCount >= 2 && qty === 0) || (qty === 0 && remainingUnits <= 0)
+                  const isSauce = ing.type === 'SAUCE'
+                  // Les sauces sont TOUJOURS sélectionnables, même si crédits épuisés
+                  const disabled = isSauce 
+                    ? false 
+                    : (isPremium && specialProteinsCount >= 2 && qty === 0) || (qty === 0 && remainingUnits <= 0)
                   
                   return (
                     <button
