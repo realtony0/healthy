@@ -239,6 +239,24 @@ function CommanderAbonnementContent() {
                   </label>
                 ))}
               </div>
+
+              {formData.paymentMethod !== 'CASH' && (
+                <div className="p-8 bg-blue-50 border-2 border-blue-100 rounded-[2.5rem] space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
+                  <div className="flex items-center gap-3 text-blue-700 font-black uppercase text-xs tracking-widest">
+                    <Sparkles size={16} />
+                    Instructions {formData.paymentMethod}
+                  </div>
+                  <p className="text-blue-900 font-bold italic">
+                    Pour activer votre abonnement, effectuez le transfert de <span className="text-blue-600">{formatPrice(price)}</span> au numéro :
+                  </p>
+                  <div className="bg-white p-4 rounded-xl text-center border-2 border-blue-100">
+                    <p className="text-2xl font-black text-blue-600 tracking-tighter">78 598 71 43</p>
+                  </div>
+                  <p className="text-xs font-bold text-blue-700/60 leading-relaxed italic">
+                    ⚠️ Mettez votre nom en référence. Votre programme sera activé dès réception.
+                  </p>
+                </div>
+              )}
             </div>
           </div>
 

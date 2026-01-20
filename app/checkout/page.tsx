@@ -270,8 +270,27 @@ export default function CheckoutPage() {
                   </label>
                 ))}
               </div>
+
+              {formData.paymentMethod !== 'CASH' && (
+                <div className="p-8 bg-blue-50 border-2 border-blue-100 rounded-[2.5rem] space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
+                  <div className="flex items-center gap-3 text-blue-700 font-black uppercase text-xs tracking-widest">
+                    <Sparkles size={16} />
+                    Instructions {formData.paymentMethod}
+                  </div>
+                  <p className="text-blue-900 font-bold italic">
+                    Pour valider votre commande, effectuez le transfert de <span className="text-blue-600">{formatPrice(total)}</span> au numéro :
+                  </p>
+                  <div className="bg-white p-4 rounded-xl text-center border-2 border-blue-100">
+                    <p className="text-2xl font-black text-blue-600 tracking-tighter">78 598 71 43</p>
+                  </div>
+                  <p className="text-xs font-bold text-blue-700/60 leading-relaxed italic text-center">
+                    ⚠️ Mettez votre nom ou numéro en référence. <br />Votre commande sera validée dès réception.
+                  </p>
+                </div>
+              )}
+
               <p className="text-center text-gray-400 font-bold italic text-sm">
-                Le paiement se fait directement à la livraison.
+                Le paiement se fait directement à la livraison ou via transfert.
               </p>
             </div>
           </div>

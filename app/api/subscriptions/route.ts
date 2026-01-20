@@ -5,6 +5,8 @@ import { prisma } from '@/lib/prisma'
 import { addDays } from 'date-fns'
 import { sendWhatsAppNotification, formatSubscriptionNotification } from '@/lib/whatsapp'
 
+const ADMIN_PHONE = '221785987143'
+
 export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
@@ -55,16 +57,37 @@ export async function POST(request: NextRequest) {
       },
     })
 
-    // Envoyer notification WhatsApp si configuré
-    if (session.user.phone) {
+    // Notification Client
+    if (session.user.phone || deliveryPhone) {
       await sendWhatsAppNotification({
-        to: session.user.phone,
+        to: session.user.phone || deliveryPhone,
         message: formatSubscriptionNotification(
           subscription.id,
           start,
           end
         ),
       })
+    }
+
+    // Notification Admin
+    try {
+      const adminMessage = `⭐ *NOUVEL ABONNEMENT !*
+      
+*Client:* ${session.user.name} (+221 ${deliveryPhone})
+*Formule:* ${mealPlan}
+*Objectif:* ${goal}
+*Période:* Du ${start.toLocaleDateString('fr-FR')} au ${end.toLocaleDateString('fr-FR')}
+*Montant:* ${price.toLocaleString('fr-FR')} FCFA
+*Paiement:* ${paymentMethod}
+
+_Gérer l'abonnement : https://healthy.sn/mmb22115/abonnements/${subscription.id}_`
+
+      await sendWhatsAppNotification({
+        to: ADMIN_PHONE,
+        message: adminMessage
+      })
+    } catch (notifError) {
+      console.error('Failed to send admin notification:', notifError)
     }
 
     return NextResponse.json(subscription)
