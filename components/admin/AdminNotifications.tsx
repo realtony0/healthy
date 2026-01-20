@@ -43,6 +43,85 @@ export default function AdminNotifications() {
   const [isOpen, setIsOpen] = useState(false)
   const [lastFetch, setLastFetch] = useState<Date | null>(null)
   const [toasts, setToasts] = useState<Notification[]>([])
+  const [notificationPermission, setNotificationPermission] = useState<NotificationPermission>('default')
+
+  // Demander la permission pour les notifications navigateur
+  useEffect(() => {
+    if ('Notification' in window) {
+      setNotificationPermission(Notification.permission)
+      
+      // Si la permission n'a pas encore été demandée, on peut la demander automatiquement
+      // ou attendre que l'utilisateur clique sur le bouton
+      if (Notification.permission === 'default') {
+        // On peut demander automatiquement ou attendre une action utilisateur
+      }
+    }
+  }, [])
+
+  // Fonction pour demander la permission
+  const requestNotificationPermission = async () => {
+    if ('Notification' in window) {
+      const permission = await Notification.requestPermission()
+      setNotificationPermission(permission)
+      
+      if (permission === 'granted') {
+        // Afficher une notification de test
+        new Notification('Notifications activées', {
+          body: 'Vous recevrez maintenant des notifications sonores pour les nouvelles commandes.',
+          icon: '/img/logo.jpeg',
+          badge: '/img/logo.jpeg',
+        })
+      }
+    }
+  }
+
+  // Fonction pour jouer un son de notification
+  const playNotificationSound = () => {
+    try {
+      // Créer un contexte audio pour jouer un son
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
+      const oscillator = audioContext.createOscillator()
+      const gainNode = audioContext.createGain()
+      
+      oscillator.connect(gainNode)
+      gainNode.connect(audioContext.destination)
+      
+      // Son de notification (beep court)
+      oscillator.frequency.value = 800
+      oscillator.type = 'sine'
+      gainNode.gain.setValueAtTime(0.3, audioContext.currentTime)
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3)
+      
+      oscillator.start(audioContext.currentTime)
+      oscillator.stop(audioContext.currentTime + 0.3)
+    } catch (error) {
+      console.error('Error playing notification sound:', error)
+    }
+  }
+
+  // Fonction pour envoyer une notification navigateur
+  const sendBrowserNotification = (notif: Notification) => {
+    if ('Notification' in window && Notification.permission === 'granted') {
+      const browserNotification = new window.Notification(notif.title, {
+        body: notif.message,
+        icon: '/img/logo.jpeg',
+        badge: '/img/logo.jpeg',
+        tag: notif.id, // Évite les doublons
+        requireInteraction: false,
+        silent: false, // Active le son système
+      })
+
+      // Ouvrir la page quand on clique sur la notification
+      browserNotification.onclick = () => {
+        window.focus()
+        window.location.href = notif.link
+        browserNotification.close()
+      }
+
+      // Jouer un son personnalisé en plus
+      playNotificationSound()
+    }
+  }
 
   const fetchNotifications = async () => {
     try {
@@ -87,6 +166,16 @@ export default function AdminNotifications() {
         
         // Afficher les toasts pour les nouvelles notifications
         setToasts(prev => [...newNotifications, ...prev].slice(0, 3))
+        
+        // Envoyer les notifications navigateur avec son
+        newNotifications.forEach(notif => {
+          sendBrowserNotification(notif)
+        })
+        
+        // Jouer un son même si les notifications navigateur ne sont pas activées
+        if (Notification.permission !== 'granted') {
+          playNotificationSound()
+        }
         
         // Supprimer les toasts après 5 secondes
         setTimeout(() => {
@@ -158,20 +247,33 @@ export default function AdminNotifications() {
       </div>
 
       <div className="relative">
-        <button
-          onClick={() => {
-            setIsOpen(!isOpen)
-            if (isOpen) markAsRead()
-          }}
-          className="relative w-12 h-12 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-center justify-center text-gray-400 hover:text-[#1a472a] hover:border-[#1a472a] transition-all duration-300"
-        >
-          <Bell size={20} />
-          {unreadCount > 0 && (
-            <span className="absolute -top-1 -right-1 w-6 h-6 bg-red-500 text-white text-xs font-black rounded-full flex items-center justify-center border-2 border-white">
-              {unreadCount > 9 ? '9+' : unreadCount}
-            </span>
+        <div className="flex items-center gap-2">
+          {/* Bouton de permission si pas encore accordée */}
+          {notificationPermission !== 'granted' && 'Notification' in window && (
+            <button
+              onClick={requestNotificationPermission}
+              className="w-10 h-10 rounded-xl bg-orange-50 border border-orange-200 flex items-center justify-center text-orange-600 hover:bg-orange-100 transition-all"
+              title="Activer les notifications sonores"
+            >
+              <Bell size={16} />
+            </button>
           )}
-        </button>
+          
+          <button
+            onClick={() => {
+              setIsOpen(!isOpen)
+              if (isOpen) markAsRead()
+            }}
+            className="relative w-12 h-12 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-center justify-center text-gray-400 hover:text-[#1a472a] hover:border-[#1a472a] transition-all duration-300"
+          >
+            <Bell size={20} />
+            {unreadCount > 0 && (
+              <span className="absolute -top-1 -right-1 w-6 h-6 bg-red-500 text-white text-xs font-black rounded-full flex items-center justify-center border-2 border-white animate-pulse">
+                {unreadCount > 9 ? '9+' : unreadCount}
+              </span>
+            )}
+          </button>
+        </div>
 
       {isOpen && (
         <>
