@@ -6,7 +6,7 @@ import { useState, useEffect, Suspense } from 'react'
 import { SUBSCRIPTION_GOALS, SUBSCRIPTION_MEAL_PLANS, SUBSCRIPTION_DURATIONS, SUBSCRIPTION_PRICES, PAYMENT_METHODS } from '@/lib/constants'
 import { formatPrice } from '@/lib/utils'
 import { addDays } from 'date-fns'
-import { ArrowLeft, Calendar, MapPin, Phone, CreditCard, Banknote, Wallet, Check, ShieldCheck, AlertCircle } from 'lucide-react'
+import { ArrowLeft, Calendar, MapPin, Phone, CreditCard, Banknote, Wallet, Check, ShieldCheck, AlertCircle, Sparkles, ChevronRight } from 'lucide-react'
 import Link from 'next/link'
 
 function CommanderAbonnementContent() {
