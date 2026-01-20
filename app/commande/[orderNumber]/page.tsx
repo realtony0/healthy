@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma'
 import { notFound } from 'next/navigation'
-import { CheckCircle, Package, Truck, Clock, MapPin, Phone, MessageCircle } from 'lucide-react'
+import { CheckCircle, Package, Truck, Clock, MapPin, Phone, MessageCircle, CreditCard } from 'lucide-react'
 import Link from 'next/link'
 import { formatPrice } from '@/lib/utils'
 
