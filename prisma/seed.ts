@@ -298,8 +298,7 @@ async function main() {
       {
         name: 'Yaourt Grec Énergie',
         slug: 'yaourt-grec-energie',
-        description:
-          'Yaourt grec protéiné, préparé avec des fruits de saison, selon disponibilité.',
+        description: null,
         price: 2200,
         kcal: 320,
         proteins: 22,
@@ -310,7 +309,7 @@ async function main() {
       {
         name: 'Toast Avocat & Oeufs',
         slug: 'toast-avocat-oeufs',
-        description: 'Toast avocat et œufs pour bien démarrer la journée.',
+        description: null,
         price: 2500,
         kcal: 380,
         proteins: 20,
@@ -321,8 +320,7 @@ async function main() {
       {
         name: 'Overnight Oats',
         slug: 'overnight-oats',
-        description:
-          'Flocons d\'avoine préparés la veille, avec fruits de saison, selon disponibilité.',
+        description: null,
         price: 2300,
         kcal: 300,
         proteins: 16,
@@ -333,8 +331,7 @@ async function main() {
       {
         name: 'Smoothie Protéiné Naturel',
         slug: 'smoothie-proteine-naturel',
-        description:
-          'Smoothie protéiné naturel avec votre choix de 1 à 2 fruits.',
+        description: null,
         price: 2600,
         kcal: 400,
         proteins: 26,
@@ -345,7 +342,7 @@ async function main() {
       {
         name: 'Amandes',
         slug: 'amandes',
-        description: 'Amandes naturelles pour un snack healthy. Portion de 100g.',
+        description: null,
         price: 1500,
         kcal: 587,
         proteins: 20.5,
