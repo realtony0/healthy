@@ -322,7 +322,7 @@ async function main() {
         name: 'Overnight Oats',
         slug: 'overnight-oats',
         description:
-          'Flocons d'avoine préparés la veille, avec fruits de saison, selon disponibilité.',
+          'Flocons d\'avoine préparés la veille, avec fruits de saison, selon disponibilité.',
         price: 2300,
         kcal: 300,
         proteins: 16,
@@ -378,7 +378,7 @@ async function main() {
       {
         name: 'Shot Immunité',
         slug: 'shot-immunite',
-        description: 'Concentré naturel à base de gingembre, citron et curcuma, pour booster les défenses et l'énergie au quotidien. Format 60ml.',
+        description: 'Concentré naturel à base de gingembre, citron et curcuma, pour booster les défenses et l\'énergie au quotidien. Format 60ml.',
         price: 800,
         kcal: 32,
         proteins: 0,
@@ -444,7 +444,7 @@ async function main() {
       {
         name: 'Energy Balls Beurre de Cacahuète',
         slug: 'energy-balls-beurre-cacahuete',
-        description: 'Flocons d'avoine, beurre de cacahuète et dattes pour une énergie rapide et durable. Très rassasiantes. 5 pièces.',
+        description: 'Flocons d\'avoine, beurre de cacahuète et dattes pour une énergie rapide et durable. Très rassasiantes. 5 pièces.',
         price: 2000,
         kcal: 440,
         proteins: 15,
@@ -455,7 +455,7 @@ async function main() {
       {
         name: 'Energy Balls Choco',
         slug: 'energy-balls-choco',
-        description: 'Flocons d'avoine, cacao non sucré, dattes et pépites de chocolat. Gourmandes, version healthy. 5 pièces.',
+        description: 'Flocons d\'avoine, cacao non sucré, dattes et pépites de chocolat. Gourmandes, version healthy. 5 pièces.',
         price: 2000,
         kcal: 475,
         proteins: 13.5,
@@ -466,7 +466,7 @@ async function main() {
       {
         name: 'Energy Balls Coco-Dattes',
         slug: 'energy-balls-coco-dattes',
-        description: 'Dattes, coco râpée et flocons d'avoine. 100 % naturelles, sans sucre ajouté. 5 pièces.',
+        description: 'Dattes, coco râpée et flocons d\'avoine. 100 % naturelles, sans sucre ajouté. 5 pièces.',
         price: 2000,
         kcal: 420,
         proteins: 9,
@@ -477,7 +477,7 @@ async function main() {
       {
         name: 'Energy Balls Protéinées',
         slug: 'energy-balls-proteinees',
-        description: 'Flocons d'avoine, beurre d'amande ou cacahuète et graines. Idéales après le sport. Sans whey. 5 pièces.',
+        description: 'Flocons d\'avoine, beurre d\'amande ou cacahuète et graines. Idéales après le sport. Sans whey. 5 pièces.',
         price: 2200,
         kcal: 450,
         proteins: 18,
