@@ -3,6 +3,7 @@ import { authOptions } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { Package, ChefHat, Truck, Home, Settings, LogOut, LayoutDashboard, Calendar, Sparkles, Users } from 'lucide-react'
+import AdminNotifications from '@/components/admin/AdminNotifications'
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await getServerSession(authOptions)
@@ -31,8 +32,11 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       <div className="container-wide flex flex-col lg:flex-row gap-12 items-start">
         {/* Sidebar */}
         <aside className="w-full lg:w-80 bg-white p-8 rounded-[3.5rem] border border-gray-100 shadow-2xl shadow-gray-200/50 sticky top-32 space-y-10">
+          <div className="flex items-center justify-between mb-6">
+            <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] px-4">Gestion</p>
+            <AdminNotifications />
+          </div>
           <div>
-            <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-6 px-4">Gestion</p>
             <nav className="space-y-2">
               {menu.map(item => (
                 <Link 
