@@ -389,7 +389,7 @@ async function main() {
       {
         name: 'Shot Énergie',
         slug: 'shot-energie',
-        description: 'Concentré naturel à base de gingembre, citron et orange, pour un boost d'énergie immédiat et naturel. Format 60ml.',
+        description: 'Concentré naturel à base de gingembre, citron et orange, pour un boost d\'énergie immédiat et naturel. Format 60ml.',
         price: 800,
         kcal: 37,
         proteins: 0,
