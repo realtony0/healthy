@@ -3,7 +3,6 @@ import { notFound } from 'next/navigation'
 import { CheckCircle, Package, Truck, Clock, MapPin, Phone, MessageCircle, CreditCard } from 'lucide-react'
 import Link from 'next/link'
 import { formatPrice } from '@/lib/utils'
-import WavePaymentInstructions from '@/components/payment/WavePaymentInstructions'
 
 export const dynamic = 'force-dynamic'
 
@@ -78,39 +77,66 @@ export default async function OrderSuccessPage({ params }: OrderSuccessPageProps
               </div>
             </div>
 
-            {order.payment?.method === 'WAVE' && (
-              <WavePaymentInstructions
-                amount={order.totalAmount}
-                orderNumber={order.orderNumber}
-                phone="785987143"
-              />
-            )}
-            {order.payment?.method === 'ORANGE_MONEY' && (
-              <div className="bg-orange-50 p-10 rounded-[3rem] border-2 border-orange-200 shadow-xl space-y-6 relative overflow-hidden">
+            {order.payment?.method !== 'CASH' && (
+              <div className={`p-10 rounded-[3rem] border-2 shadow-xl space-y-6 relative overflow-hidden ${
+                order.payment?.method === 'WAVE'
+                  ? 'bg-blue-50 border-blue-200'
+                  : 'bg-orange-50 border-orange-200'
+              }`}>
                 <div className="flex items-center gap-4 relative z-10">
-                  <div className="w-12 h-12 bg-orange-500 rounded-2xl flex items-center justify-center text-white">
+                  <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-white ${
+                    order.payment?.method === 'WAVE' ? 'bg-blue-500' : 'bg-orange-500'
+                  }`}>
                     <CreditCard size={24} />
                   </div>
-                  <h2 className="text-2xl font-black text-orange-700 uppercase tracking-tighter">Paiement Orange Money</h2>
+                  <h2 className={`text-2xl font-black uppercase tracking-tighter ${
+                    order.payment?.method === 'WAVE' ? 'text-blue-700' : 'text-orange-700'
+                  }`}>
+                    Paiement {order.payment?.method === 'WAVE' ? 'Wave' : 'Orange Money'}
+                  </h2>
                 </div>
                 
                 <div className="space-y-4 relative z-10">
-                  <p className="text-orange-900 font-bold italic">
-                    Pour valider votre commande, veuillez effectuer le transfert au numéro suivant :
+                  <p className={`font-bold text-lg ${
+                    order.payment?.method === 'WAVE' ? 'text-blue-900' : 'text-orange-900'
+                  }`}>
+                    Transférez <span className={`text-2xl font-black ${
+                      order.payment?.method === 'WAVE' ? 'text-blue-600' : 'text-orange-600'
+                    }`}>{formatPrice(order.totalAmount)}</span> FCFA au numéro suivant :
                   </p>
                   
-                  <div className="bg-white p-6 rounded-2xl border-2 border-orange-100 text-center">
-                    <p className="text-xs font-black text-gray-400 uppercase tracking-widest mb-1">Numéro Orange Money</p>
-                    <p className="text-3xl font-black text-orange-600 tracking-tighter">78 598 71 43</p>
+                  <div className={`bg-white p-6 rounded-2xl border-2 text-center ${
+                    order.payment?.method === 'WAVE' ? 'border-blue-100' : 'border-orange-100'
+                  }`}>
+                    <p className={`text-xs font-black uppercase tracking-widest mb-2 ${
+                      order.payment?.method === 'WAVE' ? 'text-blue-400' : 'text-orange-400'
+                    }`}>
+                      Numéro {order.payment?.method === 'WAVE' ? 'Wave' : 'Orange Money'}
+                    </p>
+                    <p className={`text-4xl font-black tracking-tighter ${
+                      order.payment?.method === 'WAVE' ? 'text-blue-600' : 'text-orange-600'
+                    }`}>
+                      78 598 71 43
+                    </p>
                   </div>
 
-                  <div className="p-4 bg-white/50 rounded-xl border border-orange-100">
-                    <p className="text-xs font-bold text-orange-900/60 leading-relaxed">
-                      ⚠️ Important : Veuillez mettre le numéro de commande <span className="font-black text-orange-600">#{order.orderNumber}</span> en référence du transfert.
+                  <div className={`p-4 rounded-xl border ${
+                    order.payment?.method === 'WAVE'
+                      ? 'bg-blue-100/50 border-blue-200'
+                      : 'bg-orange-100/50 border-orange-200'
+                  }`}>
+                    <p className={`text-sm font-bold leading-relaxed ${
+                      order.payment?.method === 'WAVE' ? 'text-blue-900' : 'text-orange-900'
+                    }`}>
+                      ⚠️ <strong>Important :</strong> Indiquez le numéro de commande <strong className="text-lg">#{order.orderNumber}</strong> en référence du transfert.
+                      <br />
+                      Votre commande sera validée dès réception du paiement.
                     </p>
                   </div>
                 </div>
-                <div className="absolute top-[-20px] right-[-20px] w-32 h-32 bg-orange-100/50 rounded-full blur-[40px]" />
+                <div className={`absolute top-[-20px] right-[-20px] w-32 h-32 rounded-full blur-[40px] ${
+                  order.payment?.method === 'WAVE' ? 'bg-blue-100/50' : 'bg-orange-100/50'
+                }`} />
               </div>
             )}
           </div>

@@ -7,7 +7,6 @@ import { PAYMENT_METHODS } from '@/lib/constants'
 import { formatPrice } from '@/lib/utils'
 import { ArrowLeft, ShieldCheck, MapPin, Phone, MessageSquare, CreditCard, Wallet, Banknote, Check, Sparkles } from 'lucide-react'
 import Link from 'next/link'
-import WavePaymentInstructions from '@/components/payment/WavePaymentInstructions'
 
 type CartItem = {
   id: string
@@ -272,39 +271,57 @@ export default function CheckoutPage() {
                 ))}
               </div>
 
-              {formData.paymentMethod === 'WAVE' && (
-                <div className="p-8 bg-gradient-to-br from-blue-50 to-emerald-50 border-2 border-blue-200 rounded-[2.5rem] space-y-6 animate-in fade-in slide-in-from-top-2 duration-300">
-                  <div className="flex items-center gap-3 text-blue-700 font-black uppercase text-xs tracking-widest">
+              {formData.paymentMethod !== 'CASH' && (
+                <div className={`p-8 border-2 rounded-[2.5rem] space-y-6 animate-in fade-in slide-in-from-top-2 duration-300 ${
+                  formData.paymentMethod === 'WAVE' 
+                    ? 'bg-blue-50 border-blue-200' 
+                    : 'bg-orange-50 border-orange-200'
+                }`}>
+                  <div className={`flex items-center gap-3 font-black uppercase text-xs tracking-widest ${
+                    formData.paymentMethod === 'WAVE' ? 'text-blue-700' : 'text-orange-700'
+                  }`}>
                     <Sparkles size={16} />
-                    Instructions Paiement Wave
+                    Instructions {formData.paymentMethod === 'WAVE' ? 'Wave' : 'Orange Money'}
                   </div>
-                  <p className="text-blue-900 font-bold italic">
-                    Après confirmation de votre commande, vous recevrez un QR code pour payer directement via Wave.
-                  </p>
-                  <div className="bg-white p-6 rounded-2xl border-2 border-blue-100 text-center">
-                    <p className="text-xs font-black text-gray-400 uppercase tracking-widest mb-2">Numéro Wave</p>
-                    <p className="text-3xl font-black text-blue-600 tracking-tighter">78 598 71 43</p>
+                  
+                  <div className="space-y-4">
+                    <p className={`font-bold text-lg ${
+                      formData.paymentMethod === 'WAVE' ? 'text-blue-900' : 'text-orange-900'
+                    }`}>
+                      Transférez <span className={`text-2xl font-black ${
+                        formData.paymentMethod === 'WAVE' ? 'text-blue-600' : 'text-orange-600'
+                      }`}>{formatPrice(total)}</span> FCFA au numéro suivant :
+                    </p>
+                    
+                    <div className={`bg-white p-6 rounded-2xl border-2 text-center ${
+                      formData.paymentMethod === 'WAVE' ? 'border-blue-100' : 'border-orange-100'
+                    }`}>
+                      <p className={`text-xs font-black uppercase tracking-widest mb-2 ${
+                        formData.paymentMethod === 'WAVE' ? 'text-blue-400' : 'text-orange-400'
+                      }`}>
+                        Numéro {formData.paymentMethod === 'WAVE' ? 'Wave' : 'Orange Money'}
+                      </p>
+                      <p className={`text-4xl font-black tracking-tighter ${
+                        formData.paymentMethod === 'WAVE' ? 'text-blue-600' : 'text-orange-600'
+                      }`}>
+                        78 598 71 43
+                      </p>
+                    </div>
+
+                    <div className={`p-4 rounded-xl border ${
+                      formData.paymentMethod === 'WAVE' 
+                        ? 'bg-blue-100/50 border-blue-200' 
+                        : 'bg-orange-100/50 border-orange-200'
+                    }`}>
+                      <p className={`text-sm font-bold leading-relaxed text-center ${
+                        formData.paymentMethod === 'WAVE' ? 'text-blue-900' : 'text-orange-900'
+                      }`}>
+                        ⚠️ <strong>Important :</strong> Indiquez votre <strong>nom complet</strong> ou le <strong>numéro de commande</strong> en référence du transfert.
+                        <br />
+                        Votre commande sera validée dès réception du paiement.
+                      </p>
+                    </div>
                   </div>
-                  <p className="text-xs font-bold text-blue-700/60 leading-relaxed italic text-center">
-                    Le QR code et les instructions complètes vous seront envoyés après confirmation de la commande.
-                  </p>
-                </div>
-              )}
-              {formData.paymentMethod === 'ORANGE_MONEY' && (
-                <div className="p-8 bg-orange-50 border-2 border-orange-100 rounded-[2.5rem] space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
-                  <div className="flex items-center gap-3 text-orange-700 font-black uppercase text-xs tracking-widest">
-                    <Sparkles size={16} />
-                    Instructions Orange Money
-                  </div>
-                  <p className="text-orange-900 font-bold italic">
-                    Pour valider votre commande, effectuez le transfert de <span className="text-orange-600">{formatPrice(total)}</span> au numéro :
-                  </p>
-                  <div className="bg-white p-4 rounded-xl text-center border-2 border-orange-100">
-                    <p className="text-2xl font-black text-orange-600 tracking-tighter">78 598 71 43</p>
-                  </div>
-                  <p className="text-xs font-bold text-orange-700/60 leading-relaxed italic text-center">
-                    ⚠️ Mettez votre nom ou numéro en référence. <br />Votre commande sera validée dès réception.
-                  </p>
                 </div>
               )}
 
