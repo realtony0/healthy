@@ -411,7 +411,7 @@ async function main() {
       {
         name: 'Shot Detox',
         slug: 'shot-detox',
-        description: 'Shot frais et naturel à base de citron, concombre et menthe, pour aider à l'hydratation et à la sensation de légèreté. Format 60ml.',
+        description: 'Shot frais et naturel à base de citron, concombre et menthe, pour aider à l\'hydratation et à la sensation de légèreté. Format 60ml.',
         price: 800,
         kcal: 22,
         proteins: 0,
