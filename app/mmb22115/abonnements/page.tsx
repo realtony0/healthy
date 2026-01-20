@@ -34,9 +34,7 @@ export default function AdminSubscriptionsPage() {
     try {
       const params = new URLSearchParams()
       if (filterStatus) params.set('status', filterStatus)
-      const res = await fetch(`/api/admin/subscriptions?${params.toString()}`, {
-        next: { revalidate: 0 },
-      })
+      const res = await fetch(`/api/admin/subscriptions?${params.toString()}`)
       const data = await res.json()
       setSubscriptions(Array.isArray(data.subscriptions) ? data.subscriptions : [])
     } finally {

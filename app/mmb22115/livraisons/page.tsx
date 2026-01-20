@@ -23,9 +23,7 @@ export default function AdminDeliveriesPage() {
   const fetchOrders = useCallback(async () => {
     setLoading(true)
     try {
-      const res = await fetch('/api/admin/orders?limit=100', {
-        next: { revalidate: 0 },
-      })
+      const res = await fetch('/api/admin/orders?limit=100')
       const data = await res.json()
       const all = Array.isArray(data.orders) ? (data.orders as AdminOrder[]) : []
       setOrders(all.filter((o) => !['DELIVERED', 'CANCELLED'].includes(o.status)))

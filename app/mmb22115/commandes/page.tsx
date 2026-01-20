@@ -40,18 +40,16 @@ export default function AdminOrdersPage() {
   const [pagination, setPagination] = useState<Pagination | null>(null)
   const debounceTimer = useRef<NodeJS.Timeout | undefined>(undefined)
 
-  const fetchOrders = useCallback(async (currentPage = page) => {
+  const fetchOrders = useCallback(async (currentPage?: number) => {
     setLoading(true)
     try {
       const params = new URLSearchParams()
       if (status) params.set('status', status)
       if (paymentStatus) params.set('paymentStatus', paymentStatus)
-      params.set('page', currentPage.toString())
+      params.set('page', (currentPage || page).toString())
       params.set('limit', '50')
       
-      const res = await fetch(`/api/admin/orders?${params.toString()}`, {
-        next: { revalidate: 0 },
-      })
+      const res = await fetch(`/api/admin/orders?${params.toString()}`)
       const data = await res.json()
       
       if (data.orders && Array.isArray(data.orders)) {
@@ -85,19 +83,12 @@ export default function AdminOrdersPage() {
         clearTimeout(debounceTimer.current)
       }
     }
-  }, [status, paymentStatus])
+  }, [status, paymentStatus, fetchOrders])
 
   // Chargement initial
   useEffect(() => {
-    fetchOrders()
+    fetchOrders(1)
   }, [])
-
-  // Changement de page
-  useEffect(() => {
-    if (page > 1) {
-      fetchOrders(page)
-    }
-  }, [page])
 
   const getStatusColor = useCallback((s: OrderStatus) => {
     switch (s) {
@@ -130,7 +121,7 @@ export default function AdminOrdersPage() {
         </div>
         
         <button 
-          onClick={fetchOrders}
+          onClick={() => fetchOrders()}
           className="w-12 h-12 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-center justify-center text-gray-400 hover:text-[#1a472a] hover:rotate-180 transition-all duration-500"
         >
           <RefreshCcw size={20} />
