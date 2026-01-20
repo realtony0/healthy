@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { PAYMENT_METHODS } from '@/lib/constants'
 import { formatPrice } from '@/lib/utils'
-import { ArrowLeft, ShieldCheck, MapPin, Phone, MessageSquare, CreditCard, Wallet, Banknote, Check } from 'lucide-react'
+import { ArrowLeft, ShieldCheck, MapPin, Phone, MessageSquare, CreditCard, Wallet, Banknote, Check, Sparkles } from 'lucide-react'
 import Link from 'next/link'
 
 type CartItem = {

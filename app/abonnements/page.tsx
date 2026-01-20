@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Check, ArrowRight, Calendar, Target, Zap, Clock } from 'lucide-react'
+import { Check, ArrowRight, Calendar, Target, Zap, Clock, ChevronRight } from 'lucide-react'
 import { SUBSCRIPTION_GOALS, SUBSCRIPTION_MEAL_PLANS, SUBSCRIPTION_PRICES } from '@/lib/constants'
 import { formatPrice } from '@/lib/utils'
 import { Metadata } from 'next'
