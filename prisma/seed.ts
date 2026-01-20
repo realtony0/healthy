@@ -126,6 +126,52 @@ async function main() {
     where: { slug: 'cree-ton-bowl' },
   })
 
+  // Liste des slugs autorisés (uniquement ceux fournis par l'utilisateur)
+  const allowedSlugs = [
+    // Plats Signature (7)
+    'bowl-poulet-mais-dore',
+    'patate-douce-tacos-boeuf-signature',
+    'boulettes-poulet-signature',
+    'coupes-laitue-crevettes',
+    'poisson-blanc-herbes-citron',
+    'bowl-lentilles-pommes-terre-croustillantes-veggie',
+    'boeuf-saisi-puree-patate-douce',
+    // L'Essentiel (4)
+    'salade-concombre-poulet',
+    'barquette-concombre-crevettes',
+    'poulet-grille-legumes',
+    'poisson-blanc-legumes',
+    // Rituel du Matin (5)
+    'yaourt-grec-energie',
+    'toast-avocat-oeufs',
+    'overnight-oats',
+    'smoothie-proteine-naturel',
+    'amandes',
+    // Shots Healthy (4)
+    'shot-immunite',
+    'shot-energie',
+    'shot-brule-graisse',
+    'shot-detox',
+    // Energy Balls (4)
+    'energy-balls-beurre-cacahuete',
+    'energy-balls-choco',
+    'energy-balls-coco-dattes',
+    'energy-balls-proteinees',
+    // Bowl personnalisé (invisible, pour le système)
+    'bowl-personnalise',
+  ]
+
+  // Supprimer tous les produits qui ne sont pas dans la liste autorisée
+  console.log('Nettoyage des produits non autorisés...')
+  await prisma.product.deleteMany({
+    where: {
+      slug: {
+        notIn: allowedSlugs,
+      },
+    },
+  })
+  console.log('Nettoyage terminé.')
+
   // Plats Signature
   if (platsSignature) {
     const products = [
