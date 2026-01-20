@@ -20,21 +20,23 @@ export default function AdminDeliveriesPage() {
   const [orders, setOrders] = useState<AdminOrder[]>([])
   const [loading, setLoading] = useState(true)
 
-  const fetchOrders = async () => {
+  const fetchOrders = useCallback(async () => {
     setLoading(true)
     try {
-      const res = await fetch('/api/admin/orders')
+      const res = await fetch('/api/admin/orders?limit=100', {
+        next: { revalidate: 0 },
+      })
       const data = await res.json()
-      const all = Array.isArray(data) ? (data as AdminOrder[]) : []
+      const all = Array.isArray(data.orders) ? (data.orders as AdminOrder[]) : []
       setOrders(all.filter((o) => !['DELIVERED', 'CANCELLED'].includes(o.status)))
     } finally {
       setLoading(false)
     }
-  }
+  }, [])
 
   useEffect(() => {
     fetchOrders()
-  }, [])
+  }, [fetchOrders])
 
   const groups = useMemo(() => {
     const map = new Map<string, AdminOrder[]>()

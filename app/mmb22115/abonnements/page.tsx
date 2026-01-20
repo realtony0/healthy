@@ -29,22 +29,24 @@ export default function AdminSubscriptionsPage() {
   const [loading, setLoading] = useState(true)
   const [filterStatus, setFilterStatus] = useState('')
 
-  const fetchSubscriptions = async () => {
+  const fetchSubscriptions = useCallback(async () => {
     setLoading(true)
     try {
       const params = new URLSearchParams()
       if (filterStatus) params.set('status', filterStatus)
-      const res = await fetch(`/api/admin/subscriptions?${params.toString()}`)
+      const res = await fetch(`/api/admin/subscriptions?${params.toString()}`, {
+        next: { revalidate: 0 },
+      })
       const data = await res.json()
-      setSubscriptions(Array.isArray(data) ? data : [])
+      setSubscriptions(Array.isArray(data.subscriptions) ? data.subscriptions : [])
     } finally {
       setLoading(false)
     }
-  }
+  }, [filterStatus])
 
   useEffect(() => {
     fetchSubscriptions()
-  }, [filterStatus])
+  }, [fetchSubscriptions])
 
   return (
     <div className="space-y-10">
