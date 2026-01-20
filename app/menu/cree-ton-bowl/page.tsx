@@ -33,7 +33,49 @@ export default function CreateBowlPage() {
 
   const handleComplete = async (config: BowlConfig) => {
     if (!session) {
-      router.push('/auth/signin?callbackUrl=/menu/cree-ton-bowl')
+      // Gestion panier invité pour le bowl builder
+      setAddingToCart(true)
+      try {
+        // On récupère les infos du produit virtuel pour le stocker dans le localStorage
+        const res = await fetch('/api/admin/products') // On peut tricher un peu ou juste créer l'objet
+        const products = await res.json()
+        const bowlProduct = products.find((p: any) => p.slug === 'bowl-personnalise')
+        
+        const guestCartJson = localStorage.getItem('healthy_guest_cart')
+        let guestCart = guestCartJson ? JSON.parse(guestCartJson) : { items: [] }
+        
+        const newItem = {
+          id: Math.random().toString(36).substr(2, 9),
+          productId: bowlProduct?.id || 'virtual-bowl-id',
+          quantity: 1,
+          fruitChoices: [],
+          bowlConfigId: 'guest-' + Math.random().toString(36).substr(2, 9),
+          product: {
+            id: bowlProduct?.id || 'virtual-bowl-id',
+            name: 'Bowl Personnalisé',
+            price: 0,
+            image: '/img/bowl-poulet-mais.jpeg'
+          },
+          bowlConfig: {
+            id: 'guest-config-' + Math.random().toString(36).substr(2, 9),
+            size: config.size,
+            price: config.totalPrice,
+            ingredients: config.selectedIngredients.map(it => ({
+              ingredient: ingredients.find(ing => ing.id === it.ingredientId),
+              quantity: it.quantity
+            }))
+          }
+        }
+        
+        guestCart.items.push(newItem)
+        localStorage.setItem('healthy_guest_cart', JSON.stringify(guestCart))
+        router.push('/panier')
+      } catch (error) {
+        console.error(error)
+        alert('Erreur lors de l\'ajout au panier')
+      } finally {
+        setAddingToCart(false)
+      }
       return
     }
 

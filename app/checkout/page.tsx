@@ -40,7 +40,12 @@ export default function CheckoutPage() {
     if (session) {
       fetchCart()
     } else {
-      router.push('/auth/signin?callbackUrl=/checkout')
+      // Pour les invités, on récupère le panier depuis le localStorage
+      const guestCart = localStorage.getItem('healthy_guest_cart')
+      if (guestCart) {
+        setCart(JSON.parse(guestCart))
+      }
+      setLoading(false)
     }
   }, [session, router])
 
@@ -81,6 +86,9 @@ export default function CheckoutPage() {
 
       if (response.ok) {
         const order = await response.json()
+        if (!session) {
+          localStorage.removeItem('healthy_guest_cart')
+        }
         router.push(`/commande/${order.orderNumber}`)
       } else {
         alert('Erreur lors de la création de la commande')

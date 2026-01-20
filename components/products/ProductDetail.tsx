@@ -30,16 +30,37 @@ export default function ProductDetail({ product }: ProductDetailProps) {
   const [loading, setLoading] = useState(false)
 
   const handleAddToCart = async () => {
-    if (!session) {
-      router.push(`/auth/signin?callbackUrl=/menu/${product.slug}`)
-      return
-    }
-
     if (
       PRODUCTS_WITH_FRUIT_CHOICE.includes(product.slug as any) &&
       (fruitChoices.length < 1 || fruitChoices.length > 2)
     ) {
       alert('Veuillez sélectionner entre 1 et 2 fruits pour ce produit.')
+      return
+    }
+
+    if (!session) {
+      // Gestion panier invité
+      const guestCartJson = localStorage.getItem('healthy_guest_cart')
+      let guestCart = guestCartJson ? JSON.parse(guestCartJson) : { items: [] }
+      
+      const newItem = {
+        id: Math.random().toString(36).substr(2, 9),
+        productId: product.id,
+        quantity,
+        fruitChoices,
+        bowlConfigId: null,
+        product: {
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          image: product.image
+        },
+        bowlConfig: null
+      }
+      
+      guestCart.items.push(newItem)
+      localStorage.setItem('healthy_guest_cart', JSON.stringify(guestCart))
+      router.push('/panier')
       return
     }
 

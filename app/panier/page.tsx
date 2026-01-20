@@ -30,6 +30,11 @@ export default function PanierPage() {
     if (session) {
       fetchCart()
     } else {
+      // Pour les invités, on récupère le panier depuis le localStorage
+      const guestCart = localStorage.getItem('healthy_guest_cart')
+      if (guestCart) {
+        setCart(JSON.parse(guestCart))
+      }
       setLoading(false)
     }
   }, [session])
@@ -47,11 +52,22 @@ export default function PanierPage() {
   }
 
   const removeItem = async (itemId: string) => {
-    try {
-      await fetch(`/api/cart?itemId=${itemId}`, { method: 'DELETE' })
-      fetchCart()
-    } catch (error) {
-      console.error('Error removing item:', error)
+    if (session) {
+      try {
+        await fetch(`/api/cart?itemId=${itemId}`, { method: 'DELETE' })
+        fetchCart()
+      } catch (error) {
+        console.error('Error removing item:', error)
+      }
+    } else {
+      // Pour les invités, on supprime du localStorage
+      const guestCartJson = localStorage.getItem('healthy_guest_cart')
+      if (guestCartJson) {
+        const guestCart = JSON.parse(guestCartJson)
+        guestCart.items = guestCart.items.filter((it: any) => it.id !== itemId)
+        localStorage.setItem('healthy_guest_cart', JSON.stringify(guestCart))
+        setCart(guestCart)
+      }
     }
   }
 
@@ -59,23 +75,6 @@ export default function PanierPage() {
     return (
       <div className="min-h-screen pt-32 pb-32 container-wide flex items-center justify-center">
         <div className="w-12 h-12 border-4 border-emerald-100 border-t-[#1a472a] rounded-full animate-spin" />
-      </div>
-    )
-  }
-
-  if (!session) {
-    return (
-      <div className="min-h-screen pt-32 pb-32 container-wide flex flex-col items-center justify-center text-center space-y-8">
-        <div className="w-24 h-24 bg-gray-50 rounded-[2.5rem] flex items-center justify-center text-gray-300">
-          <ShoppingCart size={48} />
-        </div>
-        <div className="space-y-4">
-          <h1 className="text-4xl font-black text-[#1a472a]">Identifiez-vous</h1>
-          <p className="text-gray-500 font-medium max-w-sm">Connectez-vous pour accéder à votre panier et commander vos repas.</p>
-        </div>
-        <Link href="/auth/signin" className="btn btn-primary btn-lg px-12">
-          Se connecter
-        </Link>
       </div>
     )
   }

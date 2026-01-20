@@ -3,14 +3,17 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { generateOrderNumber } from '@/lib/utils'
+import { sendWhatsAppNotification } from '@/lib/whatsapp'
+
+const ADMIN_PHONE = '221785987143'
 
 type OrderPayloadItem = {
   productId: string
   quantity: number
   fruitChoices?: string[]
   bowlConfigId?: string | null
-  product: { price: number }
-  bowlConfig?: { price: number } | null
+  product: { price: number; name: string }
+  bowlConfig?: { price: number; size: string } | null
 }
 
 export async function POST(request: NextRequest) {
@@ -92,6 +95,32 @@ export async function POST(request: NextRequest) {
           },
         },
       })
+    }
+
+    // Notification Admin via WhatsApp
+    try {
+      const itemsList = items.map(it => `- ${it.quantity}x ${it.product.name}${it.bowlConfig ? ` (Bowl ${it.bowlConfig.size})` : ''}`).join('\n')
+      const message = `🔔 *NOUVELLE COMMANDE !*
+      
+*Numéro:* #${order.orderNumber}
+*Montant:* ${totalAmount.toLocaleString('fr-FR')} FCFA
+*Client:* ${session?.user?.name || 'Invité'} (+221 ${deliveryPhone})
+*Adresse:* ${deliveryAddress}
+${deliveryNotes ? `*Notes:* ${deliveryNotes}` : ''}
+
+*Produits:*
+${itemsList}
+
+*Paiement:* ${paymentMethod} (En attente)
+
+_Gérer la commande : https://healthy.sn/mmb22115/commandes/${order.orderNumber}_`
+
+      await sendWhatsAppNotification({
+        to: ADMIN_PHONE,
+        message: message
+      })
+    } catch (notifError) {
+      console.error('Failed to send admin notification:', notifError)
     }
 
     return NextResponse.json(order)
