@@ -378,9 +378,9 @@ async function main() {
       {
         name: 'Shot Immunité',
         slug: 'shot-immunite',
-        description: 'Concentré naturel à base de gingembre, citron et curcuma, pour booster les défenses et l\'énergie au quotidien. Format 60ml.',
+        description: 'Concentré naturel à base de gingembre, citron et curcuma, pour booster les défenses et l\'énergie au quotidien.',
         price: 800,
-        kcal: 32,
+        kcal: 33,
         proteins: 0,
         image: '/img/shot-immunite.jpeg',
         categoryId: shotsHealthy.id,
@@ -389,9 +389,9 @@ async function main() {
       {
         name: 'Shot Énergie',
         slug: 'shot-energie',
-        description: 'Concentré naturel à base de gingembre, citron et orange, pour un boost d\'énergie immédiat et naturel. Format 60ml.',
+        description: 'Concentré naturel à base de gingembre, citron et orange, pour un boost d\'énergie immédiat et naturel.',
         price: 800,
-        kcal: 37,
+        kcal: 38,
         proteins: 0,
         image: '/img/shot-energy.jpeg',
         categoryId: shotsHealthy.id,
@@ -400,9 +400,9 @@ async function main() {
       {
         name: 'Shot Brûle Graisse',
         slug: 'shot-brule-graisse',
-        description: 'Shot naturel à base de citron, gingembre et piment doux, conçu pour stimuler le métabolisme et apporter un effet tonique. Format 60ml.',
+        description: 'Shot naturel à base de citron, gingembre et piment doux, conçu pour stimuler le métabolisme et apporter un effet tonique.',
         price: 800,
-        kcal: 27,
+        kcal: 28,
         proteins: 0,
         image: '/img/shot-brule-graisse.jpeg',
         categoryId: shotsHealthy.id,
@@ -411,9 +411,9 @@ async function main() {
       {
         name: 'Shot Detox',
         slug: 'shot-detox',
-        description: 'Shot frais et naturel à base de citron, concombre et menthe, pour aider à l\'hydratation et à la sensation de légèreté. Format 60ml.',
+        description: 'Shot frais et naturel à base de citron, concombre et menthe, pour aider à l\'hydratation et à la sensation de légèreté.',
         price: 800,
-        kcal: 22,
+        kcal: 23,
         proteins: 0,
         image: '/img/shot-detox.jpeg',
         categoryId: shotsHealthy.id,
@@ -444,7 +444,7 @@ async function main() {
       {
         name: 'Energy Balls Beurre de Cacahuète',
         slug: 'energy-balls-beurre-cacahuete',
-        description: 'Flocons d\'avoine, beurre de cacahuète et dattes pour une énergie rapide et durable. Très rassasiantes. 5 pièces.',
+        description: 'Flocons d\'avoine, beurre de cacahuète et dattes pour une énergie rapide et durable. Très rassasiantes.',
         price: 2000,
         kcal: 440,
         proteins: 15,
@@ -455,7 +455,7 @@ async function main() {
       {
         name: 'Energy Balls Choco',
         slug: 'energy-balls-choco',
-        description: 'Flocons d\'avoine, cacao non sucré, dattes et pépites de chocolat. Gourmandes, version healthy. 5 pièces.',
+        description: 'Flocons d\'avoine, cacao non sucré, dattes et pépites de chocolat. Gourmandes, version healthy.',
         price: 2000,
         kcal: 475,
         proteins: 13.5,
@@ -466,7 +466,7 @@ async function main() {
       {
         name: 'Energy Balls Coco-Dattes',
         slug: 'energy-balls-coco-dattes',
-        description: 'Dattes, coco râpée et flocons d\'avoine. 100 % naturelles, sans sucre ajouté. 5 pièces.',
+        description: 'Dattes, coco râpée et flocons d\'avoine. 100 % naturelles, sans sucre ajouté.',
         price: 2000,
         kcal: 420,
         proteins: 9,
@@ -477,7 +477,7 @@ async function main() {
       {
         name: 'Energy Balls Protéinées',
         slug: 'energy-balls-proteinees',
-        description: 'Flocons d\'avoine, beurre d\'amande ou cacahuète et graines. Idéales après le sport. Sans whey. 5 pièces.',
+        description: 'Flocons d\'avoine, beurre d\'amande ou cacahuète et graines. Idéales après le sport.',
         price: 2200,
         kcal: 450,
         proteins: 18,
