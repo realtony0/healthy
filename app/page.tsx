@@ -4,9 +4,9 @@ import { ArrowRight, Star, ShieldCheck, Leaf, Sparkles, Clock, MapPin, Heart, Tr
 
 export default function HomePage() {
   const bestSellers = [
-    { name: 'Bowl Poulet Signature', price: '3 500', img: '/img/Bowl de poulet au Maïs Doré.jpeg', tag: 'Best-seller' },
-    { name: 'Bœuf & Patate Douce', price: '4 200', img: '/img/Bœuf saisi accompagné de purée de patate douce.jpeg', tag: 'Protéiné' },
-    { name: 'Poisson aux Herbes', price: '3 900', img: '/img/Poisson blanc aux herbes et citron.jpeg', tag: 'Léger' },
+    { name: 'Bowl Poulet Signature', price: '3 500', img: '/img/bowl-poulet-mais.jpeg', tag: 'Best-seller' },
+    { name: 'Bœuf & Patate Douce', price: '4 200', img: '/img/boeuf-puree-patate-douce.jpeg', tag: 'Protéiné' },
+    { name: 'Poisson aux Herbes', price: '3 900', img: '/img/poisson-blanc-herbes.jpeg', tag: 'Léger' },
   ]
 
   return (
@@ -16,7 +16,7 @@ export default function HomePage() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image 
-            src="/img/Bowl de poulet au Maïs Doré.jpeg" 
+            src="/img/bowl-poulet-mais.jpeg" 
             alt="Healthy Dakar" 
             fill
             className="object-cover"
@@ -203,7 +203,7 @@ export default function HomePage() {
               </div>
               <div className="relative h-80 md:h-full min-h-[400px]">
                 <Image 
-                  src="/img/Bowl de lentilles & Pommes de Terre Croustillantes Veggie.jpeg" 
+                  src="/img/bowl-lentilles-veggie.jpeg" 
                   alt="Bowl personnalisé" 
                   fill 
                   className="object-cover"

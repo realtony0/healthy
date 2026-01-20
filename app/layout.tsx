@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     description: "Mangez mieux, vivez bien. Vos repas healthy livrés chaque jour partout à Dakar.",
     images: [
       {
-        url: "/img/Bowl de poulet au Maïs Doré.jpeg",
+        url: "/img/bowl-poulet-mais.jpeg",
         width: 1200,
         height: 630,
         alt: "Healthy Dakar - Repas Équilibrés",
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Healthy Dakar | Nutrition & Repas Équilibrés 100% Halal",
     description: "Mangez mieux, vivez bien. Vos repas healthy livrés chaque jour partout à Dakar.",
-    images: ["/img/Bowl de poulet au Maïs Doré.jpeg"],
+    images: ["/img/bowl-poulet-mais.jpeg"],
   },
   robots: {
     index: true,
@@ -84,7 +84,7 @@ export default function RootLayout({
               "image": "https://healthy.sn/img/logo.jpeg",
               "@id": "https://healthy.sn",
               "url": "https://healthy.sn",
-              "telephone": "+221770000000",
+              "telephone": "+221785987143",
               "address": {
                 "@type": "PostalAddress",
                 "streetAddress": "Dakar",
@@ -100,9 +100,9 @@ export default function RootLayout({
               "priceRange": "$$",
               "openingHoursSpecification": {
                 "@type": "OpeningHoursSpecification",
-                "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-                "opens": "08:00",
-                "closes": "20:00"
+                "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+                "opens": "06:00",
+                "closes": "23:00"
               }
             })
           }}

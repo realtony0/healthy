@@ -59,7 +59,7 @@ export default async function MenuPage() {
                 </div>
                 <div className="w-full md:w-1/3 aspect-square rounded-[24px] overflow-hidden shadow-2xl border-4 border-white">
                   <Image 
-                    src="/img/Bowl de lentilles & Pommes de Terre Croustillantes Veggie.jpeg" 
+                    src="/img/bowl-lentilles-veggie.jpeg" 
                     alt="Custom Bowl" 
                     width={400} 
                     height={400} 
