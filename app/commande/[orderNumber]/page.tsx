@@ -55,7 +55,7 @@ export default async function OrderSuccessPage({ params }: OrderSuccessPageProps
             </div>
             
             <div className="space-y-4">
-              {order.items.map((item) => (
+              {order.items.map((item: any) => (
                 <div key={item.id} className="flex justify-between items-start border-b border-gray-50 pb-4 last:border-0">
                   <div className="space-y-1">
                     <p className="font-black text-gray-900 leading-tight">{item.product.name}</p>
