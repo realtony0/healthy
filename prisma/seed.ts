@@ -423,17 +423,6 @@ async function main() {
         sortOrder: 4,
       },
       {
-        name: 'Shot Mix',
-        slug: 'shot-mix',
-        description: 'Shot mix de saveurs healthy.',
-        price: 800,
-        kcal: 25,
-        proteins: 1,
-        image: '/img/shot mix.jpeg',
-        categoryId: shotsHealthy.id,
-        sortOrder: 5,
-      },
-      {
         name: 'Pack Mix 4 Shots',
         slug: 'pack-mix-4-shots',
         description: 'Pack de 4 shots assortis.',
@@ -442,7 +431,7 @@ async function main() {
         proteins: 4,
         image: '/img/pack mix de 4 shots.jpeg',
         categoryId: shotsHealthy.id,
-        sortOrder: 6,
+        sortOrder: 5,
       },
     ]
 
