@@ -46,9 +46,10 @@ export default function Footer() {
           <p className="text-gray-400 text-sm font-medium">
             © {new Date().getFullYear()} Healthy Dakar. Tous droits réservés.
           </p>
-          <div className="flex gap-8 text-gray-400 text-sm font-medium">
-            <span>Dakar, Sénégal</span>
-            <a href="https://wa.me/221XXXXXXXXX" className="hover:text-emerald-600 transition-colors">WhatsApp: +221 XX XXX XX XX</a>
+          <div className="flex flex-wrap justify-center gap-6 text-gray-400 text-sm font-medium">
+            <span>Ouvert de 6h à 23h</span>
+            <span>•</span>
+            <a href="https://wa.me/221785987143" className="hover:text-emerald-600 transition-colors">WhatsApp: +221 78 598 71 43</a>
           </div>
         </div>
       </div>

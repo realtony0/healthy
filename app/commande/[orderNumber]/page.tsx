@@ -115,7 +115,7 @@ export default async function OrderSuccessPage({ params }: OrderSuccessPageProps
                 Un membre de notre équipe va vous contacter sur WhatsApp pour confirmer le créneau exact de livraison.
               </p>
               <a 
-                href="https://wa.me/221XXXXXXXXX" 
+                href="https://wa.me/221785987143" 
                 className="btn bg-white text-[#1a472a] w-full py-4 text-lg font-black flex items-center justify-center gap-3 relative z-10 group"
               >
                 <MessageCircle className="group-hover:scale-110 transition-transform" />
