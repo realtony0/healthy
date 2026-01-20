@@ -38,7 +38,7 @@ export default function AdminOrdersPage() {
   const [paymentStatus, setPaymentStatus] = useState<string>('')
   const [page, setPage] = useState(1)
   const [pagination, setPagination] = useState<Pagination | null>(null)
-  const debounceTimer = useRef<NodeJS.Timeout>()
+  const debounceTimer = useRef<NodeJS.Timeout | undefined>(undefined)
 
   const fetchOrders = useCallback(async (currentPage = page) => {
     setLoading(true)
