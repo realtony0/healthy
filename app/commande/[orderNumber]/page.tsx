@@ -4,6 +4,8 @@ import { CheckCircle, Package, Truck, Clock, MapPin, Phone, MessageCircle } from
 import Link from 'next/link'
 import { formatPrice } from '@/lib/utils'
 
+export const dynamic = 'force-dynamic'
+
 interface OrderSuccessPageProps {
   params: Promise<{
     orderNumber: string

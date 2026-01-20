@@ -5,6 +5,8 @@ import { ArrowLeft, Leaf } from 'lucide-react'
 import Link from 'next/link'
 import { Metadata } from 'next'
 
+export const dynamic = 'force-dynamic'
+
 interface ProductPageProps {
   params: Promise<{
     slug: string

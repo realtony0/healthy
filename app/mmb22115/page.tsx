@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { Package, ChefHat, Truck, ArrowRight, Activity, TrendingUp, Users, Calendar, ShoppingBag, Settings } from 'lucide-react'
 import { formatPrice } from '@/lib/utils'
 
+export const dynamic = 'force-dynamic'
+
 export default async function AdminHomePage() {
   // Récupérer les vraies stats
   const [ordersCount, totalRevenue, usersCount, activeSubs] = await Promise.all([

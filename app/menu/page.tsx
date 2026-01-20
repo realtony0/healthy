@@ -5,6 +5,8 @@ import { formatPrice } from '@/lib/utils'
 import { ArrowRight, Flame, Dumbbell, Sparkles, Plus } from 'lucide-react'
 import { Metadata } from 'next'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Menu Healthy Dakar | Bowls, Plats Signature & Jus Frais',
   description: 'Découvrez notre menu varié : des bowls personnalisables, des plats équilibrés riches en protéines et des shots détox. Cuisiné frais chaque jour à Dakar.',
