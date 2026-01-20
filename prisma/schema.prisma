@@ -1,0 +1,350 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum CategoryType {
+  STANDARD
+  BOWL_BUILDER
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PREPARING
+  READY
+  DELIVERED
+  CANCELLED
+}
+
+enum PaymentMethod {
+  CASH
+  WAVE
+  ORANGE_MONEY
+}
+
+enum PaymentStatus {
+  PENDING
+  CONFIRMED
+  FAILED
+}
+
+enum SubscriptionGoal {
+  PERTE_POIDS
+  RE_EQUILIBRAGE
+  PRISE_MASSE
+}
+
+enum SubscriptionMealPlan {
+  DEJEUNER_SEUL
+  DINER_SEUL
+  DEJEUNER_DINER
+  PETIT_DEJEUNER_DEJEUNER_DINER
+}
+
+enum SubscriptionDuration {
+  SEVEN_DAYS
+  FOUR_WEEKS
+}
+
+enum BowlSize {
+  SMALL
+  MEDIUM
+  LARGE
+}
+
+enum IngredientType {
+  FECULENT
+  PROTEINE
+  PROTEINE_PREMIUM
+  LEGUMES
+  SAUCE
+  SUPPLEMENT
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  password      String
+  firstName     String?
+  lastName      String?
+  phone         String?
+  role          UserRole  @default(USER)
+  emailVerified DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  addresses     Address[]
+  orders        Order[]
+  subscriptions Subscription[]
+  cart          Cart?
+
+  @@map("users")
+}
+
+model Category {
+  id              String       @id @default(cuid())
+  name            String
+  slug            String       @unique
+  type            CategoryType @default(STANDARD)
+  sortOrder       Int          @default(0)
+  isVisiblePublic Boolean      @default(true)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  products Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  price       Float
+  image       String?
+  kcal        Int?
+  proteins    Float?
+  isHalal     Boolean  @default(true)
+  isVisible   Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  categoryId  String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  category          Category            @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  ingredients       ProductIngredient[]
+  orderItems        OrderItem[]
+  cartItems         CartItem[]
+  subscriptionItems SubscriptionItem[]
+
+  @@map("products")
+}
+
+model Ingredient {
+  id          String         @id @default(cuid())
+  name        String
+  type        IngredientType
+  price       Float          @default(0)
+  isPremium   Boolean        @default(false)
+  isAvailable Boolean        @default(true)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  productIngredients ProductIngredient[]
+  bowlIngredients    BowlIngredient[]
+
+  @@map("ingredients")
+}
+
+model ProductIngredient {
+  id           String   @id @default(cuid())
+  productId    String
+  ingredientId String
+  quantity     Float?
+  unit         String?
+  createdAt    DateTime @default(now())
+
+  product    Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+  ingredient Ingredient @relation(fields: [ingredientId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, ingredientId])
+  @@map("product_ingredients")
+}
+
+model BowlConfig {
+  id        String   @id @default(cuid())
+  size      BowlSize
+  price     Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ingredients       BowlIngredient[]
+  cartItems         CartItem[]
+  orderItems        OrderItem[]
+  subscriptionItems SubscriptionItem[]
+
+  @@map("bowl_configs")
+}
+
+model BowlIngredient {
+  id           String   @id @default(cuid())
+  bowlConfigId String
+  ingredientId String
+  quantity     Float    @default(1)
+  createdAt    DateTime @default(now())
+
+  bowlConfig BowlConfig @relation(fields: [bowlConfigId], references: [id], onDelete: Cascade)
+  ingredient Ingredient @relation(fields: [ingredientId], references: [id], onDelete: Cascade)
+
+  @@unique([bowlConfigId, ingredientId])
+  @@map("bowl_ingredients")
+}
+
+model Address {
+  id         String   @id @default(cuid())
+  userId     String
+  street     String
+  city       String   @default("Dakar")
+  postalCode String?
+  phone      String
+  isDefault  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orders Order[]
+
+  @@map("addresses")
+}
+
+model Cart {
+  id        String   @id @default(cuid())
+  userId    String?  @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user  User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items CartItem[]
+
+  @@map("carts")
+}
+
+model CartItem {
+  id           String   @id @default(cuid())
+  cartId       String
+  productId    String
+  quantity     Int      @default(1)
+  fruitChoices String[] // Pour les produits avec choix de fruits
+  bowlConfigId String? // Pour les bowls customisés
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  cart       Cart        @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  product    Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  bowlConfig BowlConfig? @relation(fields: [bowlConfigId], references: [id], onDelete: SetNull)
+
+  @@map("cart_items")
+}
+
+model Order {
+  id              String      @id @default(cuid())
+  userId          String?
+  orderNumber     String      @unique
+  status          OrderStatus @default(PENDING)
+  totalAmount     Float
+  addressId       String?
+  deliveryAddress String
+  deliveryPhone   String
+  deliveryNotes   String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  user    User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  address Address?    @relation(fields: [addressId], references: [id], onDelete: SetNull)
+  items   OrderItem[]
+  payment Payment?
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id           String   @id @default(cuid())
+  orderId      String
+  productId    String
+  quantity     Int      @default(1)
+  price        Float
+  fruitChoices String[] // Pour les produits avec choix de fruits
+  bowlConfigId String? // Pour les bowls customisés
+  createdAt    DateTime @default(now())
+
+  order      Order       @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product    Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  bowlConfig BowlConfig? @relation(fields: [bowlConfigId], references: [id], onDelete: SetNull)
+
+  @@map("order_items")
+}
+
+model Payment {
+  id          String        @id @default(cuid())
+  orderId     String        @unique
+  method      PaymentMethod
+  status      PaymentStatus @default(PENDING)
+  amount      Float
+  reference   String?
+  notes       String?
+  confirmedAt DateTime?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("payments")
+}
+
+model Subscription {
+  id               String               @id @default(cuid())
+  userId           String
+  goal             SubscriptionGoal
+  mealPlan         SubscriptionMealPlan
+  duration         SubscriptionDuration
+  startDate        DateTime
+  endDate          DateTime
+  price            Float
+  status           String               @default("ACTIVE") // ACTIVE, PAUSED, CANCELLED, COMPLETED
+  whatsappNotified Boolean              @default(false)
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @updatedAt
+
+  user     User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items    SubscriptionItem[]
+  payments SubscriptionPayment[]
+
+  @@map("subscriptions")
+}
+
+model SubscriptionItem {
+  id             String   @id @default(cuid())
+  subscriptionId String
+  productId      String?
+  dayNumber      Int // Jour dans la semaine (1-7) ou semaine (1-4)
+  mealType       String // PETIT_DEJEUNER, DEJEUNER, DINER
+  fruitChoices   String[] // Pour les produits avec choix de fruits
+  bowlConfigId   String? // Pour les bowls customisés
+  createdAt      DateTime @default(now())
+
+  subscription Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  product      Product?     @relation(fields: [productId], references: [id], onDelete: SetNull)
+  bowlConfig   BowlConfig?  @relation(fields: [bowlConfigId], references: [id], onDelete: SetNull)
+
+  @@map("subscription_items")
+}
+
+model SubscriptionPayment {
+  id             String        @id @default(cuid())
+  subscriptionId String
+  method         PaymentMethod
+  status         PaymentStatus @default(PENDING)
+  amount         Float
+  reference      String?
+  notes          String?
+  confirmedAt    DateTime?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  subscription Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+
+  @@map("subscription_payments")
+}
