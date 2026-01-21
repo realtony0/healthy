@@ -49,7 +49,10 @@ export async function POST(request: NextRequest) {
         isVisible: isVisible ?? true,
         categoryId,
         sortOrder: sortOrder ?? 0,
-      }
+      },
+      include: {
+        category: true,
+      },
     })
 
     return NextResponse.json(product)
