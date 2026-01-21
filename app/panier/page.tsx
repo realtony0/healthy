@@ -165,13 +165,14 @@ export default function PanierPage() {
                   </div>
                   <div className="flex justify-between items-center font-bold text-lg text-emerald-50">
                     <span>Livraison</span>
-                    <span className="text-emerald-400 uppercase text-xs tracking-widest">Gratuite</span>
+                    <span className="text-emerald-400/60 uppercase text-xs tracking-widest italic">À calculer</span>
                   </div>
                 </div>
                 <div className="pt-6 border-t border-white/10 flex justify-between items-end">
-                  <span className="text-sm font-bold uppercase tracking-widest text-emerald-400/60">Total Final</span>
+                  <span className="text-sm font-bold uppercase tracking-widest text-emerald-400/60">Total produits</span>
                   <span className="text-5xl font-black italic font-serif leading-none">{formatPrice(total)}</span>
                 </div>
+                <p className="text-xs font-bold text-emerald-400/60 text-center italic pt-2">+ Frais de livraison selon la zone</p>
               </div>
               
               <Link

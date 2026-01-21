@@ -36,15 +36,15 @@ export default function Header() {
         ? 'bg-white md:bg-white/90 backdrop-blur-md border-b border-gray-100 py-2' 
         : 'bg-white md:bg-transparent py-4 md:py-6'
     }`}>
-      <div className="container-wide h-20 md:h-24 flex items-center justify-between">
+      <div className="container-wide h-24 md:h-28 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center active:scale-95 transition-transform">
           <Image
             src="/img/logo.jpeg"
             alt="Healthy"
-            width={240}
-            height={96}
-            className="h-16 md:h-20 w-auto mix-blend-multiply"
+            width={300}
+            height={120}
+            className="h-20 md:h-24 w-auto mix-blend-multiply"
             priority
           />
         </Link>

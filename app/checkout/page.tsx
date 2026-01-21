@@ -421,7 +421,7 @@ export default function CheckoutPage() {
                   </div>
                   <div className="flex justify-between items-center text-emerald-400/60 font-bold text-xs uppercase tracking-widest">
                     <span>Livraison</span>
-                    <span>{deliveryFee > 0 ? formatPrice(deliveryFee) : 'Gratuite'}</span>
+                    <span>{formatPrice(deliveryFee)}</span>
                   </div>
                   <div className="flex justify-between items-end pt-4 border-t border-white/10">
                     <span className="text-sm font-bold uppercase tracking-widest">Total</span>

@@ -8,7 +8,7 @@ export default function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-12 mb-20">
           <div className="col-span-2 space-y-6">
             <Link href="/" className="inline-block">
-              <Image src="/img/logo.jpeg" alt="Healthy" width={280} height={112} className="h-20 w-auto mix-blend-multiply" />
+              <Image src="/img/logo.jpeg" alt="Healthy" width={320} height={128} className="h-24 md:h-28 w-auto mix-blend-multiply" />
             </Link>
             <p className="text-gray-500 max-w-sm text-lg leading-relaxed font-medium">
               La meilleure nutrition de Dakar, livrée chez vous chaque jour. 100% frais, 100% halal.
