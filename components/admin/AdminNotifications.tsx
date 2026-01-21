@@ -193,7 +193,12 @@ export default function AdminNotifications() {
         }, 5000)
       }
 
-      setLastFetch(new Date())
+      // Mettre à jour le dernier fetch et le sauvegarder dans localStorage
+      const currentFetchTime = new Date()
+      setLastFetch(currentFetchTime)
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('admin_last_notification_fetch', currentFetchTime.toISOString())
+      }
     } catch (error) {
       console.error('Error fetching notifications:', error)
     }
