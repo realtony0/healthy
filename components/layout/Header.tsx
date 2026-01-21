@@ -34,15 +34,15 @@ export default function Header() {
     <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
       scrolled ? 'bg-white/90 backdrop-blur-md border-b border-gray-100 py-2' : 'bg-transparent py-4 md:py-6'
     }`}>
-      <div className="container-wide h-16 md:h-20 flex items-center justify-between">
+      <div className="container-wide h-20 md:h-24 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center active:scale-95 transition-transform">
           <Image
             src="/img/logo.jpeg"
             alt="Healthy"
-            width={180}
-            height={72}
-            className="h-12 md:h-16 w-auto mix-blend-multiply"
+            width={240}
+            height={96}
+            className="h-16 md:h-20 w-auto mix-blend-multiply"
             priority
           />
         </Link>
