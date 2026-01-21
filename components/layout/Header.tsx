@@ -36,7 +36,7 @@ export default function Header() {
         ? 'bg-white md:bg-white/90 backdrop-blur-md border-b border-gray-100 py-2' 
         : 'bg-white md:bg-transparent py-4 md:py-6'
     }`}>
-      <div className="container-wide h-28 md:h-32 flex items-center justify-between">
+      <div className="container-wide h-32 md:h-36 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center active:scale-95 transition-transform">
           <Image
@@ -44,7 +44,8 @@ export default function Header() {
             alt="Healthy"
             width={360}
             height={144}
-            className="h-24 md:h-28 w-auto mix-blend-multiply"
+            className="h-28 md:h-32 w-auto object-contain filter brightness-110 contrast-110"
+            style={{ mixBlendMode: 'multiply', filter: 'brightness(1.1) contrast(1.1)' }}
             priority
           />
         </Link>

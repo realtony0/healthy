@@ -8,7 +8,7 @@ export default function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-12 mb-20">
           <div className="col-span-2 space-y-6">
             <Link href="/" className="inline-block">
-              <Image src="/img/logo.jpeg" alt="Healthy" width={400} height={160} className="h-28 md:h-32 w-auto mix-blend-multiply" />
+              <Image src="/img/logo.jpeg" alt="Healthy" width={400} height={160} className="h-32 md:h-36 w-auto object-contain filter brightness-110 contrast-110" style={{ mixBlendMode: 'multiply' }} />
             </Link>
             <p className="text-gray-500 max-w-sm text-lg leading-relaxed font-medium">
               La meilleure nutrition de Dakar, livrée chez vous chaque jour. 100% frais, 100% halal.
