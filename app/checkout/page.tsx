@@ -200,7 +200,7 @@ export default function CheckoutPage() {
               <div className="grid gap-6">
                 <div className="space-y-3">
                   <label htmlFor="deliveryZone" className="text-xs font-black text-gray-400 uppercase tracking-widest block ml-2">
-                    Zone de livraison *
+                    Quartier / Localité *
                   </label>
                   <div className="relative">
                     <select
@@ -210,31 +210,23 @@ export default function CheckoutPage() {
                       onChange={(e) => setSelectedZoneId(e.target.value)}
                       className="w-full px-6 py-5 bg-gray-50 border-2 border-transparent rounded-3xl focus:bg-white focus:border-[#1a472a] outline-none transition-all font-bold text-lg shadow-inner appearance-none"
                     >
-                      <option value="">Sélectionnez votre zone</option>
-                      {zones.map((zone) => (
-                        <option key={zone.id} value={zone.id}>
-                          {zone.name} → {formatPrice(zone.price)} FCFA
+                      <option value="">Sélectionnez votre quartier</option>
+                      {quartiersList.map((item, index) => (
+                        <option key={`${item.zoneId}-${index}`} value={item.zoneId}>
+                          {item.quartier} → {formatPrice(item.price)} FCFA
                         </option>
                       ))}
                     </select>
+                    <ChevronDown size={20} className="absolute right-6 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
                   </div>
                   {selectedZoneId && selectedZone && (
                     <div className="mt-3 p-4 bg-emerald-50 rounded-2xl border border-emerald-100">
                       <p className="text-xs font-black text-emerald-900 uppercase tracking-widest mb-2">
-                        Quartiers inclus ({selectedZone.quartiers.length} quartiers)
+                        Zone {selectedZone.number} • Livraison {formatPrice(selectedZone.price)} FCFA
                       </p>
-                      <div className="flex flex-wrap gap-2">
-                        {selectedZone.quartiers.slice(0, 5).map((q, i) => (
-                          <span key={i} className="text-xs font-bold text-emerald-700 bg-white px-2 py-1 rounded-lg">
-                            {q}
-                          </span>
-                        ))}
-                        {selectedZone.quartiers.length > 5 && (
-                          <span className="text-xs font-bold text-emerald-600">
-                            +{selectedZone.quartiers.length - 5} autres...
-                          </span>
-                        )}
-                      </div>
+                      <p className="text-xs font-bold text-emerald-700 italic">
+                        Tous les quartiers de cette zone sont livrés au même tarif.
+                      </p>
                     </div>
                   )}
                 </div>
