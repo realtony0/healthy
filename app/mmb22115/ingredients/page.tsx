@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Plus, Edit2, Trash2, Sparkles, Check, X, RefreshCcw } from 'lucide-react'
+import { Plus, Trash2, Check, X, RefreshCcw } from 'lucide-react'
 import { formatPrice } from '@/lib/utils'
 
 type Ingredient = {
@@ -13,9 +13,35 @@ type Ingredient = {
   isAvailable: boolean
 }
 
+type IngredientForm = {
+  id?: string
+  name: string
+  type: string
+  price: string
+  isPremium: boolean
+  isAvailable: boolean
+}
+
+const INGREDIENT_TYPES = [
+  { value: 'FECULENT', label: 'Féculent' },
+  { value: 'PROTEINE', label: 'Protéine' },
+  { value: 'PROTEINE_PREMIUM', label: 'Protéine Premium' },
+  { value: 'LEGUMES', label: 'Légumes' },
+  { value: 'SAUCE', label: 'Sauce' },
+] as const
+
 export default function AdminIngredientsPage() {
   const [ingredients, setIngredients] = useState<Ingredient[]>([])
   const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+  const [showModal, setShowModal] = useState(false)
+  const [form, setForm] = useState<IngredientForm>({
+    name: '',
+    type: 'LEGUMES',
+    price: '0',
+    isPremium: false,
+    isAvailable: true,
+  })
 
   const fetchIngredients = async () => {
     setLoading(true)
@@ -31,6 +57,69 @@ export default function AdminIngredientsPage() {
   useEffect(() => {
     fetchIngredients()
   }, [])
+
+  const openCreate = () => {
+    setForm({
+      name: '',
+      type: 'LEGUMES',
+      price: '0',
+      isPremium: false,
+      isAvailable: true,
+    })
+    setShowModal(true)
+  }
+
+  const openEdit = (ing: Ingredient) => {
+    setForm({
+      id: ing.id,
+      name: ing.name,
+      type: ing.type,
+      price: String(ing.price ?? 0),
+      isPremium: ing.isPremium,
+      isAvailable: ing.isAvailable,
+    })
+    setShowModal(true)
+  }
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Supprimer cet ingrédient ?')) return
+    try {
+      await fetch(`/api/admin/ingredients/${id}`, { method: 'DELETE' })
+      await fetchIngredients()
+    } catch (e) {
+      console.error(e)
+      alert('Erreur lors de la suppression.')
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setSaving(true)
+    try {
+      const isEdit = Boolean(form.id)
+      const url = isEdit ? `/api/admin/ingredients/${form.id}` : '/api/admin/ingredients'
+      const method = isEdit ? 'PUT' : 'POST'
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: form.name,
+          type: form.type,
+          price: form.price,
+          isPremium: form.isPremium,
+          isAvailable: form.isAvailable,
+        }),
+      })
+      if (!res.ok) throw new Error('save failed')
+      setShowModal(false)
+      await fetchIngredients()
+    } catch (e) {
+      console.error(e)
+      alert('Erreur lors de l’enregistrement.')
+    } finally {
+      setSaving(false)
+    }
+  }
 
   const getTypeColor = (type: string) => {
     switch (type) {
@@ -52,10 +141,20 @@ export default function AdminIngredientsPage() {
           <p className="text-gray-500 font-medium italic">Gérez les ingrédients disponibles pour le "Crée ton Bowl".</p>
         </div>
         
-        <button className="btn btn-primary gap-2 shadow-xl shadow-emerald-900/20">
+        <div className="flex flex-wrap gap-3">
+          <button
+            onClick={fetchIngredients}
+            className="btn btn-outline gap-2"
+            type="button"
+          >
+            <RefreshCcw size={18} />
+            Actualiser
+          </button>
+          <button onClick={openCreate} className="btn btn-primary gap-2 shadow-xl shadow-emerald-900/20" type="button">
           <Plus size={20} />
           Nouvel Ingrédient
-        </button>
+          </button>
+        </div>
       </div>
 
       {loading ? (
@@ -88,15 +187,120 @@ export default function AdminIngredientsPage() {
               </div>
 
               <div className="flex gap-2 pt-6 border-t border-gray-50 mt-6">
-                <button className="flex-1 py-3 rounded-2xl bg-gray-50 text-gray-400 font-black text-[10px] uppercase tracking-widest hover:bg-[#1a472a] hover:text-white transition-all">
+                <button
+                  type="button"
+                  onClick={() => openEdit(ing)}
+                  className="flex-1 py-3 rounded-2xl bg-gray-50 text-gray-700 font-black text-[10px] uppercase tracking-widest hover:bg-[#1a472a] hover:text-white transition-all"
+                >
                   Modifier
                 </button>
-                <button className="w-12 h-12 rounded-2xl bg-red-50 text-red-400 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all">
+                <button
+                  type="button"
+                  onClick={() => handleDelete(ing.id)}
+                  className="w-12 h-12 rounded-2xl bg-red-50 text-red-400 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all"
+                >
                   <Trash2 size={18} />
                 </button>
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {showModal && (
+        <div className="fixed inset-0 bg-black/70 md:bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white w-full max-w-xl rounded-[2rem] md:rounded-[3rem] border border-gray-100 shadow-2xl overflow-hidden">
+            <div className="p-6 md:p-8 border-b border-gray-100 flex items-center justify-between">
+              <h2 className="text-2xl md:text-3xl font-black text-[#1a472a]">
+                {form.id ? 'Modifier l’ingrédient' : 'Nouvel ingrédient'}
+              </h2>
+              <button
+                type="button"
+                onClick={() => setShowModal(false)}
+                className="w-10 h-10 rounded-2xl bg-gray-50 text-gray-400 hover:text-gray-900 flex items-center justify-center"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <form onSubmit={handleSubmit} className="p-6 md:p-8 space-y-5">
+              <div className="space-y-2">
+                <label className="text-xs font-black text-gray-400 uppercase tracking-widest">Nom</label>
+                <input
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  className="w-full px-5 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-[#1a472a] outline-none font-bold"
+                  required
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-xs font-black text-gray-400 uppercase tracking-widest">Type</label>
+                  <select
+                    value={form.type}
+                    onChange={(e) => setForm({ ...form, type: e.target.value })}
+                    className="w-full px-5 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-[#1a472a] outline-none font-bold"
+                    required
+                  >
+                    {INGREDIENT_TYPES.map((t) => (
+                      <option key={t.value} value={t.value}>
+                        {t.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-black text-gray-400 uppercase tracking-widest">Prix (FCFA)</label>
+                  <input
+                    type="number"
+                    inputMode="numeric"
+                    value={form.price}
+                    onChange={(e) => setForm({ ...form, price: e.target.value })}
+                    className="w-full px-5 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-[#1a472a] outline-none font-bold"
+                    min="0"
+                    step="50"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <label className="flex items-center gap-3 bg-gray-50 rounded-2xl px-5 py-4 border border-gray-100">
+                  <input
+                    type="checkbox"
+                    checked={form.isAvailable}
+                    onChange={(e) => setForm({ ...form, isAvailable: e.target.checked })}
+                    className="w-5 h-5"
+                  />
+                  <span className="font-bold text-gray-700">Disponible</span>
+                </label>
+                <label className="flex items-center gap-3 bg-gray-50 rounded-2xl px-5 py-4 border border-gray-100">
+                  <input
+                    type="checkbox"
+                    checked={form.isPremium}
+                    onChange={(e) => setForm({ ...form, isPremium: e.target.checked })}
+                    className="w-5 h-5"
+                  />
+                  <span className="font-bold text-gray-700">Premium</span>
+                </label>
+              </div>
+
+              <div className="flex flex-col md:flex-row gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                  className="btn btn-outline w-full md:w-auto"
+                  disabled={saving}
+                >
+                  Annuler
+                </button>
+                <button type="submit" className="btn btn-primary w-full md:flex-1" disabled={saving}>
+                  {saving ? 'Enregistrement…' : 'Enregistrer'}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
     </div>
