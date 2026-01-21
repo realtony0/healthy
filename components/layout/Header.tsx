@@ -37,21 +37,21 @@ export default function Header() {
         ? 'bg-white md:bg-white/90 backdrop-blur-md border-b border-gray-100 py-2' 
         : 'bg-white md:bg-transparent py-4 md:py-6'
     }`}>
-      <div className="container-wide h-32 md:h-36 flex items-center justify-between">
+      <div className="container-wide h-36 md:h-40 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center active:scale-95 transition-transform">
           <Image
             src={getLogoPath()}
             alt="Healthy"
-            width={360}
-            height={144}
-            className="h-28 md:h-32 w-auto object-contain"
+            width={400}
+            height={160}
+            className="h-32 md:h-36 w-auto object-contain"
             onError={(e) => {
               // Fallback to JPEG if PNG doesn't exist
               const target = e.target as HTMLImageElement
               if (target.src.includes('logo.png')) {
                 target.src = '/img/logo.jpeg'
-                target.className = 'h-28 md:h-32 w-auto object-contain filter brightness-110 contrast-110'
+                target.className = 'h-32 md:h-36 w-auto object-contain filter brightness-110 contrast-110'
                 target.style.mixBlendMode = 'multiply'
               }
             }}

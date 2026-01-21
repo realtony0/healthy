@@ -12,15 +12,15 @@ export default function Footer() {
               <Image 
                 src={getLogoPath()} 
                 alt="Healthy" 
-                width={400} 
-                height={160} 
-                className="h-32 md:h-36 w-auto object-contain"
+                width={450} 
+                height={180} 
+                className="h-36 md:h-40 w-auto object-contain"
                 onError={(e) => {
                   // Fallback to JPEG if PNG doesn't exist
                   const target = e.target as HTMLImageElement
                   if (target.src.includes('logo.png')) {
                     target.src = '/img/logo.jpeg'
-                    target.className = 'h-32 md:h-36 w-auto object-contain filter brightness-110 contrast-110'
+                    target.className = 'h-36 md:h-40 w-auto object-contain filter brightness-110 contrast-110'
                     target.style.mixBlendMode = 'multiply'
                   }
                 }}
