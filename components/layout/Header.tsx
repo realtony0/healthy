@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { useSession, signOut } from 'next-auth/react'
 import { ShoppingCart, User, Menu, X, LayoutDashboard } from 'lucide-react'
 import { useState, useEffect } from 'react'
+import { getLogoPath } from '@/lib/logo'
 
 export default function Header() {
   const { data: session } = useSession()
@@ -40,12 +41,20 @@ export default function Header() {
         {/* Logo */}
         <Link href="/" className="flex items-center active:scale-95 transition-transform">
           <Image
-            src="/img/logo.jpeg"
+            src={getLogoPath()}
             alt="Healthy"
             width={360}
             height={144}
-            className="h-28 md:h-32 w-auto object-contain filter brightness-110 contrast-110"
-            style={{ mixBlendMode: 'multiply', filter: 'brightness(1.1) contrast(1.1)' }}
+            className="h-28 md:h-32 w-auto object-contain"
+            onError={(e) => {
+              // Fallback to JPEG if PNG doesn't exist
+              const target = e.target as HTMLImageElement
+              if (target.src.includes('logo.png')) {
+                target.src = '/img/logo.jpeg'
+                target.className = 'h-28 md:h-32 w-auto object-contain filter brightness-110 contrast-110'
+                target.style.mixBlendMode = 'multiply'
+              }
+            }}
             priority
           />
         </Link>
