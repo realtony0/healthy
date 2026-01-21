@@ -234,11 +234,11 @@ export default function AdminNotifications() {
   return (
     <>
       {/* Toast Notifications */}
-          <div className="fixed top-24 right-4 md:right-6 z-50 space-y-3 max-w-[calc(100vw-2rem)] md:max-w-sm">
+          <div className="fixed top-28 md:top-24 right-2 md:right-6 z-[60] space-y-2 md:space-y-3 max-w-[calc(100vw-1rem)] md:max-w-sm">
             {toasts.map(toast => (
               <div
                 key={toast.id}
-                className="bg-white p-4 md:p-6 rounded-2xl border-2 border-emerald-200 shadow-2xl animate-in slide-in-from-right duration-300"
+                className="bg-white p-3 md:p-6 rounded-xl md:rounded-2xl border-2 border-emerald-200 shadow-2xl animate-in slide-in-from-right duration-300"
               >
             <div className="flex items-start gap-4">
               <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
@@ -262,15 +262,15 @@ export default function AdminNotifications() {
       </div>
 
       <div className="relative">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 md:gap-2">
           {/* Bouton de permission si pas encore accordée */}
           {notificationPermission !== 'granted' && 'Notification' in window && (
             <button
               onClick={requestNotificationPermission}
-              className="w-10 h-10 rounded-xl bg-orange-50 border border-orange-200 flex items-center justify-center text-orange-600 hover:bg-orange-100 transition-all"
+              className="w-9 h-9 md:w-10 md:h-10 rounded-xl bg-orange-50 border border-orange-200 flex items-center justify-center text-orange-600 hover:bg-orange-100 transition-all flex-shrink-0"
               title="Activer les notifications sonores"
             >
-              <Bell size={16} />
+              <Bell size={14} className="md:w-4 md:h-4" />
             </button>
           )}
           
@@ -279,11 +279,11 @@ export default function AdminNotifications() {
               setIsOpen(!isOpen)
               if (isOpen) markAsRead()
             }}
-            className="relative w-12 h-12 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-center justify-center text-gray-400 hover:text-[#1a472a] hover:border-[#1a472a] transition-all duration-300"
+            className="relative w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-white border border-gray-100 shadow-sm flex items-center justify-center text-gray-400 hover:text-[#1a472a] hover:border-[#1a472a] transition-all duration-300 flex-shrink-0"
           >
-            <Bell size={20} />
+            <Bell size={18} className="md:w-5 md:h-5" />
             {unreadCount > 0 && (
-              <span className="absolute -top-1 -right-1 w-6 h-6 bg-red-500 text-white text-xs font-black rounded-full flex items-center justify-center border-2 border-white animate-pulse">
+              <span className="absolute -top-0.5 -right-0.5 md:-top-1 md:-right-1 w-5 h-5 md:w-6 md:h-6 bg-red-500 text-white text-[10px] md:text-xs font-black rounded-full flex items-center justify-center border-2 border-white animate-pulse">
                 {unreadCount > 9 ? '9+' : unreadCount}
               </span>
             )}
