@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { PAYMENT_METHODS } from '@/lib/constants'
 import { formatPrice } from '@/lib/utils'
-import { ArrowLeft, ShieldCheck, MapPin, Phone, MessageSquare, CreditCard, Wallet, Banknote, Check, Sparkles } from 'lucide-react'
+import { ArrowLeft, ShieldCheck, MapPin, Phone, MessageSquare, CreditCard, Wallet, Banknote, Check, Sparkles, ChevronDown } from 'lucide-react'
 import Link from 'next/link'
 
 type CartItem = {
@@ -31,6 +31,17 @@ export default function CheckoutPage() {
   const [submitting, setSubmitting] = useState(false)
   const [zones, setZones] = useState<Array<{ id: string; name: string; number: number; price: number; quartiers: string[] }>>([])
   const [selectedZoneId, setSelectedZoneId] = useState<string>('')
+  
+  // Créer une liste aplatie de tous les quartiers avec leur zone
+  const quartiersList = zones.flatMap(zone => 
+    zone.quartiers.map(quartier => ({
+      quartier,
+      zoneId: zone.id,
+      zoneName: zone.name,
+      zoneNumber: zone.number,
+      price: zone.price
+    }))
+  ).sort((a, b) => a.quartier.localeCompare(b.quartier))
   const [formData, setFormData] = useState({
     deliveryAddress: '',
     deliveryPhone: '',
