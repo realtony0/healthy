@@ -41,7 +41,14 @@ export default function AdminNotifications() {
   const [notifications, setNotifications] = useState<Notification[]>([])
   const [unreadCount, setUnreadCount] = useState(0)
   const [isOpen, setIsOpen] = useState(false)
-  const [lastFetch, setLastFetch] = useState<Date | null>(null)
+  const [lastFetch, setLastFetch] = useState<Date | null>(() => {
+    // Récupérer le dernier fetch depuis localStorage
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('admin_last_notification_fetch')
+      return stored ? new Date(stored) : new Date() // Si pas de valeur, utiliser maintenant pour ne pas spammer
+    }
+    return new Date()
+  })
   const [toasts, setToasts] = useState<Notification[]>([])
   const [notificationPermission, setNotificationPermission] = useState<NotificationPermission>('default')
 
@@ -125,15 +132,17 @@ export default function AdminNotifications() {
 
   const fetchNotifications = async () => {
     try {
+      const currentFetchTime = new Date()
       const res = await fetch('/api/admin/notifications')
       const data: NotificationData = await res.json()
 
       const newNotifications: Notification[] = []
 
-      // Convertir les commandes en notifications
+      // Convertir les commandes en notifications - seulement celles créées APRÈS le dernier fetch
       data.orders.forEach(order => {
         const orderDate = new Date(order.createdAt)
-        if (!lastFetch || orderDate > lastFetch) {
+        // Vérifier que la commande est vraiment nouvelle (créée après le dernier fetch)
+        if (lastFetch && orderDate > lastFetch) {
           newNotifications.push({
             id: `order-${order.id}`,
             type: 'order',
@@ -145,10 +154,11 @@ export default function AdminNotifications() {
         }
       })
 
-      // Convertir les abonnements en notifications
+      // Convertir les abonnements en notifications - seulement ceux créés APRÈS le dernier fetch
       data.subscriptions.forEach(sub => {
         const subDate = new Date(sub.createdAt)
-        if (!lastFetch || subDate > lastFetch) {
+        // Vérifier que l'abonnement est vraiment nouveau (créé après le dernier fetch)
+        if (lastFetch && subDate > lastFetch) {
           newNotifications.push({
             id: `sub-${sub.id}`,
             type: 'subscription',

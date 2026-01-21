@@ -12,9 +12,9 @@ export default function Footer() {
               <Image 
                 src={getLogoPath()} 
                 alt="Healthy" 
-                width={450} 
-                height={180} 
-                className="h-36 md:h-40 w-auto object-contain"
+                width={500} 
+                height={200} 
+                className="h-40 md:h-44 w-auto object-contain"
                 style={{ mixBlendMode: 'multiply' }}
               />
             </Link>
