@@ -299,9 +299,9 @@ export default function AdminNotifications() {
           />
           
           {/* Dropdown */}
-          <div className="absolute right-0 top-14 w-96 bg-white rounded-3xl border-2 border-gray-100 shadow-2xl z-50 max-h-[600px] overflow-hidden flex flex-col">
-            <div className="p-6 border-b border-gray-100 flex items-center justify-between">
-              <h3 className="font-black text-gray-900 text-lg">Notifications</h3>
+          <div className="absolute right-0 top-12 md:top-14 w-[calc(100vw-2rem)] md:w-96 bg-white rounded-[1.5rem] md:rounded-3xl border-2 border-gray-100 shadow-2xl z-50 max-h-[calc(100vh-10rem)] md:max-h-[600px] overflow-hidden flex flex-col">
+            <div className="p-4 md:p-6 border-b border-gray-100 flex items-center justify-between">
+              <h3 className="font-black text-gray-900 text-base md:text-lg">Notifications</h3>
               <button
                 onClick={() => setIsOpen(false)}
                 className="w-8 h-8 rounded-xl bg-gray-50 flex items-center justify-center text-gray-400 hover:text-gray-900 transition-colors"
