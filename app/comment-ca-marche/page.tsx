@@ -114,8 +114,8 @@ export default function CommentCaMarchePage() {
                   <p className="text-xs font-black text-white/40 uppercase tracking-widest leading-tight">Économie moyenne</p>
                 </div>
                 <div className="col-span-2 bg-[#1a472a] rounded-[3rem] p-10 text-white relative overflow-hidden flex flex-col justify-center gap-2">
-                  <p className="text-2xl font-black italic font-serif relative z-10">Livraison Gratuite</p>
-                  <p className="text-sm font-medium text-white/60 relative z-10">Sur tous nos abonnements hebdomadaires.</p>
+                  <p className="text-2xl font-black italic font-serif relative z-10">Livraison à domicile</p>
+                  <p className="text-sm font-medium text-white/60 relative z-10">Partout à Dakar selon votre zone (1000 à 3000 FCFA).</p>
                   <div className="absolute right-[-20px] top-[-20px] text-white/10 rotate-12">
                     <Truck size={120} />
                   </div>
