@@ -15,15 +15,7 @@ export default function Footer() {
                 width={450} 
                 height={180} 
                 className="h-36 md:h-40 w-auto object-contain"
-                onError={(e) => {
-                  // Fallback to JPEG if PNG doesn't exist
-                  const target = e.target as HTMLImageElement
-                  if (target.src.includes('logo.png')) {
-                    target.src = '/img/logo.jpeg'
-                    target.className = 'h-36 md:h-40 w-auto object-contain filter brightness-110 contrast-110'
-                    target.style.mixBlendMode = 'multiply'
-                  }
-                }}
+                style={{ mixBlendMode: 'multiply' }}
               />
             </Link>
             <p className="text-gray-500 max-w-sm text-lg leading-relaxed font-medium">

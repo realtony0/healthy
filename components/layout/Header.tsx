@@ -46,15 +46,7 @@ export default function Header() {
             width={400}
             height={160}
             className="h-32 md:h-36 w-auto object-contain"
-            onError={(e) => {
-              // Fallback to JPEG if PNG doesn't exist
-              const target = e.target as HTMLImageElement
-              if (target.src.includes('logo.png')) {
-                target.src = '/img/logo.jpeg'
-                target.className = 'h-32 md:h-36 w-auto object-contain filter brightness-110 contrast-110'
-                target.style.mixBlendMode = 'multiply'
-              }
-            }}
+            style={{ mixBlendMode: 'multiply' }}
             priority
           />
         </Link>
