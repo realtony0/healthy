@@ -29,6 +29,8 @@ export default function CheckoutPage() {
   const [cart, setCart] = useState<Cart | null>(null)
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
+  const [zones, setZones] = useState<Array<{ id: string; name: string; number: number; price: number; quartiers: string[] }>>([])
+  const [selectedZoneId, setSelectedZoneId] = useState<string>('')
   const [formData, setFormData] = useState({
     deliveryAddress: '',
     deliveryPhone: '',
@@ -37,6 +39,7 @@ export default function CheckoutPage() {
   })
 
   useEffect(() => {
+    fetchZones()
     if (session) {
       fetchCart()
     } else {
@@ -48,6 +51,16 @@ export default function CheckoutPage() {
       setLoading(false)
     }
   }, [session, router])
+
+  const fetchZones = async () => {
+    try {
+      const res = await fetch('/api/delivery-zones')
+      const data = await res.json()
+      setZones(data)
+    } catch (error) {
+      console.error('Error fetching zones:', error)
+    }
+  }
 
   const fetchCart = async () => {
     try {
@@ -75,12 +88,17 @@ export default function CheckoutPage() {
         bowlConfig: item.bowlConfig,
       }))
 
+      const selectedZone = zones.find(z => z.id === selectedZoneId)
+      const deliveryFee = selectedZone?.price || 0
+
       const response = await fetch('/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           items,
           ...formData,
+          deliveryZoneId: selectedZoneId || null,
+          deliveryFee,
         }),
       })
 
@@ -135,10 +153,14 @@ export default function CheckoutPage() {
     )
   }
 
-  const total = cart.items.reduce((sum: number, item) => {
+  const subtotal = cart.items.reduce((sum: number, item) => {
     const itemPrice = item.bowlConfig ? item.bowlConfig.price : item.product.price
     return sum + itemPrice * item.quantity
   }, 0)
+
+  const selectedZone = zones.find(z => z.id === selectedZoneId)
+  const deliveryFee = selectedZone?.price || 0
+  const total = subtotal + deliveryFee
 
   return (
     <div className="pt-32 pb-32 bg-[#fffdfa]">
@@ -165,6 +187,47 @@ export default function CheckoutPage() {
               </div>
               
               <div className="grid gap-6">
+                <div className="space-y-3">
+                  <label htmlFor="deliveryZone" className="text-xs font-black text-gray-400 uppercase tracking-widest block ml-2">
+                    Zone de livraison *
+                  </label>
+                  <div className="relative">
+                    <select
+                      id="deliveryZone"
+                      required
+                      value={selectedZoneId}
+                      onChange={(e) => setSelectedZoneId(e.target.value)}
+                      className="w-full px-6 py-5 bg-gray-50 border-2 border-transparent rounded-3xl focus:bg-white focus:border-[#1a472a] outline-none transition-all font-bold text-lg shadow-inner appearance-none"
+                    >
+                      <option value="">Sélectionnez votre zone</option>
+                      {zones.map((zone) => (
+                        <option key={zone.id} value={zone.id}>
+                          {zone.name} → {formatPrice(zone.price)} FCFA
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  {selectedZoneId && selectedZone && (
+                    <div className="mt-3 p-4 bg-emerald-50 rounded-2xl border border-emerald-100">
+                      <p className="text-xs font-black text-emerald-900 uppercase tracking-widest mb-2">
+                        Quartiers inclus ({selectedZone.quartiers.length} quartiers)
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {selectedZone.quartiers.slice(0, 5).map((q, i) => (
+                          <span key={i} className="text-xs font-bold text-emerald-700 bg-white px-2 py-1 rounded-lg">
+                            {q}
+                          </span>
+                        ))}
+                        {selectedZone.quartiers.length > 5 && (
+                          <span className="text-xs font-bold text-emerald-600">
+                            +{selectedZone.quartiers.length - 5} autres...
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
                 <div className="space-y-3">
                   <label htmlFor="deliveryAddress" className="text-xs font-black text-gray-400 uppercase tracking-widest block ml-2">
                     Adresse complète *
@@ -353,10 +416,14 @@ export default function CheckoutPage() {
 
                 <div className="pt-8 border-t border-white/10 space-y-4">
                   <div className="flex justify-between items-center text-emerald-400/60 font-bold text-xs uppercase tracking-widest">
-                    <span>Livraison</span>
-                    <span>Gratuite</span>
+                    <span>Sous-total</span>
+                    <span>{formatPrice(subtotal)}</span>
                   </div>
-                  <div className="flex justify-between items-end">
+                  <div className="flex justify-between items-center text-emerald-400/60 font-bold text-xs uppercase tracking-widest">
+                    <span>Livraison</span>
+                    <span>{deliveryFee > 0 ? formatPrice(deliveryFee) : 'Gratuite'}</span>
+                  </div>
+                  <div className="flex justify-between items-end pt-4 border-t border-white/10">
                     <span className="text-sm font-bold uppercase tracking-widest">Total</span>
                     <span className="text-5xl font-black italic font-serif leading-none">{formatPrice(total)}</span>
                   </div>

@@ -239,6 +239,21 @@ model CartItem {
   @@map("cart_items")
 }
 
+model DeliveryZone {
+  id        String   @id @default(cuid())
+  name      String
+  number    Int      @unique // 1, 2, 3
+  price     Float    // Prix de livraison en FCFA
+  quartiers String[] // Liste des quartiers dans cette zone
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  orders Order[]
+
+  @@map("delivery_zones")
+}
+
 model Order {
   id              String      @id @default(cuid())
   userId          String?
@@ -249,13 +264,16 @@ model Order {
   deliveryAddress String
   deliveryPhone   String
   deliveryNotes   String?
+  deliveryZoneId  String?
+  deliveryFee     Float       @default(0) // Frais de livraison
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
 
-  user    User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
-  address Address?    @relation(fields: [addressId], references: [id], onDelete: SetNull)
-  items   OrderItem[]
-  payment Payment?
+  user         User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  address      Address?      @relation(fields: [addressId], references: [id], onDelete: SetNull)
+  deliveryZone DeliveryZone? @relation(fields: [deliveryZoneId], references: [id], onDelete: SetNull)
+  items        OrderItem[]
+  payment      Payment?
 
   @@map("orders")
 }

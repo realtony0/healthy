@@ -26,6 +26,8 @@ export async function POST(request: NextRequest) {
       deliveryNotes?: string | null
       paymentMethod: 'CASH' | 'WAVE' | 'ORANGE_MONEY'
       addressId?: string | null
+      deliveryZoneId?: string | null
+      deliveryFee?: number
     }
     const {
       items,
@@ -34,21 +36,24 @@ export async function POST(request: NextRequest) {
       deliveryNotes,
       paymentMethod,
       addressId,
+      deliveryZoneId,
+      deliveryFee = 0,
     } = body
 
     if (!items || items.length === 0) {
       return NextResponse.json({ error: 'Cart is empty' }, { status: 400 })
     }
 
-    // Calculer le total
-    let totalAmount = 0
+    // Calculer le total (sous-total + frais de livraison)
+    let subtotal = 0
     for (const item of items) {
       if (item.bowlConfig) {
-        totalAmount += item.bowlConfig.price * item.quantity
+        subtotal += item.bowlConfig.price * item.quantity
       } else {
-        totalAmount += item.product.price * item.quantity
+        subtotal += item.product.price * item.quantity
       }
     }
+    const totalAmount = subtotal + deliveryFee
 
     // Créer la commande
     const order = await prisma.order.create({
@@ -60,6 +65,8 @@ export async function POST(request: NextRequest) {
         deliveryPhone,
         deliveryNotes,
         addressId,
+        deliveryZoneId,
+        deliveryFee,
         items: {
           create: items.map((item) => ({
             productId: item.productId,

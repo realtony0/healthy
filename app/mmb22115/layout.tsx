@@ -28,10 +28,10 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   ]
 
   return (
-    <div className="min-h-screen bg-[#fffdfa] pt-32 pb-32">
-      <div className="container-wide flex flex-col lg:flex-row gap-12 items-start">
-        {/* Sidebar */}
-        <aside className="w-full lg:w-80 bg-white p-8 rounded-[3.5rem] border border-gray-100 shadow-2xl shadow-gray-200/50 sticky top-32 space-y-10">
+    <div className="min-h-screen bg-[#fffdfa] pt-24 md:pt-32 pb-16 md:pb-32">
+      <div className="container-wide flex flex-col lg:flex-row gap-6 md:gap-12 items-start">
+        {/* Sidebar - Mobile optimized */}
+        <aside className="w-full lg:w-80 bg-white p-4 md:p-8 rounded-[2rem] md:rounded-[3.5rem] border border-gray-100 shadow-xl md:shadow-2xl shadow-gray-200/50 lg:sticky lg:top-32 top-24 space-y-6 md:space-y-10 max-h-screen lg:max-h-[calc(100vh-8rem)] overflow-y-auto">
           <div className="flex items-center justify-between mb-6">
             <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] px-4">Gestion</p>
             <AdminNotifications />
@@ -59,11 +59,11 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           </div>
         </aside>
 
-        {/* Main Content */}
-        <main className="flex-1 w-full bg-white p-10 lg:p-16 rounded-[4rem] border border-gray-100 shadow-2xl shadow-gray-200/50 relative overflow-hidden">
+        {/* Main Content - Mobile optimized */}
+        <main className="flex-1 w-full bg-white p-4 md:p-10 lg:p-16 rounded-[2rem] md:rounded-[4rem] border border-gray-100 shadow-xl md:shadow-2xl shadow-gray-200/50 relative overflow-hidden min-w-0">
           {children}
           {/* Decor */}
-          <div className="absolute top-[-50px] right-[-50px] w-64 h-64 bg-emerald-50 rounded-full blur-3xl -z-0" />
+          <div className="absolute top-[-50px] right-[-50px] w-64 h-64 bg-emerald-50 rounded-full blur-3xl -z-0 hidden md:block" />
         </main>
       </div>
     </div>

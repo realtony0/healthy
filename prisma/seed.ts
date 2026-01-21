@@ -567,6 +567,87 @@ async function main() {
     })
   }
 
+  // Créer les zones de livraison
+  console.log('Création des zones de livraison...')
+  const deliveryZones = [
+    {
+      name: 'Zone 1',
+      number: 1,
+      price: 1000,
+      quartiers: ['Maristes', 'Hann Bel-Air', 'Zone de Captage', 'Castor'],
+      isActive: true,
+    },
+    {
+      name: 'Zone 2',
+      number: 2,
+      price: 2000,
+      quartiers: [
+        'Fann – Point E',
+        'Biscuiterie',
+        'Colobane',
+        'Amitié 1 / 2 / 3',
+        'Mermoz – Sacré-Cœur',
+        'Patte d\'Oie',
+        'Sicap Liberté',
+        'Plateau',
+        'Ouakam',
+        'Yoff',
+        'Cambérène',
+        'Parcelles Assainies (toutes unités)',
+        'Almadies',
+        'Ngor',
+        'Mamelles',
+        'Keur Gorgui',
+        'Pikine',
+        'Niarry Tally',
+        'Ben Tally',
+        'Fass',
+        'Médina',
+        'Grand Dakar',
+        'Zone A / B',
+        'Dieuppeul',
+        'Derklé',
+      ],
+      isActive: true,
+    },
+    {
+      name: 'Zone 3',
+      number: 3,
+      price: 3000,
+      quartiers: [
+        'Keur Massar',
+        'Malika',
+        'Niakhirate',
+        'Rufisque',
+        'Bargny',
+        'Diamniadio',
+        'APiX',
+        'Kounoune',
+        'Tivaouane Peuls',
+        'Thiaroye',
+        'Yeumbeul',
+        'Mbao',
+        'Grand Mbao',
+        'Sicap Mbao',
+      ],
+      isActive: true,
+    },
+  ]
+
+  for (const zoneData of deliveryZones) {
+    await prisma.deliveryZone.upsert({
+      where: { number: zoneData.number },
+      update: {
+        name: zoneData.name,
+        price: zoneData.price,
+        quartiers: zoneData.quartiers,
+        isActive: zoneData.isActive,
+      },
+      create: zoneData,
+    })
+  }
+  console.log('Zones de livraison créées.')
+
   console.log('Seeding completed!')
 }
 
