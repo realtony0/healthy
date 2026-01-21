@@ -219,12 +219,12 @@ export default function AdminNotifications() {
   return (
     <>
       {/* Toast Notifications */}
-      <div className="fixed top-24 right-6 z-50 space-y-3">
-        {toasts.map(toast => (
-          <div
-            key={toast.id}
-            className="bg-white p-6 rounded-2xl border-2 border-emerald-200 shadow-2xl max-w-sm animate-in slide-in-from-right duration-300"
-          >
+          <div className="fixed top-24 right-4 md:right-6 z-50 space-y-3 max-w-[calc(100vw-2rem)] md:max-w-sm">
+            {toasts.map(toast => (
+              <div
+                key={toast.id}
+                className="bg-white p-4 md:p-6 rounded-2xl border-2 border-emerald-200 shadow-2xl animate-in slide-in-from-right duration-300"
+              >
             <div className="flex items-start gap-4">
               <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
                 toast.type === 'order' ? 'bg-blue-50 text-blue-600' : 'bg-orange-50 text-orange-600'

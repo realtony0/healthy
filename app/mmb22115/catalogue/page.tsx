@@ -391,7 +391,7 @@ export default function AdminCataloguePage() {
 
       {/* Modal Produit */}
       {showProductModal && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black/70 md:bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-[3rem] border border-gray-100 shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="sticky top-0 bg-white border-b border-gray-100 p-6 flex items-center justify-between z-10">
               <h2 className="text-2xl font-black text-[#1a472a]">
@@ -569,7 +569,7 @@ export default function AdminCataloguePage() {
 
       {/* Modal Catégorie */}
       {showCategoryModal && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black/70 md:bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-[3rem] border border-gray-100 shadow-2xl max-w-xl w-full">
             <div className="sticky top-0 bg-white border-b border-gray-100 p-6 flex items-center justify-between z-10">
               <h2 className="text-2xl font-black text-[#1a472a]">

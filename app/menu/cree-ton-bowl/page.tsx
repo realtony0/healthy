@@ -138,7 +138,7 @@ export default function CreateBowlPage() {
     <div className="pt-32 pb-32 bg-[#fffdfa] relative">
       {/* Adding to Cart Overlay */}
       {addingToCart && (
-        <div className="fixed inset-0 bg-[#1a472a]/10 backdrop-blur-sm z-[100] flex items-center justify-center">
+        <div className="fixed inset-0 bg-[#1a472a]/30 md:bg-[#1a472a]/10 backdrop-blur-sm z-[100] flex items-center justify-center">
           <div className="bg-white p-10 rounded-[3rem] shadow-2xl flex flex-col items-center gap-6 animate-in zoom-in-95 duration-300">
             <div className="w-16 h-16 bg-emerald-50 rounded-2xl flex items-center justify-center text-[#1a472a]">
               <ShoppingBag size={32} className="animate-bounce" />

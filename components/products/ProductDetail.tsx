@@ -103,7 +103,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
             <div className="w-full h-full flex items-center justify-center bg-emerald-50 text-emerald-200 font-black text-2xl lg:text-4xl">Healthy</div>
           )}
           {product.kcal && (
-            <div className="absolute bottom-4 right-4 lg:bottom-10 lg:right-10 bg-white/90 backdrop-blur-xl px-4 py-2 lg:px-6 lg:py-3 rounded-2xl lg:rounded-3xl shadow-xl border border-gray-100 flex items-center gap-2">
+              <div className="absolute bottom-4 right-4 lg:bottom-10 lg:right-10 bg-white md:bg-white/90 backdrop-blur-xl px-4 py-2 lg:px-6 lg:py-3 rounded-2xl lg:rounded-3xl shadow-xl border border-gray-100 flex items-center gap-2">
               <Flame size={16} className="lg:w-5 lg:h-5 text-orange-500" />
               <span className="font-black text-[#1a472a] text-sm lg:text-base">{product.kcal} kcal</span>
             </div>
@@ -155,7 +155,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
               <div className="text-3xl lg:text-5xl font-black italic font-serif leading-none mt-1 lg:mt-2">{formatPrice(product.price * quantity)}</div>
             </div>
             
-            <div className="flex items-center gap-2 lg:gap-4 bg-white/10 backdrop-blur-md p-1.5 lg:p-2 rounded-2xl lg:rounded-3xl border border-white/20 relative z-10">
+                <div className="flex items-center gap-2 lg:gap-4 bg-white/20 md:bg-white/10 backdrop-blur-md p-1.5 lg:p-2 rounded-2xl lg:rounded-3xl border border-white/30 md:border-white/20 relative z-10">
               <button 
                 onClick={() => setQuantity(q => Math.max(1, q-1))}
                 className="w-10 h-10 lg:w-14 lg:h-14 rounded-xl lg:rounded-2xl hover:bg-white hover:text-[#1a472a] flex items-center justify-center transition-all duration-300 active:scale-90"

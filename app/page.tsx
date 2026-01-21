@@ -130,10 +130,10 @@ export default function HomePage() {
                 <Link href="/menu" className="block space-y-6">
                   <div className="aspect-[4/5] rounded-[3.5rem] overflow-hidden relative shadow-2xl shadow-gray-200/50">
                     <Image src={p.img} alt={p.name} fill className="object-cover group-hover:scale-105 transition-transform duration-700" />
-                    <div className="absolute top-8 left-8 bg-white/90 backdrop-blur-md px-4 py-2 rounded-2xl text-[10px] font-black uppercase tracking-widest text-[#1a472a] shadow-sm">
+                    <div className="absolute top-8 left-8 bg-white md:bg-white/90 backdrop-blur-md px-4 py-2 rounded-2xl text-[10px] font-black uppercase tracking-widest text-[#1a472a] shadow-sm">
                       {p.tag}
                     </div>
-                    <div className="absolute bottom-8 left-8 right-8 bg-brand/90 backdrop-blur-md p-6 rounded-[2.5rem] flex items-center justify-between opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
+                    <div className="absolute bottom-8 left-8 right-8 bg-brand md:bg-brand/90 backdrop-blur-md p-6 rounded-[2.5rem] flex items-center justify-between opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
                       <div className="text-white">
                         <p className="text-[10px] font-black uppercase tracking-widest opacity-60">Énergie</p>
                         <p className="text-xl font-black italic font-serif">{p.kcal} cal</p>

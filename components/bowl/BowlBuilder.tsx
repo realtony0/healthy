@@ -122,7 +122,7 @@ export default function BowlBuilder({ ingredients, onComplete }: BowlBuilderProp
   return (
     <div className="flex flex-col min-h-screen lg:min-h-0 lg:flex-row pb-20 lg:pb-0">
       {/* Top Mobile Progress */}
-      <div className="lg:hidden sticky top-16 bg-white/80 backdrop-blur-md border-b border-gray-100 z-40 px-5 py-4">
+      <div className="lg:hidden sticky top-16 bg-white border-b border-gray-100 z-40 px-5 py-4 shadow-sm">
         <div className="flex items-center justify-between mb-2">
           <p className="text-[10px] font-black text-brand uppercase tracking-widest italic">{STEPS[currentStep].name}</p>
           <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{currentStep + 1} / {STEPS.length}</p>
@@ -323,7 +323,7 @@ export default function BowlBuilder({ ingredients, onComplete }: BowlBuilderProp
           )}
 
           {/* Action Buttons */}
-          <div className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-xl border-t border-gray-100 p-5 lg:relative lg:bg-transparent lg:border-0 lg:p-0 lg:mt-12 flex justify-between gap-4 z-50">
+          <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 shadow-xl p-5 lg:relative lg:bg-transparent lg:border-0 lg:p-0 lg:mt-12 lg:shadow-none flex justify-between gap-4 z-50">
             <button
               onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
               disabled={currentStep === 0}
