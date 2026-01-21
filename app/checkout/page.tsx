@@ -222,10 +222,10 @@ export default function CheckoutPage() {
                   {selectedZoneId && selectedZone && (
                     <div className="mt-3 p-4 bg-emerald-50 rounded-2xl border border-emerald-100">
                       <p className="text-xs font-black text-emerald-900 uppercase tracking-widest mb-2">
-                        Zone {selectedZone.number} • Livraison {formatPrice(selectedZone.price)} FCFA
+                        Frais de livraison : {formatPrice(selectedZone.price)} FCFA
                       </p>
                       <p className="text-xs font-bold text-emerald-700 italic">
-                        Tous les quartiers de cette zone sont livrés au même tarif.
+                        Tous les quartiers de votre zone sont livrés au même tarif.
                       </p>
                     </div>
                   )}
