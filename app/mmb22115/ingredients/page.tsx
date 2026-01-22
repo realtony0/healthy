@@ -84,7 +84,11 @@ export default function AdminIngredientsPage() {
   const handleDelete = async (id: string) => {
     if (!confirm('Supprimer cet ingrédient ?')) return
     try {
-      await fetch(`/api/admin/ingredients/${id}`, { method: 'DELETE' })
+      const res = await fetch(`/api/admin/ingredients/${id}`, { method: 'DELETE' })
+      if (!res.ok) {
+        const error = await res.json()
+        throw new Error(error.error || 'Erreur lors de la suppression')
+      }
       await fetchIngredients()
     } catch (e) {
       console.error(e)
@@ -150,9 +154,17 @@ export default function AdminIngredientsPage() {
             <RefreshCcw size={18} />
             Actualiser
           </button>
-          <button onClick={openCreate} className="btn btn-primary gap-2 shadow-xl shadow-emerald-900/20" type="button">
-          <Plus size={20} />
-          Nouvel Ingrédient
+          <button 
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              openCreate()
+            }} 
+            className="btn btn-primary gap-2 shadow-xl shadow-emerald-900/20 cursor-pointer z-10 relative" 
+            type="button"
+          >
+            <Plus size={20} />
+            Nouvel Ingrédient
           </button>
         </div>
       </div>
@@ -165,7 +177,7 @@ export default function AdminIngredientsPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {ingredients.map((ing) => (
-            <div key={ing.id} className="bg-white p-6 rounded-[2.5rem] border border-gray-100 shadow-xl shadow-gray-200/20 flex flex-col justify-between group hover:border-[#1a472a] transition-all duration-500">
+            <div key={ing.id} className="bg-white p-6 rounded-[2.5rem] border border-gray-100 shadow-xl shadow-gray-200/20 flex flex-col justify-between group hover:border-[#1a472a] transition-all duration-500 relative">
               <div className="space-y-4">
                 <div className="flex justify-between items-start">
                   <div className={`px-3 py-1 rounded-full border text-[10px] font-black uppercase tracking-widest ${getTypeColor(ing.type)}`}>
@@ -189,15 +201,23 @@ export default function AdminIngredientsPage() {
               <div className="flex gap-2 pt-6 border-t border-gray-50 mt-6">
                 <button
                   type="button"
-                  onClick={() => openEdit(ing)}
-                  className="flex-1 py-3 rounded-2xl bg-gray-50 text-gray-700 font-black text-[10px] uppercase tracking-widest hover:bg-[#1a472a] hover:text-white transition-all"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    openEdit(ing)
+                  }}
+                  className="flex-1 py-3 rounded-2xl bg-gray-50 text-gray-700 font-black text-[10px] uppercase tracking-widest hover:bg-[#1a472a] hover:text-white transition-all cursor-pointer z-10 relative"
                 >
                   Modifier
                 </button>
                 <button
                   type="button"
-                  onClick={() => handleDelete(ing.id)}
-                  className="w-12 h-12 rounded-2xl bg-red-50 text-red-400 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    handleDelete(ing.id)
+                  }}
+                  className="w-12 h-12 rounded-2xl bg-red-50 text-red-400 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all cursor-pointer z-10 relative"
                 >
                   <Trash2 size={18} />
                 </button>

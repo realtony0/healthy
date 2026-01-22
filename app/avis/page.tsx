@@ -1,7 +1,17 @@
-import { Star, Quote, MessageSquare } from 'lucide-react'
-import Image from 'next/image'
+'use client'
+
+import { useState } from 'react'
+import { Star, Quote, MessageSquare, X } from 'lucide-react'
 
 export default function AvisPage() {
+  const [showModal, setShowModal] = useState(false)
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    rating: 5,
+    comment: '',
+  })
+  const [submitting, setSubmitting] = useState(false)
   const testimonials = [
     {
       name: 'Aminata Diop',
@@ -86,7 +96,10 @@ export default function AvisPage() {
             <p className="text-xl text-white/70 font-medium">
               Votre avis est précieux pour nous aider à nous améliorer chaque jour.
             </p>
-            <button className="btn bg-white text-[#1a472a] btn-lg px-12 py-6 text-xl flex items-center gap-3 mx-auto group">
+            <button 
+              onClick={() => setShowModal(true)}
+              className="btn bg-white text-[#1a472a] btn-lg px-12 py-6 text-xl flex items-center gap-3 mx-auto group cursor-pointer"
+            >
               <MessageSquare className="group-hover:scale-110 transition-transform" />
               Laisser un avis
             </button>
@@ -94,6 +107,112 @@ export default function AvisPage() {
           <div className="absolute top-[-50px] right-[-50px] w-96 h-96 bg-emerald-400/10 rounded-full blur-[100px]" />
         </div>
       </div>
+
+      {showModal && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white w-full max-w-2xl rounded-[3rem] border border-gray-100 shadow-2xl overflow-hidden">
+            <div className="p-8 border-b border-gray-100 flex items-center justify-between">
+              <h2 className="text-3xl font-black text-[#1a472a]">Laisser un avis</h2>
+              <button
+                type="button"
+                onClick={() => setShowModal(false)}
+                className="w-10 h-10 rounded-2xl bg-gray-50 text-gray-400 hover:text-gray-900 flex items-center justify-center"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <form 
+              onSubmit={async (e) => {
+                e.preventDefault()
+                setSubmitting(true)
+                try {
+                  // Ici tu peux ajouter un appel API pour sauvegarder l'avis
+                  // await fetch('/api/reviews', { method: 'POST', body: JSON.stringify(form) })
+                  alert('Merci pour votre avis ! Il sera publié après modération.')
+                  setForm({ name: '', email: '', rating: 5, comment: '' })
+                  setShowModal(false)
+                } catch (error) {
+                  console.error(error)
+                  alert('Erreur lors de l\'envoi de votre avis.')
+                } finally {
+                  setSubmitting(false)
+                }
+              }}
+              className="p-8 space-y-6"
+            >
+              <div className="space-y-2">
+                <label className="text-xs font-black text-gray-400 uppercase tracking-widest">Nom</label>
+                <input
+                  type="text"
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  className="w-full px-5 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-[#1a472a] outline-none font-bold"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-black text-gray-400 uppercase tracking-widest">Email</label>
+                <input
+                  type="email"
+                  value={form.email}
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                  className="w-full px-5 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-[#1a472a] outline-none font-bold"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-black text-gray-400 uppercase tracking-widest">Note</label>
+                <div className="flex gap-2">
+                  {[1, 2, 3, 4, 5].map((rating) => (
+                    <button
+                      key={rating}
+                      type="button"
+                      onClick={() => setForm({ ...form, rating })}
+                      className="focus:outline-none"
+                    >
+                      <Star
+                        size={32}
+                        className={rating <= form.rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}
+                      />
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-black text-gray-400 uppercase tracking-widest">Votre avis</label>
+                <textarea
+                  value={form.comment}
+                  onChange={(e) => setForm({ ...form, comment: e.target.value })}
+                  className="w-full px-5 py-4 bg-gray-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-[#1a472a] outline-none font-bold min-h-[150px]"
+                  required
+                />
+              </div>
+
+              <div className="flex flex-col md:flex-row gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                  className="btn btn-outline w-full md:w-auto"
+                  disabled={submitting}
+                >
+                  Annuler
+                </button>
+                <button 
+                  type="submit" 
+                  className="btn bg-[#1a472a] text-white w-full md:flex-1" 
+                  disabled={submitting}
+                >
+                  {submitting ? 'Envoi en cours...' : 'Envoyer mon avis'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
