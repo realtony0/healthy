@@ -2,1416 +2,870 @@ import {
   AbsoluteFill,
   interpolate,
   useCurrentFrame,
-  useVideoConfig,
   spring,
   Img,
   staticFile,
   Easing,
+  Audio,
 } from 'remotion';
 
-// Curseur de souris animé
-const MouseCursor: React.FC<{ x: number; y: number; clicking?: boolean }> = ({
-  x,
-  y,
-  clicking,
-}) => {
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        left: x,
-        top: y,
-        width: 24,
-        height: 24,
-        pointerEvents: 'none',
-        zIndex: 1000,
-        transform: 'translate(-12px, -12px)',
-      }}
-    >
-      <svg
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        style={{
-          filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.3))',
-        }}
-      >
-        <path
-          d="M3 3L10.07 19.97L12.58 12.58L19.97 10.07L3 3Z"
-          fill="white"
-          stroke="#1a472a"
-          strokeWidth="2"
-        />
-      </svg>
-      {clicking && (
-        <div
-          style={{
-            position: 'absolute',
-            left: '50%',
-            top: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: 40,
-            height: 40,
-            borderRadius: '50%',
-            border: '2px solid rgba(26, 71, 42, 0.5)',
-            animation: 'pulse 0.3s ease-out',
-          }}
-        />
-      )}
-    </div>
-  );
+// ============================================
+// DIRECTION ARTISTIQUE: CINEMATIC LUXURY FOOD
+// ============================================
+// Inspiration: Apple, high-end food brands, Netflix intros
+// Palette: Deep greens, warm golds, clean whites
+// Typography: Bold, minimal, impactful
+// Motion: Smooth, elegant, satisfying
+// ============================================
+
+const COLORS = {
+  dark: '#0a0a0a',
+  forest: '#0d2818',
+  emerald: '#10b981',
+  gold: '#d4a574',
+  cream: '#faf7f2',
+  white: '#ffffff',
 };
 
-// Badge URL avec curseur
-const URLBadge: React.FC<{ frame: number; visible: boolean }> = ({
+// Grain/noise overlay for cinematic feel
+const FilmGrain: React.FC<{ opacity?: number }> = ({ opacity = 0.03 }) => (
+  <div
+    style={{
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+      opacity,
+      pointerEvents: 'none',
+      zIndex: 1000,
+    }}
+  />
+);
+
+// Animated gradient background
+const GradientBg: React.FC<{ frame: number; colors: string[] }> = ({
   frame,
-  visible,
+  colors,
 }) => {
-  const opacity = visible
-    ? interpolate(frame, [0, 15], [0, 1], { extrapolateRight: 'clamp' })
-    : 0;
-  const scale = spring({
-    frame: visible ? frame : 0,
-    fps: 30,
-    config: { damping: 10 },
+  const rotation = interpolate(frame, [0, 300], [0, 360], {
+    extrapolateRight: 'extend',
+  });
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        top: '-50%',
+        left: '-50%',
+        right: '-50%',
+        bottom: '-50%',
+        background: `conic-gradient(from ${rotation}deg at 50% 50%, ${colors.join(', ')})`,
+        filter: 'blur(100px)',
+        opacity: 0.6,
+      }}
+    />
+  );
+};
+
+// Cinematic text reveal
+const CinematicText: React.FC<{
+  frame: number;
+  text: string;
+  delay?: number;
+  size?: number;
+  color?: string;
+  weight?: number;
+  tracking?: number;
+}> = ({
+  frame,
+  text,
+  delay = 0,
+  size = 120,
+  color = COLORS.white,
+  weight = 900,
+  tracking = -0.04,
+}) => {
+  const f = frame - delay;
+  
+  const clipProgress = interpolate(f, [0, 30], [0, 100], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+    easing: Easing.out(Easing.cubic),
+  });
+  
+  const opacity = interpolate(f, [0, 20], [0, 1], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+  
+  const y = interpolate(f, [0, 30], [40, 0], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+    easing: Easing.out(Easing.cubic),
   });
 
   return (
     <div
       style={{
-        position: 'absolute',
-        bottom: 60,
-        left: '50%',
-        transform: `translateX(-50%) scale(${0.8 + scale * 0.2})`,
+        fontSize: size,
+        fontWeight: weight,
+        color,
+        letterSpacing: `${tracking}em`,
+        lineHeight: 1,
+        fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
         opacity,
-        zIndex: 100,
+        transform: `translateY(${y}px)`,
+        clipPath: `inset(0 ${100 - clipProgress}% 0 0)`,
       }}
     >
-      <div
-        style={{
-          backgroundColor: 'rgba(26, 71, 42, 0.95)',
-          backdropFilter: 'blur(20px)',
-          padding: '20px 40px',
-          borderRadius: 50,
-          border: '3px solid rgba(255,255,255,0.3)',
-          boxShadow: '0 20px 60px rgba(0,0,0,0.4)',
-          display: 'flex',
-          alignItems: 'center',
-          gap: 20,
-        }}
-      >
-        <div
-          style={{
-            width: 32,
-            height: 32,
-            backgroundColor: 'white',
-            borderRadius: 8,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: 20,
-          }}
-        >
-          🔗
-        </div>
-        <div
-          style={{
-            fontSize: 32,
-            fontWeight: 900,
-            color: 'white',
-            letterSpacing: '0.02em',
-          }}
-        >
-          healthy.sn
-        </div>
-        <div
-          style={{
-            width: 40,
-            height: 40,
-            backgroundColor: 'rgba(255,255,255,0.2)',
-            borderRadius: 12,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-          }}
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-            <path d="M3 3L10.07 19.97L12.58 12.58L19.97 10.07L3 3Z" />
-          </svg>
-        </div>
-      </div>
+      {text}
     </div>
   );
 };
 
-// Scène 1: Introduction avec logo et URL (3s)
-const Scene1: React.FC<{ frame: number }> = ({ frame }) => {
-  const bgRotation = interpolate(frame, [0, 90], [0, 360]);
-  const logoScale = spring({
-    frame,
-    fps: 30,
-    config: { damping: 10 },
-  });
-  const logoOpacity = interpolate(frame, [0, 30], [0, 1], {
+// Horizontal line reveal
+const LineReveal: React.FC<{
+  frame: number;
+  delay?: number;
+  color?: string;
+  width?: number;
+}> = ({ frame, delay = 0, color = COLORS.gold, width = 200 }) => {
+  const f = frame - delay;
+  const progress = interpolate(f, [0, 25], [0, 100], {
+    extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
+    easing: Easing.out(Easing.cubic),
   });
-
-  const mouseX = interpolate(frame, [30, 60], [50, 50], {
-    extrapolateRight: 'clamp',
-  });
-  const mouseY = interpolate(frame, [30, 60], [50, 85], {
-    extrapolateRight: 'clamp',
-  });
-  const clicking = frame >= 45 && frame <= 50;
 
   return (
-    <AbsoluteFill
+    <div
       style={{
-        background: `linear-gradient(${bgRotation}deg, #1a472a 0%, #10b981 50%, #1a472a 100%)`,
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'relative',
+        width: width * (progress / 100),
+        height: 3,
+        backgroundColor: color,
+        marginTop: 30,
+        marginBottom: 30,
       }}
-    >
-      <div
-        style={{
-          opacity: logoOpacity,
-          transform: `scale(${0.8 + logoScale * 0.2})`,
-          textAlign: 'center',
-          color: 'white',
-        }}
-      >
-        <div
-          style={{
-            fontSize: 96,
-            fontWeight: 900,
-            marginBottom: 20,
-            letterSpacing: '-0.02em',
-            textShadow: '0 8px 32px rgba(0,0,0,0.4)',
-          }}
-        >
-          HEALTHY DAKAR
-        </div>
-        <div
-          style={{
-            fontSize: 36,
-            fontWeight: 600,
-            opacity: 0.95,
-            textShadow: '0 4px 16px rgba(0,0,0,0.3)',
-          }}
-        >
-          Votre nutrition livrée chaque jour
-        </div>
-      </div>
-      <MouseCursor
-        x={`${mouseX}%`}
-        y={`${mouseY}%`}
-        clicking={clicking}
-      />
-      <URLBadge frame={frame - 30} visible={frame >= 30} />
-    </AbsoluteFill>
+    />
   );
 };
 
-// Scène 2: Page d'accueil avec vraies images (8s)
-const Scene2: React.FC<{ frame: number }> = ({ frame }) => {
-  const scrollY = interpolate(frame, [0, 240], [0, -500], {
+// Image with cinematic reveal
+const CinematicImage: React.FC<{
+  frame: number;
+  src: string;
+  delay?: number;
+  scale?: number;
+}> = ({ frame, src, delay = 0, scale = 1 }) => {
+  const f = frame - delay;
+  
+  const clipProgress = interpolate(f, [0, 40], [100, 0], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+    easing: Easing.out(Easing.cubic),
+  });
+  
+  const imageScale = interpolate(f, [0, 60], [1.3, 1], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+    easing: Easing.out(Easing.cubic),
+  });
+  
+  const opacity = interpolate(f, [0, 20], [0, 1], {
+    extrapolateLeft: 'clamp',
     extrapolateRight: 'clamp',
   });
 
-  const plats = [
-    {
-      name: 'Bowl Poulet Signature',
-      price: '3 500 FCFA',
-      img: 'img/bowl-poulet-mais.jpeg',
-      kcal: '450 kcal',
-    },
-    {
-      name: 'Bœuf & Patate Douce',
-      price: '4 200 FCFA',
-      img: 'img/boeuf-puree-patate-douce.jpeg',
-      kcal: '520 kcal',
-    },
-    {
-      name: 'Poisson aux Herbes',
-      price: '3 900 FCFA',
-      img: 'img/poisson-blanc-herbes.jpeg',
-      kcal: '410 kcal',
-    },
-  ];
-
-  // Animation du curseur
-  const mouseX = interpolate(
-    frame,
-    [0, 60, 120, 180, 240],
-    [20, 50, 80, 50, 20],
-    {
-      extrapolateRight: 'clamp',
-    }
-  );
-  const mouseY = interpolate(
-    frame,
-    [0, 60, 120, 180, 240],
-    [30, 40, 50, 60, 70],
-    {
-      extrapolateRight: 'clamp',
-    }
-  );
-  const clicking = (frame >= 50 && frame <= 55) || (frame >= 130 && frame <= 135);
-
   return (
-    <AbsoluteFill
+    <div
       style={{
-        backgroundColor: '#fffdfa',
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'relative',
+        width: 380 * scale,
+        height: 380 * scale,
+        borderRadius: 40,
+        overflow: 'hidden',
+        opacity,
+        clipPath: `inset(${clipProgress}% 0 0 0)`,
+        boxShadow: '0 60px 120px rgba(0,0,0,0.5)',
       }}
     >
-      {/* Simuler un écran de téléphone/desktop */}
-      <div
+      <Img
+        src={staticFile(src)}
         style={{
-          width: '95%',
-          maxWidth: 500,
-          height: '90%',
-          backgroundColor: 'white',
-          borderRadius: 40,
-          overflow: 'hidden',
-          boxShadow: '0 40px 100px rgba(0,0,0,0.3)',
-          position: 'relative',
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          transform: `scale(${imageScale})`,
+        }}
+      />
+    </div>
+  );
+};
+
+// Badge component
+const Badge: React.FC<{
+  frame: number;
+  text: string;
+  delay?: number;
+  variant?: 'light' | 'dark';
+}> = ({ frame, text, delay = 0, variant = 'dark' }) => {
+  const f = frame - delay;
+  const scale = spring({
+    frame: f,
+    fps: 30,
+    config: { damping: 12, stiffness: 150 },
+  });
+  const opacity = interpolate(f, [0, 15], [0, 1], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+
+  return (
+    <div
+      style={{
+        opacity,
+        transform: `scale(${0.8 + scale * 0.2})`,
+        backgroundColor: variant === 'dark' ? COLORS.forest : COLORS.cream,
+        color: variant === 'dark' ? COLORS.white : COLORS.forest,
+        padding: '16px 32px',
+        borderRadius: 50,
+        fontSize: 18,
+        fontWeight: 800,
+        letterSpacing: '0.1em',
+        textTransform: 'uppercase',
+      }}
+    >
+      {text}
+    </div>
+  );
+};
+
+// ============================================
+// SCENE 1: CINEMATIC INTRO (4s)
+// ============================================
+const Scene1: React.FC<{ frame: number }> = ({ frame }) => {
+  const fadeIn = interpolate(frame, [0, 30], [0, 1], {
+    extrapolateRight: 'clamp',
+  });
+  
+  const logoScale = spring({
+    frame: frame - 15,
+    fps: 30,
+    config: { damping: 15, stiffness: 100 },
+  });
+
+  return (
+    <AbsoluteFill style={{ backgroundColor: COLORS.dark }}>
+      <GradientBg frame={frame} colors={[COLORS.forest, COLORS.dark, COLORS.emerald, COLORS.dark]} />
+      <AbsoluteFill
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          opacity: fadeIn,
         }}
       >
-        {/* Header */}
         <div
           style={{
-            height: 70,
-            backgroundColor: 'white',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: '0 24px',
-            borderBottom: '1px solid #f0f0f0',
+            transform: `scale(${0.9 + logoScale * 0.1})`,
+            textAlign: 'center',
           }}
         >
+          <div
+            style={{
+              fontSize: 24,
+              fontWeight: 600,
+              color: COLORS.gold,
+              letterSpacing: '0.3em',
+              marginBottom: 30,
+              textTransform: 'uppercase',
+            }}
+          >
+            Dakar • Sénégal
+          </div>
+          <CinematicText frame={frame} text="HEALTHY" delay={20} size={160} />
+          <LineReveal frame={frame} delay={40} />
           <div
             style={{
               fontSize: 28,
-              fontWeight: 900,
-              color: '#1a472a',
+              fontWeight: 500,
+              color: COLORS.cream,
+              opacity: 0.8,
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
             }}
           >
-            Healthy
-          </div>
-          <div
-            style={{
-              width: 44,
-              height: 44,
-              backgroundColor: '#1a472a',
-              borderRadius: 14,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'white',
-              fontSize: 18,
-              fontWeight: 900,
-            }}
-          >
-            🛒
+            L'art de bien manger
           </div>
         </div>
-
-        {/* Contenu scrollable */}
-        <div
-          style={{
-            height: 'calc(100% - 70px)',
-            overflow: 'hidden',
-            position: 'relative',
-          }}
-        >
-          <div
-            style={{
-              transform: `translateY(${scrollY}px)`,
-              padding: '40px 24px',
-            }}
-          >
-            {/* Hero */}
-            <div style={{ textAlign: 'center', marginBottom: 50 }}>
-              <div
-                style={{
-                  fontSize: 12,
-                  color: '#1a472a',
-                  backgroundColor: '#e6f5ed',
-                  padding: '10px 20px',
-                  borderRadius: 25,
-                  display: 'inline-block',
-                  marginBottom: 24,
-                  fontWeight: 700,
-                }}
-              >
-                ✨ Cuisiné ce matin
-              </div>
-              <div
-                style={{
-                  fontSize: 56,
-                  fontWeight: 900,
-                  color: '#1a472a',
-                  marginBottom: 20,
-                  lineHeight: 1.1,
-                }}
-              >
-                Sain.<br />Frais.<br />
-                <span style={{ color: '#10b981', fontStyle: 'italic' }}>
-                  Prêt.
-                </span>
-              </div>
-            </div>
-
-            {/* Plats avec vraies images */}
-            <div style={{ marginTop: 40 }}>
-              <div
-                style={{
-                  fontSize: 28,
-                  fontWeight: 900,
-                  color: '#1a472a',
-                  marginBottom: 30,
-                }}
-              >
-                Nos Favoris
-              </div>
-              {plats.map((plat, i) => (
-                <div
-                  key={i}
-                  style={{
-                    backgroundColor: 'white',
-                    borderRadius: 30,
-                    overflow: 'hidden',
-                    marginBottom: 24,
-                    boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
-                    border: '2px solid #f0f0f0',
-                  }}
-                >
-                  <Img
-                    src={staticFile(plat.img)}
-                    style={{
-                      width: '100%',
-                      height: 200,
-                      objectFit: 'cover',
-                    }}
-                  />
-                  <div style={{ padding: 24 }}>
-                    <div
-                      style={{
-                        fontSize: 24,
-                        fontWeight: 900,
-                        color: '#1a472a',
-                        marginBottom: 12,
-                      }}
-                    >
-                      {plat.name}
-                    </div>
-                    <div
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <div
-                        style={{
-                          fontSize: 28,
-                          fontWeight: 900,
-                          color: '#10b981',
-                        }}
-                      >
-                        {plat.price}
-                      </div>
-                      <div
-                        style={{
-                          fontSize: 16,
-                          color: '#666',
-                          fontWeight: 600,
-                        }}
-                      >
-                        {plat.kcal}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <MouseCursor
-        x={`${mouseX}%`}
-        y={`${mouseY}%`}
-        clicking={clicking}
-      />
-      <URLBadge frame={frame} visible={true} />
+      </AbsoluteFill>
+      <FilmGrain />
     </AbsoluteFill>
   );
 };
 
-// Scène 3: Menu complet avec toutes les catégories (10s)
+// ============================================
+// SCENE 2: HERO DISH REVEAL (6s)
+// ============================================
+const Scene2: React.FC<{ frame: number }> = ({ frame }) => {
+  const bgFade = interpolate(frame, [0, 30], [0, 1], {
+    extrapolateRight: 'clamp',
+  });
+
+  return (
+    <AbsoluteFill style={{ backgroundColor: COLORS.cream, opacity: bgFade }}>
+      <AbsoluteFill
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: 80,
+          padding: 80,
+        }}
+      >
+        <div style={{ flex: 1, maxWidth: 500 }}>
+          <Badge frame={frame} text="Signature" delay={15} variant="dark" />
+          <div style={{ height: 40 }} />
+          <CinematicText
+            frame={frame}
+            text="Bowl"
+            delay={25}
+            size={100}
+            color={COLORS.forest}
+          />
+          <CinematicText
+            frame={frame}
+            text="Poulet"
+            delay={35}
+            size={100}
+            color={COLORS.forest}
+          />
+          <LineReveal frame={frame} delay={50} color={COLORS.emerald} />
+          <div
+            style={{
+              fontSize: 64,
+              fontWeight: 900,
+              color: COLORS.emerald,
+              marginTop: 20,
+            }}
+          >
+            3 500 F
+          </div>
+          <div
+            style={{
+              fontSize: 22,
+              color: COLORS.forest,
+              opacity: 0.6,
+              marginTop: 15,
+              fontWeight: 500,
+            }}
+          >
+            450 kcal • 35g protéines
+          </div>
+        </div>
+        <CinematicImage
+          frame={frame}
+          src="img/bowl-poulet-mais.jpeg"
+          delay={20}
+          scale={1.2}
+        />
+      </AbsoluteFill>
+      <FilmGrain opacity={0.02} />
+    </AbsoluteFill>
+  );
+};
+
+// ============================================
+// SCENE 3: MULTI-DISH SHOWCASE (8s)
+// ============================================
 const Scene3: React.FC<{ frame: number }> = ({ frame }) => {
-  const scrollY = interpolate(frame, [0, 300], [0, -800], {
-    extrapolateRight: 'clamp',
-  });
-
-  const categories = [
-    {
-      name: 'Plats Signature',
-      plats: [
-        { name: 'Bowl Poulet', price: '3 500', img: 'img/bowl-poulet-mais.jpeg' },
-        { name: 'Bœuf Patate', price: '4 200', img: 'img/boeuf-puree-patate-douce.jpeg' },
-        { name: 'Poisson Herbes', price: '3 900', img: 'img/poisson-blanc-herbes.jpeg' },
-      ],
-    },
-    {
-      name: 'Snacks & Energy Balls',
-      plats: [
-        { name: 'Energy Balls Mix', price: '2 500', img: 'img/energy-balls-mix.jpeg' },
-        { name: 'Energy Balls Protéines', price: '2 800', img: 'img/energy-balls-proteines.jpeg' },
-      ],
-    },
+  const dishes = [
+    { img: 'img/boeuf-puree-patate-douce.jpeg', name: 'Bœuf Signature', price: '4 200 F' },
+    { img: 'img/poisson-blanc-herbes.jpeg', name: 'Poisson Herbes', price: '3 900 F' },
+    { img: 'img/poulet-grille-legumes.jpeg', name: 'Poulet Grillé', price: '3 500 F' },
   ];
 
-  const mouseX = interpolate(frame, [0, 150, 300], [30, 70, 30], {
+  const currentDish = Math.floor(frame / 80) % dishes.length;
+  const dishFrame = frame % 80;
+
+  const fadeIn = interpolate(dishFrame, [0, 20], [0, 1], {
     extrapolateRight: 'clamp',
   });
-  const mouseY = interpolate(frame, [0, 150, 300], [40, 60, 80], {
+  const fadeOut = interpolate(dishFrame, [60, 80], [1, 0], {
     extrapolateRight: 'clamp',
   });
-  const clicking =
-    (frame >= 40 && frame <= 45) ||
-    (frame >= 160 && frame <= 165) ||
-    (frame >= 280 && frame <= 285);
+  const opacity = Math.min(fadeIn, fadeOut);
+
+  const scale = interpolate(dishFrame, [0, 80], [1.1, 1], {
+    extrapolateRight: 'clamp',
+    easing: Easing.out(Easing.cubic),
+  });
 
   return (
-    <AbsoluteFill
-      style={{
-        backgroundColor: '#fffdfa',
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'relative',
-      }}
-    >
+    <AbsoluteFill style={{ backgroundColor: COLORS.dark }}>
+      <AbsoluteFill style={{ opacity }}>
+        <Img
+          src={staticFile(dishes[currentDish].img)}
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            transform: `scale(${scale})`,
+            filter: 'brightness(0.7)',
+          }}
+        />
+      </AbsoluteFill>
+      
+      {/* Gradient overlay */}
       <div
         style={{
-          width: '95%',
-          maxWidth: 500,
-          height: '90%',
-          backgroundColor: 'white',
-          borderRadius: 40,
-          overflow: 'hidden',
-          boxShadow: '0 40px 100px rgba(0,0,0,0.3)',
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: '60%',
+          background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%)',
+        }}
+      />
+      
+      <AbsoluteFill
+        style={{
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          paddingBottom: 200,
+          opacity,
         }}
       >
-        <div
-          style={{
-            height: 70,
-            backgroundColor: 'white',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderBottom: '1px solid #f0f0f0',
-          }}
-        >
+        <div style={{ textAlign: 'center' }}>
           <div
             style={{
-              fontSize: 32,
+              fontSize: 80,
               fontWeight: 900,
-              color: '#1a472a',
+              color: COLORS.white,
+              letterSpacing: '-0.02em',
+              marginBottom: 20,
             }}
           >
-            Le Menu
+            {dishes[currentDish].name}
           </div>
-        </div>
-
-        <div
-          style={{
-            height: 'calc(100% - 70px)',
-            overflow: 'hidden',
-          }}
-        >
           <div
             style={{
-              transform: `translateY(${scrollY}px)`,
-              padding: '40px 24px',
+              fontSize: 56,
+              fontWeight: 900,
+              color: COLORS.gold,
             }}
           >
-            {categories.map((category, catIdx) => (
-              <div key={catIdx} style={{ marginBottom: 50 }}>
-                <div
-                  style={{
-                    fontSize: 32,
-                    fontWeight: 900,
-                    color: '#1a472a',
-                    marginBottom: 30,
-                  }}
-                >
-                  {category.name}
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-                  {category.plats.map((plat, platIdx) => (
-                    <div
-                      key={platIdx}
-                      style={{
-                        backgroundColor: 'white',
-                        borderRadius: 24,
-                        overflow: 'hidden',
-                        boxShadow: '0 8px 30px rgba(0,0,0,0.1)',
-                        border: '2px solid #f0f0f0',
-                      }}
-                    >
-                      <div style={{ display: 'flex', gap: 16 }}>
-                        <Img
-                          src={staticFile(plat.img)}
-                          style={{
-                            width: 140,
-                            height: 140,
-                            objectFit: 'cover',
-                            flexShrink: 0,
-                          }}
-                        />
-                        <div
-                          style={{
-                            flex: 1,
-                            padding: 20,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'space-between',
-                          }}
-                        >
-                          <div
-                            style={{
-                              fontSize: 22,
-                              fontWeight: 900,
-                              color: '#1a472a',
-                            }}
-                          >
-                            {plat.name}
-                          </div>
-                          <div
-                            style={{
-                              fontSize: 24,
-                              fontWeight: 900,
-                              color: '#10b981',
-                            }}
-                          >
-                            {plat.price} FCFA
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
+            {dishes[currentDish].price}
           </div>
         </div>
+      </AbsoluteFill>
+      
+      {/* Progress dots */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: 100,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          display: 'flex',
+          gap: 12,
+        }}
+      >
+        {dishes.map((_, i) => (
+          <div
+            key={i}
+            style={{
+              width: i === currentDish ? 40 : 12,
+              height: 12,
+              borderRadius: 6,
+              backgroundColor: i === currentDish ? COLORS.gold : 'rgba(255,255,255,0.3)',
+              transition: 'width 0.3s ease',
+            }}
+          />
+        ))}
       </div>
-
-      <MouseCursor
-        x={`${mouseX}%`}
-        y={`${mouseY}%`}
-        clicking={clicking}
-      />
-      <URLBadge frame={frame} visible={true} />
+      <FilmGrain />
     </AbsoluteFill>
   );
 };
 
-// Scène 4: Crée ton Bowl (8s)
+// ============================================
+// SCENE 4: FEATURES / VALUES (6s)
+// ============================================
 const Scene4: React.FC<{ frame: number }> = ({ frame }) => {
-  const scrollY = interpolate(frame, [0, 240], [0, -400], {
-    extrapolateRight: 'clamp',
-  });
-
-  const mouseX = interpolate(frame, [0, 80, 160, 240], [30, 70, 50, 30], {
-    extrapolateRight: 'clamp',
-  });
-  const mouseY = interpolate(frame, [0, 80, 160, 240], [50, 60, 70, 50], {
-    extrapolateRight: 'clamp',
-  });
-  const clicking =
-    (frame >= 50 && frame <= 55) ||
-    (frame >= 130 && frame <= 135) ||
-    (frame >= 210 && frame <= 215);
-
-  return (
-    <AbsoluteFill
-      style={{
-        backgroundColor: '#fffdfa',
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'relative',
-      }}
-    >
-      <div
-        style={{
-          width: '95%',
-          maxWidth: 500,
-          height: '90%',
-          backgroundColor: 'white',
-          borderRadius: 40,
-          overflow: 'hidden',
-          boxShadow: '0 40px 100px rgba(0,0,0,0.3)',
-        }}
-      >
-        <div
-          style={{
-            height: 70,
-            backgroundColor: 'white',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderBottom: '1px solid #f0f0f0',
-          }}
-        >
-          <div
-            style={{
-              fontSize: 32,
-              fontWeight: 900,
-              color: '#1a472a',
-            }}
-          >
-            Crée ton Bowl
-          </div>
-        </div>
-
-        <div
-          style={{
-            height: 'calc(100% - 70px)',
-            overflow: 'hidden',
-          }}
-        >
-          <div
-            style={{
-              transform: `translateY(${scrollY}px)`,
-              padding: '40px 24px',
-            }}
-          >
-            <div
-              style={{
-                fontSize: 48,
-                fontWeight: 900,
-                color: '#1a472a',
-                marginBottom: 20,
-                textAlign: 'center',
-              }}
-            >
-              Votre Chef,<br />
-              <span style={{ color: '#10b981', fontStyle: 'italic' }}>
-                c'est vous.
-              </span>
-            </div>
-
-            <div style={{ marginTop: 40 }}>
-              <div
-                style={{
-                  fontSize: 24,
-                  fontWeight: 900,
-                  color: '#1a472a',
-                  marginBottom: 20,
-                }}
-              >
-                Choisissez votre taille
-              </div>
-              <div style={{ display: 'flex', gap: 12, marginBottom: 30 }}>
-                {['Small', 'Medium', 'Large'].map((size, i) => (
-                  <div
-                    key={i}
-                    style={{
-                      flex: 1,
-                      backgroundColor: i === 1 ? '#1a472a' : '#f0f0f0',
-                      color: i === 1 ? 'white' : '#666',
-                      padding: '20px',
-                      borderRadius: 20,
-                      textAlign: 'center',
-                      fontWeight: 900,
-                      fontSize: 18,
-                    }}
-                  >
-                    {size}
-                  </div>
-                ))}
-              </div>
-
-              <div
-                style={{
-                  fontSize: 24,
-                  fontWeight: 900,
-                  color: '#1a472a',
-                  marginBottom: 20,
-                }}
-              >
-                Sélectionnez vos ingrédients
-              </div>
-              {['Féculents', 'Protéines', 'Légumes', 'Sauces'].map(
-                (type, i) => (
-                  <div
-                    key={i}
-                    style={{
-                      backgroundColor: '#f0f0f0',
-                      padding: '16px',
-                      borderRadius: 16,
-                      marginBottom: 12,
-                      fontSize: 18,
-                      fontWeight: 700,
-                      color: '#1a472a',
-                    }}
-                  >
-                    {type} (cliquez pour choisir)
-                  </div>
-                )
-              )}
-
-              <div
-                style={{
-                  marginTop: 40,
-                  backgroundColor: '#1a472a',
-                  color: 'white',
-                  padding: '24px',
-                  borderRadius: 24,
-                  textAlign: 'center',
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: 20,
-                    fontWeight: 600,
-                    marginBottom: 12,
-                  }}
-                >
-                  Total
-                </div>
-                <div
-                  style={{
-                    fontSize: 36,
-                    fontWeight: 900,
-                  }}
-                >
-                  4 500 FCFA
-                </div>
-                <div
-                  style={{
-                    marginTop: 20,
-                    backgroundColor: 'white',
-                    color: '#1a472a',
-                    padding: '18px',
-                    borderRadius: 16,
-                    fontWeight: 900,
-                    fontSize: 18,
-                  }}
-                >
-                  Ajouter au panier
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <MouseCursor
-        x={`${mouseX}%`}
-        y={`${mouseY}%`}
-        clicking={clicking}
-      />
-      <URLBadge frame={frame} visible={true} />
-    </AbsoluteFill>
-  );
-};
-
-// Scène 5: Abonnements (6s)
-const Scene5: React.FC<{ frame: number }> = ({ frame }) => {
-  const scrollY = interpolate(frame, [0, 180], [0, -300], {
-    extrapolateRight: 'clamp',
-  });
-
-  const plans = [
-    { name: 'Petit-déjeuner', price: 'Sur mesure' },
-    { name: 'Déjeuner', price: 'Sur mesure' },
-    { name: 'Dîner', price: 'Sur mesure' },
-    { name: '3 repas/jour', price: 'Sur mesure', popular: true },
+  const features = [
+    { icon: '🌿', title: 'Frais', desc: 'Cuisiné ce matin' },
+    { icon: '✓', title: 'Halal', desc: '100% certifié' },
+    { icon: '⚡', title: 'Express', desc: 'Livré chez vous' },
   ];
 
-  const mouseX = interpolate(frame, [0, 60, 120, 180], [30, 70, 50, 30], {
-    extrapolateRight: 'clamp',
-  });
-  const mouseY = interpolate(frame, [0, 60, 120, 180], [50, 60, 70, 50], {
-    extrapolateRight: 'clamp',
-  });
-  const clicking =
-    (frame >= 40 && frame <= 45) ||
-    (frame >= 100 && frame <= 105) ||
-    (frame >= 160 && frame <= 165);
-
   return (
-    <AbsoluteFill
-      style={{
-        backgroundColor: '#fffdfa',
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'relative',
-      }}
-    >
-      <div
+    <AbsoluteFill style={{ backgroundColor: COLORS.forest }}>
+      <GradientBg
+        frame={frame}
+        colors={[COLORS.forest, COLORS.dark, COLORS.emerald + '40', COLORS.forest]}
+      />
+      <AbsoluteFill
         style={{
-          width: '95%',
-          maxWidth: 500,
-          height: '90%',
-          backgroundColor: 'white',
-          borderRadius: 40,
-          overflow: 'hidden',
-          boxShadow: '0 40px 100px rgba(0,0,0,0.3)',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
         <div
           style={{
-            height: 70,
-            backgroundColor: 'white',
             display: 'flex',
+            flexDirection: 'column',
+            gap: 60,
             alignItems: 'center',
-            justifyContent: 'center',
-            borderBottom: '1px solid #f0f0f0',
           }}
         >
-          <div
-            style={{
-              fontSize: 32,
-              fontWeight: 900,
-              color: '#1a472a',
-            }}
-          >
-            Abonnements
-          </div>
-        </div>
+          {features.map((feature, i) => {
+            const delay = i * 25;
+            const f = frame - delay;
+            const opacity = interpolate(f, [0, 20], [0, 1], {
+              extrapolateLeft: 'clamp',
+              extrapolateRight: 'clamp',
+            });
+            const x = interpolate(f, [0, 25], [-50, 0], {
+              extrapolateLeft: 'clamp',
+              extrapolateRight: 'clamp',
+              easing: Easing.out(Easing.cubic),
+            });
 
-        <div
-          style={{
-            height: 'calc(100% - 70px)',
-            overflow: 'hidden',
-          }}
-        >
-          <div
-            style={{
-              transform: `translateY(${scrollY}px)`,
-              padding: '40px 24px',
-            }}
-          >
-            <div
-              style={{
-                fontSize: 48,
-                fontWeight: 900,
-                color: '#1a472a',
-                marginBottom: 40,
-                textAlign: 'center',
-              }}
-            >
-              Programmes
-            </div>
-
-            {plans.map((plan, i) => (
+            return (
               <div
                 key={i}
                 style={{
-                  backgroundColor: plan.popular ? '#1a472a' : 'white',
-                  color: plan.popular ? 'white' : '#1a472a',
-                  padding: '30px',
-                  borderRadius: 30,
-                  marginBottom: 20,
-                  border: plan.popular ? '4px solid #10b981' : '2px solid #f0f0f0',
-                  boxShadow: plan.popular
-                    ? '0 20px 60px rgba(26, 71, 42, 0.3)'
-                    : '0 8px 30px rgba(0,0,0,0.1)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 40,
+                  opacity,
+                  transform: `translateX(${x}px)`,
                 }}
               >
                 <div
                   style={{
-                    fontSize: 28,
-                    fontWeight: 900,
-                    marginBottom: 12,
+                    width: 100,
+                    height: 100,
+                    borderRadius: 30,
+                    backgroundColor: 'rgba(255,255,255,0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: 50,
                   }}
                 >
-                  {plan.name}
+                  {feature.icon}
                 </div>
-                <div
-                  style={{
-                    fontSize: 24,
-                    fontWeight: 700,
-                    opacity: 0.9,
-                  }}
-                >
-                  {plan.price}
-                </div>
-                {plan.popular && (
+                <div>
                   <div
                     style={{
-                      marginTop: 16,
-                      fontSize: 14,
-                      fontWeight: 700,
-                      color: '#10b981',
-                      backgroundColor: 'rgba(255,255,255,0.2)',
-                      padding: '8px 16px',
-                      borderRadius: 20,
-                      display: 'inline-block',
+                      fontSize: 56,
+                      fontWeight: 900,
+                      color: COLORS.white,
+                      letterSpacing: '-0.02em',
                     }}
                   >
-                    ⭐ Le plus populaire
+                    {feature.title}
                   </div>
-                )}
+                  <div
+                    style={{
+                      fontSize: 24,
+                      color: COLORS.gold,
+                      fontWeight: 500,
+                    }}
+                  >
+                    {feature.desc}
+                  </div>
+                </div>
               </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
-      </div>
-
-      <MouseCursor
-        x={`${mouseX}%`}
-        y={`${mouseY}%`}
-        clicking={clicking}
-      />
-      <URLBadge frame={frame} visible={true} />
+      </AbsoluteFill>
+      <FilmGrain />
     </AbsoluteFill>
   );
 };
 
-// Scène 6: Zones de livraison (5s)
+// ============================================
+// SCENE 5: SNACKS & ENERGY (5s)
+// ============================================
+const Scene5: React.FC<{ frame: number }> = ({ frame }) => {
+  const snacks = [
+    { img: 'img/energy-balls-mix.jpeg', name: 'Energy Balls' },
+    { img: 'img/smoothie-proteine.jpeg', name: 'Smoothies' },
+    { img: 'img/overnight-oats.jpeg', name: 'Overnight Oats' },
+  ];
+
+  return (
+    <AbsoluteFill style={{ backgroundColor: COLORS.cream }}>
+      <AbsoluteFill
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'column',
+          gap: 60,
+        }}
+      >
+        <div style={{ textAlign: 'center' }}>
+          <Badge frame={frame} text="Snacks & Energy" delay={0} />
+          <div style={{ height: 30 }} />
+          <CinematicText
+            frame={frame}
+            text="Le plein"
+            delay={15}
+            size={80}
+            color={COLORS.forest}
+          />
+          <CinematicText
+            frame={frame}
+            text="d'énergie"
+            delay={25}
+            size={80}
+            color={COLORS.forest}
+          />
+        </div>
+
+        <div style={{ display: 'flex', gap: 30, marginTop: 40 }}>
+          {snacks.map((snack, i) => (
+            <div key={i} style={{ textAlign: 'center' }}>
+              <CinematicImage
+                frame={frame}
+                src={snack.img}
+                delay={40 + i * 15}
+                scale={0.7}
+              />
+              <div
+                style={{
+                  fontSize: 24,
+                  fontWeight: 700,
+                  color: COLORS.forest,
+                  marginTop: 20,
+                }}
+              >
+                {snack.name}
+              </div>
+            </div>
+          ))}
+        </div>
+      </AbsoluteFill>
+      <FilmGrain opacity={0.02} />
+    </AbsoluteFill>
+  );
+};
+
+// ============================================
+// SCENE 6: DELIVERY ZONES (4s)
+// ============================================
 const Scene6: React.FC<{ frame: number }> = ({ frame }) => {
   const zones = [
-    {
-      name: 'Zone 1',
-      quartiers: ['Almadies', 'Mermoz', 'Ouakam'],
-      price: '1 000 FCFA',
-    },
-    {
-      name: 'Zone 2',
-      quartiers: ['Plateau', 'Fann', 'Point E'],
-      price: '1 500 FCFA',
-    },
-    {
-      name: 'Zone 3',
-      quartiers: ['Parcelles', 'Liberté 6', 'Yoff'],
-      price: '2 000 FCFA',
-    },
+    'Almadies', 'Mermoz', 'Ouakam', 'Plateau', 'Point E',
+    'Fann', 'Liberté', 'Yoff', 'Parcelles', 'Sacré-Cœur',
   ];
 
-  const scrollY = interpolate(frame, [0, 150], [0, -200], {
-    extrapolateRight: 'clamp',
-  });
-
-  const mouseX = interpolate(frame, [0, 50, 100, 150], [30, 70, 50, 30], {
-    extrapolateRight: 'clamp',
-  });
-  const mouseY = interpolate(frame, [0, 50, 100, 150], [50, 60, 70, 50], {
-    extrapolateRight: 'clamp',
-  });
-  const clicking =
-    (frame >= 30 && frame <= 35) ||
-    (frame >= 80 && frame <= 85) ||
-    (frame >= 130 && frame <= 135);
-
   return (
-    <AbsoluteFill
-      style={{
-        backgroundColor: '#fffdfa',
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'relative',
-      }}
-    >
-      <div
+    <AbsoluteFill style={{ backgroundColor: COLORS.dark }}>
+      <GradientBg
+        frame={frame}
+        colors={[COLORS.emerald + '30', COLORS.dark, COLORS.forest, COLORS.dark]}
+      />
+      <AbsoluteFill
         style={{
-          width: '95%',
-          maxWidth: 500,
-          height: '90%',
-          backgroundColor: 'white',
-          borderRadius: 40,
-          overflow: 'hidden',
-          boxShadow: '0 40px 100px rgba(0,0,0,0.3)',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'column',
         }}
       >
         <div
           style={{
-            height: 70,
-            backgroundColor: 'white',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderBottom: '1px solid #f0f0f0',
+            fontSize: 24,
+            fontWeight: 600,
+            color: COLORS.gold,
+            letterSpacing: '0.2em',
+            marginBottom: 30,
+            textTransform: 'uppercase',
           }}
         >
-          <div
-            style={{
-              fontSize: 32,
-              fontWeight: 900,
-              color: '#1a472a',
-            }}
-          >
-            Zones de Livraison
-          </div>
+          Livraison Express
         </div>
-
+        <CinematicText frame={frame} text="Partout" delay={10} size={100} />
+        <CinematicText frame={frame} text="à Dakar" delay={20} size={100} />
+        
         <div
           style={{
-            height: 'calc(100% - 70px)',
-            overflow: 'hidden',
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            gap: 15,
+            maxWidth: 800,
+            marginTop: 60,
+          }}
+        >
+          {zones.map((zone, i) => {
+            const delay = 40 + i * 5;
+            const f = frame - delay;
+            const opacity = interpolate(f, [0, 10], [0, 1], {
+              extrapolateLeft: 'clamp',
+              extrapolateRight: 'clamp',
+            });
+            const scale = spring({
+              frame: f,
+              fps: 30,
+              config: { damping: 15 },
+            });
+
+            return (
+              <div
+                key={i}
+                style={{
+                  opacity,
+                  transform: `scale(${0.8 + scale * 0.2})`,
+                  backgroundColor: 'rgba(255,255,255,0.1)',
+                  padding: '12px 24px',
+                  borderRadius: 30,
+                  fontSize: 18,
+                  fontWeight: 600,
+                  color: COLORS.white,
+                }}
+              >
+                {zone}
+              </div>
+            );
+          })}
+        </div>
+      </AbsoluteFill>
+      <FilmGrain />
+    </AbsoluteFill>
+  );
+};
+
+// ============================================
+// SCENE 7: FINAL CTA (5s)
+// ============================================
+const Scene7: React.FC<{ frame: number }> = ({ frame }) => {
+  const pulse = interpolate(
+    frame % 60,
+    [0, 30, 60],
+    [1, 1.05, 1],
+    { extrapolateRight: 'clamp' }
+  );
+
+  const glowOpacity = interpolate(
+    frame % 60,
+    [0, 30, 60],
+    [0.3, 0.6, 0.3]
+  );
+
+  return (
+    <AbsoluteFill style={{ backgroundColor: COLORS.dark }}>
+      <GradientBg
+        frame={frame}
+        colors={[COLORS.emerald, COLORS.forest, COLORS.dark, COLORS.emerald]}
+      />
+      
+      {/* Glow effect */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: 600,
+          height: 600,
+          borderRadius: '50%',
+          background: `radial-gradient(circle, ${COLORS.emerald}60 0%, transparent 70%)`,
+          opacity: glowOpacity,
+        }}
+      />
+      
+      <AbsoluteFill
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'column',
+          gap: 40,
+        }}
+      >
+        <CinematicText frame={frame} text="Commandez" delay={0} size={90} />
+        <CinematicText frame={frame} text="maintenant" delay={15} size={90} />
+        
+        <LineReveal frame={frame} delay={35} width={300} />
+        
+        <div
+          style={{
+            transform: `scale(${pulse})`,
+            marginTop: 20,
           }}
         >
           <div
             style={{
-              transform: `translateY(${scrollY}px)`,
-              padding: '40px 24px',
+              backgroundColor: COLORS.white,
+              padding: '30px 60px',
+              borderRadius: 60,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 20,
+              boxShadow: `0 20px 60px ${COLORS.emerald}40`,
             }}
           >
             <div
               style={{
                 fontSize: 48,
                 fontWeight: 900,
-                color: '#1a472a',
-                marginBottom: 40,
-                textAlign: 'center',
+                color: COLORS.forest,
+                letterSpacing: '-0.02em',
               }}
             >
-              Livraison Express
-            </div>
-
-            {zones.map((zone, i) => (
-              <div
-                key={i}
-                style={{
-                  backgroundColor: 'white',
-                  border: '3px solid #1a472a',
-                  borderRadius: 30,
-                  padding: '30px',
-                  marginBottom: 24,
-                  boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: 36,
-                    fontWeight: 900,
-                    color: '#1a472a',
-                    marginBottom: 16,
-                  }}
-                >
-                  {zone.name}
-                </div>
-                <div
-                  style={{
-                    fontSize: 32,
-                    fontWeight: 900,
-                    color: '#10b981',
-                    marginBottom: 20,
-                  }}
-                >
-                  {zone.price}
-                </div>
-                <div style={{ fontSize: 18, color: '#666', lineHeight: 1.8 }}>
-                  {zone.quartiers.map((q, j) => (
-                    <div key={j}>• {q}</div>
-                  ))}
-                </div>
-              </div>
-            ))}
-
-            <div
-              style={{
-                marginTop: 30,
-                padding: 24,
-                backgroundColor: '#e6f5ed',
-                borderRadius: 24,
-              }}
-            >
-              <div
-                style={{
-                  fontSize: 20,
-                  fontWeight: 700,
-                  color: '#1a472a',
-                  marginBottom: 8,
-                }}
-              >
-                📍 Livraison partout à Dakar
-              </div>
-              <div style={{ fontSize: 16, color: '#666' }}>
-                Commandez entre 6h et 23h • Livraison express disponible
-              </div>
+              healthy.sn
             </div>
           </div>
         </div>
-      </div>
-
-      <MouseCursor
-        x={`${mouseX}%`}
-        y={`${mouseY}%`}
-        clicking={clicking}
-      />
-      <URLBadge frame={frame} visible={true} />
+        
+        <div
+          style={{
+            fontSize: 22,
+            color: COLORS.cream,
+            opacity: 0.7,
+            marginTop: 30,
+            fontWeight: 500,
+          }}
+        >
+          Rejoint par 80 clients satisfaits
+        </div>
+      </AbsoluteFill>
+      <FilmGrain />
     </AbsoluteFill>
   );
 };
 
-// Scène 7: Avantages (Frais, Halal) (5s)
-const Scene7: React.FC<{ frame: number }> = ({ frame }) => {
-  const items = [
-    {
-      icon: '🥗',
-      text: '100% FRAIS',
-      desc: 'Cuisiné chaque matin',
-      color: '#10b981',
-    },
-    {
-      icon: '✅',
-      text: '100% HALAL',
-      desc: 'Certifié authentique',
-      color: '#1a472a',
-    },
-  ];
-
-  const currentIndex = Math.floor((frame / 75) % items.length);
-  const itemFrame = frame % 75;
-  const item = items[currentIndex];
-
-  const opacity = interpolate(itemFrame, [0, 20, 55, 75], [0, 1, 1, 0], {
-    extrapolateRight: 'clamp',
-  });
-  const scale = spring({
-    frame: itemFrame,
-    fps: 30,
-    config: { damping: 10 },
-  });
-
-  return (
-    <AbsoluteFill
-      style={{
-        background: `linear-gradient(135deg, ${item.color} 0%, ${item.color}dd 100%)`,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <div
-        style={{
-          opacity,
-          transform: `scale(${0.85 + scale * 0.15})`,
-          textAlign: 'center',
-          color: 'white',
-        }}
-      >
-        <div style={{ fontSize: 140, marginBottom: 40 }}>{item.icon}</div>
-        <div
-          style={{
-            fontSize: 72,
-            fontWeight: 900,
-            marginBottom: 24,
-            textShadow: '0 8px 32px rgba(0,0,0,0.4)',
-          }}
-        >
-          {item.text}
-        </div>
-        <div
-          style={{
-            fontSize: 32,
-            fontWeight: 600,
-            opacity: 0.95,
-            textShadow: '0 4px 16px rgba(0,0,0,0.3)',
-          }}
-        >
-          {item.desc}
-        </div>
-      </div>
-      <URLBadge frame={frame} visible={true} />
-    </AbsoluteFill>
-  );
-};
-
-// Scène 8: Call to Action final avec URL cliquable (4s)
-const Scene8: React.FC<{ frame: number }> = ({ frame }) => {
-  const bgPulse = interpolate(
-    frame,
-    [0, 30, 60, 90, 120],
-    [1, 1.05, 1, 1.05, 1],
-    {
-      extrapolateRight: 'clamp',
-      easing: Easing.inOut(Easing.ease),
-    }
-  );
-  const textScale = spring({
-    frame,
-    fps: 30,
-    config: { damping: 8 },
-  });
-
-  const mouseX = interpolate(frame, [60, 90, 120], [40, 50, 60], {
-    extrapolateRight: 'clamp',
-  });
-  const mouseY = interpolate(frame, [60, 90, 120], [75, 80, 75], {
-    extrapolateRight: 'clamp',
-  });
-  const clicking = frame >= 85 && frame <= 95;
-
-  return (
-    <AbsoluteFill
-      style={{
-        background: `linear-gradient(135deg, #1a472a 0%, #10b981 100%)`,
-        justifyContent: 'center',
-        alignItems: 'center',
-        transform: `scale(${bgPulse})`,
-        position: 'relative',
-      }}
-    >
-      <div
-        style={{
-          transform: `scale(${0.9 + textScale * 0.1})`,
-          textAlign: 'center',
-          color: 'white',
-        }}
-      >
-        <div
-          style={{
-            fontSize: 72,
-            fontWeight: 900,
-            marginBottom: 30,
-            textShadow: '0 8px 32px rgba(0,0,0,0.4)',
-            letterSpacing: '-0.02em',
-          }}
-        >
-          COMMANDEZ MAINTENANT
-        </div>
-        <div
-          style={{
-            fontSize: 28,
-            fontWeight: 600,
-            opacity: 0.95,
-            marginBottom: 50,
-            textShadow: '0 4px 16px rgba(0,0,0,0.3)',
-          }}
-        >
-          Rejoignez 80 clients satisfaits à Dakar
-        </div>
-      </div>
-
-      <MouseCursor
-        x={`${mouseX}%`}
-        y={`${mouseY}%`}
-        clicking={clicking}
-      />
-      <URLBadge frame={frame} visible={true} />
-    </AbsoluteFill>
-  );
-};
-
+// ============================================
+// MAIN COMPOSITION
+// ============================================
 export const Publicite: React.FC = () => {
   const frame = useCurrentFrame();
 
-  // Durée de chaque scène (en frames à 30fps)
-  const scene1Duration = 90; // 3s - Intro
-  const scene2Duration = 240; // 8s - Accueil avec plats
-  const scene3Duration = 300; // 10s - Menu complet
-  const scene4Duration = 240; // 8s - Crée ton Bowl
-  const scene5Duration = 180; // 6s - Abonnements
-  const scene6Duration = 150; // 5s - Zones livraison
-  const scene7Duration = 150; // 5s - Avantages
-  const scene8Duration = 120; // 4s - CTA final
+  // Scene durations (in frames at 30fps)
+  const scenes = [
+    { duration: 120, Component: Scene1 },  // 4s - Intro
+    { duration: 180, Component: Scene2 },  // 6s - Hero dish
+    { duration: 240, Component: Scene3 },  // 8s - Multi dishes
+    { duration: 180, Component: Scene4 },  // 6s - Features
+    { duration: 150, Component: Scene5 },  // 5s - Snacks
+    { duration: 120, Component: Scene6 },  // 4s - Delivery
+    { duration: 150, Component: Scene7 },  // 5s - CTA
+  ];
 
-  if (frame < scene1Duration) {
-    return <Scene1 frame={frame} />;
-  } else if (frame < scene1Duration + scene2Duration) {
-    return <Scene2 frame={frame - scene1Duration} />;
-  } else if (frame < scene1Duration + scene2Duration + scene3Duration) {
-    return <Scene3 frame={frame - scene1Duration - scene2Duration} />;
-  } else if (
-    frame <
-    scene1Duration + scene2Duration + scene3Duration + scene4Duration
-  ) {
-    return (
-      <Scene4
-        frame={
-          frame - scene1Duration - scene2Duration - scene3Duration
-        }
-      />
-    );
-  } else if (
-    frame <
-    scene1Duration +
-      scene2Duration +
-      scene3Duration +
-      scene4Duration +
-      scene5Duration
-  ) {
-    return (
-      <Scene5
-        frame={
-          frame -
-          scene1Duration -
-          scene2Duration -
-          scene3Duration -
-          scene4Duration
-        }
-      />
-    );
-  } else if (
-    frame <
-    scene1Duration +
-      scene2Duration +
-      scene3Duration +
-      scene4Duration +
-      scene5Duration +
-      scene6Duration
-  ) {
-    return (
-      <Scene6
-        frame={
-          frame -
-          scene1Duration -
-          scene2Duration -
-          scene3Duration -
-          scene4Duration -
-          scene5Duration
-        }
-      />
-    );
-  } else if (
-    frame <
-    scene1Duration +
-      scene2Duration +
-      scene3Duration +
-      scene4Duration +
-      scene5Duration +
-      scene6Duration +
-      scene7Duration
-  ) {
-    return (
-      <Scene7
-        frame={
-          frame -
-          scene1Duration -
-          scene2Duration -
-          scene3Duration -
-          scene4Duration -
-          scene5Duration -
-          scene6Duration
-        }
-      />
-    );
-  } else {
-    return (
-      <Scene8
-        frame={
-          frame -
-          scene1Duration -
-          scene2Duration -
-          scene3Duration -
-          scene4Duration -
-          scene5Duration -
-          scene6Duration -
-          scene7Duration
-        }
-      />
-    );
+  let accumulatedFrames = 0;
+  for (let i = 0; i < scenes.length; i++) {
+    const scene = scenes[i];
+    if (frame < accumulatedFrames + scene.duration) {
+      const sceneFrame = frame - accumulatedFrames;
+      return <scene.Component frame={sceneFrame} />;
+    }
+    accumulatedFrames += scene.duration;
   }
+
+  // Fallback to last scene
+  const lastScene = scenes[scenes.length - 1];
+  return <lastScene.Component frame={frame - accumulatedFrames + lastScene.duration} />;
 };
