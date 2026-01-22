@@ -141,7 +141,7 @@ export default function CheckoutPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen pt-32 pb-32 container-wide flex items-center justify-center">
+      <div className="min-h-screen pt-16 md:pt-20 pb-32 container-wide flex items-center justify-center">
         <div className="w-12 h-12 border-4 border-emerald-100 border-t-[#1a472a] rounded-full animate-spin" />
       </div>
     )
@@ -149,7 +149,7 @@ export default function CheckoutPage() {
 
   if (!cart || !cart.items || cart.items.length === 0) {
     return (
-      <div className="min-h-screen pt-32 pb-32 container-wide flex flex-col items-center justify-center text-center space-y-8">
+      <div className="min-h-screen pt-16 md:pt-20 pb-32 container-wide flex flex-col items-center justify-center text-center space-y-8">
         <div className="w-24 h-24 bg-gray-50 rounded-[2.5rem] flex items-center justify-center text-gray-300">
           <ArrowLeft size={48} />
         </div>
@@ -174,7 +174,7 @@ export default function CheckoutPage() {
   const total = subtotal + deliveryFee
 
   return (
-    <div className="pt-32 pb-32 bg-[#fffdfa]">
+    <div className="pt-16 md:pt-20 pb-32 bg-[#fffdfa]">
       <div className="container-wide">
         <div className="flex items-center gap-4 mb-12">
           <Link href="/panier" className="w-12 h-12 rounded-2xl bg-white border border-gray-100 flex items-center justify-center text-gray-400 hover:text-[#1a472a] transition-all shadow-sm">

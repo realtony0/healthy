@@ -3,7 +3,7 @@ import { ArrowRight, ShoppingBag, Calendar, Sparkles } from 'lucide-react'
 
 export default function CommanderPage() {
   return (
-    <div className="pt-32 pb-32 bg-[#fffdfa]">
+    <div className="pt-16 md:pt-20 pb-32 bg-[#fffdfa]">
       <div className="container-wide">
         <div className="max-w-2xl mx-auto text-center mb-20 space-y-6">
           <div className="food-badge mx-auto">Prêt à déguster ?</div>

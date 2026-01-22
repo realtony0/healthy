@@ -24,7 +24,7 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="pt-32 pb-32 bg-[#fffdfa]">
+    <div className="pt-16 md:pt-20 pb-32 bg-[#fffdfa]">
       <div className="container-wide">
         <div className="grid lg:grid-cols-2 gap-20 items-start">
           {/* Info Side */}

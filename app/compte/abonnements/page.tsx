@@ -48,7 +48,7 @@ export default function CompteAbonnementsPage() {
 
   if (authStatus === 'loading') {
     return (
-      <div className="min-h-screen pt-32 pb-32 container-wide flex items-center justify-center">
+      <div className="min-h-screen pt-16 md:pt-20 pb-32 container-wide flex items-center justify-center">
         <div className="w-12 h-12 border-4 border-emerald-100 border-t-[#1a472a] rounded-full animate-spin" />
       </div>
     )
@@ -59,7 +59,7 @@ export default function CompteAbonnementsPage() {
   }
 
   return (
-    <div className="pt-32 pb-32 bg-[#fffdfa]">
+    <div className="pt-16 md:pt-20 pb-32 bg-[#fffdfa]">
       <div className="container-wide">
         <div className="flex items-center gap-4 mb-12">
           <Link href="/compte" className="w-12 h-12 rounded-2xl bg-white border border-gray-100 flex items-center justify-center text-gray-400 hover:text-[#1a472a] transition-all shadow-sm">

@@ -35,7 +35,7 @@ export default function AbonnementsPage() {
   ]
 
   return (
-    <div className="pt-24 pb-32">
+    <div className="pt-16 md:pt-20 pb-32">
       <div className="container-wide px-4 md:px-0">
         {/* Header */}
         <div className="max-w-3xl mb-12 md:mb-20 text-center md:text-left">

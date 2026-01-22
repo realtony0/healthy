@@ -34,10 +34,10 @@ export default function Header() {
   return (
     <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
       scrolled 
-        ? 'bg-white md:bg-white/90 backdrop-blur-md border-b border-gray-100 py-2' 
-        : 'bg-white md:bg-transparent py-4 md:py-6'
+        ? 'bg-white md:bg-white/90 backdrop-blur-md border-b border-gray-100 py-1' 
+        : 'bg-white md:bg-transparent py-2 md:py-3'
     }`}>
-      <div className="container-wide h-20 md:h-24 flex items-center justify-between">
+      <div className="container-wide h-14 md:h-16 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center active:scale-95 transition-transform">
           <Image
@@ -45,7 +45,7 @@ export default function Header() {
             alt="Healthy"
             width={500}
             height={200}
-            className="h-16 md:h-20 w-auto object-contain"
+            className="h-12 md:h-14 w-auto object-contain"
             style={{ mixBlendMode: 'multiply' }}
             priority
           />
@@ -102,7 +102,7 @@ export default function Header() {
 
       {/* Mobile Menu - Enhanced */}
       {isOpen && (
-        <div className="lg:hidden fixed inset-0 top-[60px] bg-white z-[60] flex flex-col p-6 animate-in fade-in slide-in-from-top-5 duration-300">
+        <div className="lg:hidden fixed inset-0 top-[56px] md:top-[64px] bg-white z-[60] flex flex-col p-6 animate-in fade-in slide-in-from-top-5 duration-300">
           <div className="flex flex-col gap-4">
             <p className="text-[10px] font-black text-gray-300 uppercase tracking-[0.2em] mb-2 px-4">Navigation</p>
             {links.map((link) => (

@@ -73,7 +73,7 @@ export default function PanierPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen pt-32 pb-32 container-wide flex items-center justify-center">
+      <div className="min-h-screen pt-16 md:pt-20 pb-32 container-wide flex items-center justify-center">
         <div className="w-12 h-12 border-4 border-emerald-100 border-t-[#1a472a] rounded-full animate-spin" />
       </div>
     )
@@ -81,7 +81,7 @@ export default function PanierPage() {
 
   if (!cart || !cart.items || cart.items.length === 0) {
     return (
-      <div className="min-h-screen pt-32 pb-32 container-wide flex flex-col items-center justify-center text-center space-y-8">
+      <div className="min-h-screen pt-16 md:pt-20 pb-32 container-wide flex flex-col items-center justify-center text-center space-y-8">
         <div className="w-24 h-24 bg-emerald-50 rounded-[2.5rem] flex items-center justify-center text-emerald-200">
           <ShoppingBag size={48} />
         </div>
@@ -102,7 +102,7 @@ export default function PanierPage() {
   }, 0)
 
   return (
-    <div className="pt-32 pb-32 bg-[#fffdfa]">
+    <div className="pt-16 md:pt-20 pb-32 bg-[#fffdfa]">
       <div className="container-wide">
         <div className="max-w-2xl mb-16 space-y-4">
           <div className="food-badge">Récapitulatif</div>

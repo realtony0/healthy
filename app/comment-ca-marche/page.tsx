@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 export default function CommentCaMarchePage() {
   return (
-    <div className="pt-32 pb-32 bg-[#fffdfa]">
+    <div className="pt-16 md:pt-20 pb-32 bg-[#fffdfa]">
       <div className="container-wide">
         <div className="max-w-2xl mb-24 space-y-6 text-center md:text-left">
           <div className="food-badge">Notre Concept</div>
