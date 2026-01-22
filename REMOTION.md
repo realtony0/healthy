@@ -1,57 +1,56 @@
-# Remotion - Création de Vidéos
+# Remotion - Vidéo de Présentation Healthy Dakar
 
-Remotion est intégré dans le projet Healthy Dakar pour créer des vidéos programmatiquement avec React.
+Remotion est intégré pour créer la vidéo de présentation/promo du site Healthy Dakar.
 
-## 🚀 Utilisation
+## 🎬 Générer la vidéo de promo
 
-### Lancer Remotion Studio
+Pour créer le fichier MP4 de la vidéo de présentation :
 
-Pour visualiser et éditer vos vidéos en temps réel :
+```bash
+npm run render:video
+```
+
+La vidéo sera générée dans `out/healthy-promo.mp4` (format 1920x1080, 16 secondes).
+
+## 🎨 Contenu de la vidéo
+
+La vidéo `HealthyPromo` contient 4 scènes :
+
+1. **Introduction** (3s) - Titre "Healthy Dakar" avec animation
+2. **Avantages** (5s) - 3 points clés : 100% Frais, 100% Halal, Livraison Express
+3. **Produits** (5s) - Présentation des Bowls, Plats Signature, Abonnements
+4. **Call to Action** (3s) - "Commandez maintenant" avec le site web
+
+## 🛠️ Éditer la vidéo
+
+Pour visualiser et modifier la vidéo avant de la générer :
 
 ```bash
 npm run remotion:studio
 ```
 
-Cela ouvrira Remotion Studio sur `http://localhost:3000` (ou un autre port si 3000 est occupé).
-
-### Rendre une vidéo (Générer un MP4)
-
-Pour générer un fichier vidéo MP4 :
-
-```bash
-npm run remotion:render HealthyPromo out/video.mp4
-```
-
-### Visualiser dans le navigateur
-
-Accédez à `/remotion` dans votre application Next.js pour voir un player de la vidéo.
+Cela ouvrira Remotion Studio où tu peux :
+- Prévisualiser la vidéo en temps réel
+- Modifier les textes, couleurs, durées
+- Tester différentes animations
 
 ## 📁 Structure
 
 ```
 remotion/
-├── Root.tsx          # Point d'entrée, enregistre toutes les compositions
-├── HealthyPromo.tsx  # Exemple de composition vidéo
+├── Root.tsx          # Point d'entrée, enregistre la composition
+├── HealthyPromo.tsx  # Vidéo de présentation (4 scènes)
 └── index.ts          # Export du Root
 ```
-
-## 🎬 Créer une nouvelle vidéo
-
-1. Créez un nouveau composant dans `remotion/` (ex: `MyVideo.tsx`)
-2. Utilisez les hooks Remotion : `useCurrentFrame()`, `useVideoConfig()`
-3. Enregistrez la composition dans `Root.tsx`
-4. Lancez `npm run remotion:studio` pour la visualiser
 
 ## 📚 Documentation
 
 - [Remotion Docs](https://www.remotion.dev/docs)
 - [Remotion Examples](https://github.com/remotion-dev/remotion/tree/main/packages/example)
 
-## 🎨 Exemple : HealthyPromo
+## 💡 Personnalisation
 
-La vidéo `HealthyPromo` est un exemple simple qui affiche :
-- Le titre "Healthy Dakar"
-- Le sous-titre "Votre nutrition, livrée chaque jour"
-- Des animations d'entrée et de sortie
-
-Vous pouvez personnaliser les props dans `Root.tsx` ou via l'interface Remotion Studio.
+Pour modifier la vidéo :
+1. Édite `remotion/HealthyPromo.tsx`
+2. Lance `npm run remotion:studio` pour prévisualiser
+3. Génère le MP4 avec `npm run render:video`

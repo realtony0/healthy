@@ -12,7 +12,8 @@
     "db:seed:production": "tsx prisma/seed.ts",
     "create-admin": "tsx scripts/create-admin.ts",
     "remotion:studio": "remotion studio",
-    "remotion:render": "remotion render"
+    "remotion:render": "remotion render",
+    "render:video": "tsx scripts/render-video.ts"
   },
   "prisma": "5.15.0",
   "dependencies": {
