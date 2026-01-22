@@ -49,7 +49,7 @@ export default function AvisPage() {
         <div className="max-w-2xl mb-24 space-y-6 text-center md:text-left">
           <div className="food-badge mx-auto md:mx-0 w-fit">
             <Star size={14} className="fill-emerald-600 text-emerald-600" />
-            4.9/5 sur plus de 500 avis
+            4.9/5 sur 80 avis
           </div>
           <h1 className="text-6xl font-black tracking-tight text-[#1a472a]">Vos Témoignages</h1>
           <p className="text-xl text-gray-500 font-medium leading-relaxed">

@@ -47,7 +47,7 @@ export default function HomePage() {
                     <div key={i} className="w-8 h-8 md:w-10 md:h-10 rounded-full border-4 border-white bg-gray-100" />
                   ))}
                 </div>
-                <p className="text-xs md:text-sm font-bold italic">Rejoint par +500 clients à Dakar</p>
+                <p className="text-xs md:text-sm font-bold italic">Rejoint par 80 clients à Dakar</p>
               </div>
             </div>
 

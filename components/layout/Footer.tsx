@@ -15,7 +15,10 @@ export default function Footer() {
                 width={500} 
                 height={200} 
                 className="h-20 md:h-24 w-auto object-contain"
-                style={{ mixBlendMode: 'multiply' }}
+                style={{ 
+                  mixBlendMode: 'normal',
+                  backgroundColor: 'transparent'
+                }}
               />
             </Link>
             <p className="text-gray-500 max-w-sm text-lg leading-relaxed font-medium">
