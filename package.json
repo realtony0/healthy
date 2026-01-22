@@ -13,8 +13,9 @@
     "create-admin": "tsx scripts/create-admin.ts",
     "remotion:studio": "remotion studio",
     "remotion:render": "remotion render",
-    "render:video": "tsx scripts/render-video.ts SiteDemo",
-    "render:promo": "tsx scripts/render-video.ts HealthyPromo"
+    "render:video": "tsx scripts/render-video.ts Publicite",
+    "render:promo": "tsx scripts/render-video.ts HealthyPromo",
+    "render:demo": "tsx scripts/render-video.ts SiteDemo"
   },
   "prisma": "5.15.0",
   "dependencies": {

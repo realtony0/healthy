@@ -1,6 +1,7 @@
 import { Composition } from 'remotion';
 import { HealthyPromo } from './HealthyPromo';
 import { SiteDemo } from './SiteDemo';
+import { Publicite } from './Publicite';
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -20,6 +21,14 @@ export const RemotionRoot: React.FC = () => {
         fps={30}
         width={1920}
         height={1080}
+      />
+      <Composition
+        id="Publicite"
+        component={Publicite}
+        durationInFrames={1050}
+        fps={30}
+        width={1080}
+        height={1920}
       />
     </>
   );

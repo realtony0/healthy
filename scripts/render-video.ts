@@ -20,7 +20,7 @@ if (!existsSync(outputDir)) {
   mkdirSync(outputDir, { recursive: true });
 }
 
-const videoType = process.argv[2] || 'SiteDemo'; // 'HealthyPromo' ou 'SiteDemo'
+const videoType = process.argv[2] || 'Publicite'; // 'HealthyPromo', 'SiteDemo', ou 'Publicite'
 
 console.log(`🎬 Génération de la vidéo ${videoType}...\n`);
 
