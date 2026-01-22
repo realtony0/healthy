@@ -12,7 +12,7 @@ export default function HomePage() {
   return (
     <div className="bg-[#fffdfa]">
       {/* Hero Section - Minimalist & Premium */}
-      <section className="relative pt-16 pb-16 md:pt-32 md:pb-32 overflow-hidden">
+      <section className="relative pt-14 pb-16 md:pt-24 md:pb-32 overflow-hidden">
         <div className="container-wide">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center">
             <div className="space-y-8 md:space-y-10 text-center lg:text-left">

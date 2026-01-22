@@ -25,7 +25,7 @@ export default async function MenuPage() {
   })
 
   return (
-    <div className="pt-16 md:pt-20 pb-32">
+    <div className="pt-14 md:pt-16 pb-32">
       <div className="container-wide px-4 md:px-0">
         <div className="max-w-2xl mb-12 md:mb-20 space-y-4 text-center md:text-left">
           <div className="food-badge mx-auto md:mx-0">Le Menu</div>

@@ -28,7 +28,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   ]
 
   return (
-    <div className="min-h-screen bg-[#fffdfa] pt-16 md:pt-20 pb-16 md:pb-32">
+    <div className="min-h-screen bg-[#fffdfa] pt-14 md:pt-16 pb-16 md:pb-32">
       <div className="container-wide flex flex-col lg:flex-row gap-6 md:gap-12 items-start">
         {/* Sidebar - Mobile optimized */}
         <aside className="w-full lg:w-80 bg-white p-4 md:p-8 rounded-[2rem] md:rounded-[3.5rem] border border-gray-100 shadow-xl md:shadow-2xl shadow-gray-200/50 lg:sticky lg:top-32 space-y-4 md:space-y-6 lg:space-y-10 max-h-[calc(100vh-7rem)] lg:max-h-[calc(100vh-8rem)] overflow-y-auto">

@@ -127,7 +127,7 @@ export default function CreateBowlPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen pt-16 md:pt-20 pb-32 container-wide flex flex-col items-center justify-center gap-4">
+      <div className="min-h-screen pt-14 md:pt-16 pb-32 container-wide flex flex-col items-center justify-center gap-4">
         <div className="w-12 h-12 border-4 border-emerald-100 border-t-[#1a472a] rounded-full animate-spin" />
         <p className="text-sm font-bold text-gray-400 uppercase tracking-widest animate-pulse">Chargement du module...</p>
       </div>
@@ -135,7 +135,7 @@ export default function CreateBowlPage() {
   }
 
   return (
-    <div className="pt-16 md:pt-20 pb-32 bg-[#fffdfa] relative">
+    <div className="pt-14 md:pt-16 pb-32 bg-[#fffdfa] relative">
       {/* Adding to Cart Overlay */}
       {addingToCart && (
         <div className="fixed inset-0 bg-[#1a472a]/30 md:bg-[#1a472a]/10 backdrop-blur-sm z-[100] flex items-center justify-center">
