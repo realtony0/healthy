@@ -194,7 +194,6 @@ export default function AdminNotifications() {
       }
 
       // Mettre à jour le dernier fetch et le sauvegarder dans localStorage
-      const currentFetchTime = new Date()
       setLastFetch(currentFetchTime)
       if (typeof window !== 'undefined') {
         localStorage.setItem('admin_last_notification_fetch', currentFetchTime.toISOString())
