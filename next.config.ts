@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Use Turbopack (default in Next.js 16)
+  turbopack: {},
+  
+  // Webpack config for compatibility
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {
@@ -12,6 +15,16 @@ const nextConfig: NextConfig = {
       };
     }
     return config;
+  },
+  
+  // Image configuration
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
   },
 };
 

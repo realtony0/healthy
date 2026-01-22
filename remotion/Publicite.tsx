@@ -568,7 +568,7 @@ const Scene5: React.FC<{ frame: number }> = ({ frame }) => {
 
   const scale = interpolate(dishFrame, [0, 10], [1.3, 1], {
     extrapolateRight: 'clamp',
-    easing: Easing.out(Easing.back),
+    easing: Easing.out(Easing.cubic),
   });
 
   const textY = interpolate(dishFrame, [5, 20], [100, 0], {
