@@ -33,7 +33,7 @@ export default async function OrderSuccessPage({ params }: OrderSuccessPageProps
   }
 
   return (
-    <div className="pt-14 md:pt-16 pb-32 bg-[#fffdfa]">
+    <div className="pt-16 md:pt-20 pb-32 bg-[#fffdfa]">
       <div className="container-wide max-w-4xl mx-auto">
         <div className="text-center space-y-6 mb-16">
           <div className="w-24 h-24 bg-emerald-50 rounded-full flex items-center justify-center text-emerald-500 mx-auto shadow-xl border-4 border-emerald-50">

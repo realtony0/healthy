@@ -44,7 +44,7 @@ export default function AvisPage() {
   ]
 
   return (
-    <div className="pt-14 md:pt-16 pb-32 bg-[#fffdfa]">
+    <div className="pt-16 md:pt-20 pb-32 bg-[#fffdfa]">
       <div className="container-wide">
         <div className="max-w-2xl mb-24 space-y-6 text-center md:text-left">
           <div className="food-badge mx-auto md:mx-0 w-fit">
