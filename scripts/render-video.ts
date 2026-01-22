@@ -20,11 +20,13 @@ if (!existsSync(outputDir)) {
   mkdirSync(outputDir, { recursive: true });
 }
 
-console.log('🎬 Génération de la vidéo Healthy Dakar...\n');
+const videoType = process.argv[2] || 'SiteDemo'; // 'HealthyPromo' ou 'SiteDemo'
+
+console.log(`🎬 Génération de la vidéo ${videoType}...\n`);
 
 try {
   execSync(
-    `npx remotion render HealthyPromo ${outputFile}`,
+    `npx remotion render ${videoType} ${outputFile}`,
     {
       stdio: 'inherit',
       cwd: process.cwd(),
