@@ -5,10 +5,10 @@ import {
 } from 'remotion';
 
 // ============================================
-// DA: PREMIUM TECH-FOOD INFOGRAPHIC (Master)
+// DA: THE MASTER INFOGRAPHIC (9:16)
 // ============================================
+// Style: High-Density, Data-Rich, Ultra-Premium
 // Format: 1080x1920 (Instagram / Snapchat / TikTok)
-// Style: Balanced Visuals + High Info Density
 // ============================================
 
 const COLORS = {
@@ -16,29 +16,19 @@ const COLORS = {
   secondary: '#00ff87', // Neon Mint
   accent: '#ffbe0b',    // Golden Yellow
   dark: '#050505',
-  light: '#f8fafc',
   white: '#ffffff',
   cream: '#fffdfa',
 };
 
-const GlassBox: React.FC<{ children: React.ReactNode; style?: React.CSSProperties }> = ({ children, style }) => (
+const Card: React.FC<{ children: React.ReactNode; style?: React.CSSProperties }> = ({ children, style }) => (
   <div style={{
-    backgroundColor: 'rgba(13, 40, 24, 0.7)',
-    backdropFilter: 'blur(12px)',
+    backgroundColor: 'rgba(255, 255, 255, 0.03)',
     borderRadius: 30,
     padding: 25,
     border: '1px solid rgba(255, 255, 255, 0.1)',
-    boxShadow: '0 15px 30px rgba(0,0,0,0.2)',
     ...style
   }}>
     {children}
-  </div>
-);
-
-const SectionHeader: React.FC<{ title: string; subtitle: string; color?: string }> = ({ title, subtitle, color = COLORS.secondary }) => (
-  <div style={{ marginBottom: 15 }}>
-    <div style={{ fontSize: 12, fontWeight: 900, color, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 4 }}>{subtitle}</div>
-    <div style={{ fontSize: 28, fontWeight: 900, color: 'white', lineHeight: 1 }}>{title}</div>
   </div>
 );
 
@@ -103,108 +93,93 @@ const MouseCursor: React.FC<{ size?: number }> = ({ size = 24 }) => (
 export const FlyerSocial: React.FC = () => {
   return (
     <AbsoluteFill style={{ backgroundColor: COLORS.dark, color: 'white' }}>
-      {/* 1. BRAND HEADER */}
-      <div style={{ padding: '60px 60px 20px', background: `linear-gradient(to bottom, ${COLORS.primary} 0%, transparent 100%)` }}>
-        <div style={{ fontSize: 20, fontWeight: 800, color: COLORS.secondary, letterSpacing: '0.4em' }}>HEALTHY DAKAR</div>
-        <div style={{ fontSize: 60, fontWeight: 950, lineHeight: 0.9, letterSpacing: '-0.04em', marginTop: 10 }}>VOTRE ALLIÉ<br />NUTRITION.</div>
+      {/* 1. MASTER HEADER */}
+      <div style={{ padding: '80px 60px 40px', background: `linear-gradient(to bottom, ${COLORS.primary} 0%, transparent 100%)` }}>
+        <div style={{ fontSize: 22, fontWeight: 800, color: COLORS.secondary, letterSpacing: '0.5em' }}>HEALTHY DAKAR</div>
+        <div style={{ fontSize: 90, fontWeight: 950, lineHeight: 0.85, letterSpacing: '-0.05em', marginTop: 15 }}>L'ÉCOSYSTÈME<br /><span style={{ color: COLORS.secondary }}>NUTRITION.</span></div>
+        <div style={{ fontSize: 24, color: 'rgba(255,255,255,0.6)', marginTop: 30, fontWeight: 600 }}>Tout ce dont votre corps a besoin, réuni sur www.healthy.sn</div>
       </div>
 
-      <div style={{ padding: '0 40px 40px', display: 'flex', flexDirection: 'column', gap: 25 }}>
+      <div style={{ padding: '0 40px', display: 'flex', flexDirection: 'column', gap: 30 }}>
         
-        {/* 2. CRÉE TON BOWL - The Hero Logic */}
-        <div style={{ display: 'flex', gap: 20 }}>
-          <div style={{ flex: 1.2 }}>
-            <GlassBox style={{ height: '100%' }}>
-              <SectionHeader subtitle="Innovation" title="CRÉE TON BOWL" />
-              <div style={{ fontSize: 15, color: 'rgba(255,255,255,0.7)', lineHeight: 1.5, marginBottom: 20 }}>
-                Composez votre repas sur le site. Les <b>Kcal & Protéines</b> s'ajustent en temps réel à chaque ingrédient.
-              </div>
-              <div style={{ display: 'flex', gap: 10 }}>
-                <div style={{ backgroundColor: COLORS.secondary, color: COLORS.primary, padding: '6px 12px', borderRadius: 8, fontSize: 11, fontWeight: 900 }}>LIVE MACROS</div>
-                <div style={{ border: `1px solid ${COLORS.secondary}`, color: COLORS.secondary, padding: '6px 12px', borderRadius: 8, fontSize: 11, fontWeight: 900 }}>100% CUSTOM</div>
-              </div>
-            </GlassBox>
+        {/* 2. CONCEPT 1: CRÉE TON BOWL (L'Innovation) */}
+        <Card style={{ display: 'flex', gap: 25, alignItems: 'center', backgroundColor: 'rgba(0, 255, 135, 0.05)', border: `1px solid ${COLORS.secondary}30` }}>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: 14, fontWeight: 900, color: COLORS.secondary, letterSpacing: '0.1em', marginBottom: 8 }}>CONCEPT #01</div>
+            <div style={{ fontSize: 32, fontWeight: 900, marginBottom: 10 }}>CRÉE TON BOWL</div>
+            <div style={{ fontSize: 16, color: 'rgba(255,255,255,0.7)', lineHeight: 1.5 }}>
+              <b>Le site calcule tout pour toi.</b> Choisis ta base, tes protéines et tes légumes. Vois tes <b>Kcal & Macros</b> s'ajuster en temps réel.
+            </div>
           </div>
-          <div style={{ flex: 1, borderRadius: 30, overflow: 'hidden', border: '3px solid rgba(255,255,255,0.1)' }}>
+          <div style={{ width: 160, height: 160, borderRadius: 25, overflow: 'hidden', border: '3px solid white' }}>
             <Img src={staticFile('img/bowl-poulet-mais.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </div>
-        </div>
+        </Card>
 
-        {/* 3. ABONNEMENTS - Routine */}
-        <div style={{ display: 'flex', gap: 20 }}>
-          <div style={{ flex: 1, borderRadius: 30, overflow: 'hidden', border: '3px solid rgba(255,255,255,0.1)' }}>
+        {/* 3. CONCEPT 2: ABONNEMENTS (La Routine) */}
+        <Card style={{ display: 'flex', gap: 25, alignItems: 'center', backgroundColor: 'rgba(255, 255, 255, 0.05)' }}>
+          <div style={{ width: 160, height: 160, borderRadius: 25, overflow: 'hidden', border: '3px solid white' }}>
             <Img src={staticFile('img/boeuf-puree-patate-douce.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </div>
-          <div style={{ flex: 1.2 }}>
-            <GlassBox style={{ height: '100%', backgroundColor: COLORS.primary }}>
-              <SectionHeader subtitle="Discipline" title="ABONNEMENTS" color={COLORS.secondary} />
-              <div style={{ fontSize: 15, color: 'rgba(255,255,255,0.8)', lineHeight: 1.5, marginBottom: 15 }}>
-                Planifiez votre semaine. Recevez vos repas automatiquement à domicile ou au bureau.
-              </div>
-              <div style={{ fontSize: 14, fontWeight: 900, color: COLORS.secondary }}>✓ ÉCONOMISEZ -20%</div>
-            </GlassBox>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: 14, fontWeight: 900, color: COLORS.accent, letterSpacing: '0.1em', marginBottom: 8 }}>CONCEPT #02</div>
+            <div style={{ fontSize: 32, fontWeight: 900, marginBottom: 10 }}>ABONNEMENTS</div>
+            <div style={{ fontSize: 16, color: 'rgba(255,255,255,0.7)', lineHeight: 1.5 }}>
+              <b>Zéro stress, 100% santé.</b> Planifie tes repas de la semaine. Livraison automatique à l'heure de ton choix. <b>-20% de réduction.</b>
+            </div>
           </div>
-        </div>
+        </Card>
 
-        {/* 4. ENERGY & BOOST - Shots & Snacks */}
+        {/* 4. CONCEPT 3: BOOST & SHOTS (L'Énergie) */}
         <div style={{ display: 'flex', gap: 20 }}>
-          <GlassBox style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 20, backgroundColor: COLORS.accent, color: COLORS.dark }}>
-            <div style={{ width: 90, height: 90, borderRadius: 20, overflow: 'hidden', flexShrink: 0 }}>
-              <Img src={staticFile('img/shot-mix.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-            </div>
-            <div>
-              <div style={{ fontSize: 18, fontWeight: 900 }}>SHOTS DÉTOX</div>
-              <div style={{ fontSize: 12, fontWeight: 700, opacity: 0.8 }}>Immunité & Énergie.</div>
-            </div>
-          </GlassBox>
-          <GlassBox style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 20, backgroundColor: 'white', color: COLORS.primary }}>
-            <div style={{ width: 90, height: 90, borderRadius: 20, overflow: 'hidden', flexShrink: 0 }}>
-              <Img src={staticFile('img/energy-balls-mix.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-            </div>
-            <div>
-              <div style={{ fontSize: 18, fontWeight: 900 }}>SNACKS FIT</div>
-              <div style={{ fontSize: 12, fontWeight: 700, opacity: 0.6 }}>Energy Balls.</div>
-            </div>
-          </GlassBox>
+          <Card style={{ flex: 1, textAlign: 'center', backgroundColor: COLORS.primary }}>
+            <Img src={staticFile('img/shot-mix.jpeg')} style={{ width: 80, height: 80, borderRadius: '50%', margin: '0 auto 15px', border: '2px solid white' }} />
+            <div style={{ fontSize: 18, fontWeight: 900, color: COLORS.secondary }}>SHOTS DÉTOX</div>
+            <div style={{ fontSize: 12, opacity: 0.7, marginTop: 5 }}>Boost naturel & Immunité.</div>
+          </Card>
+          <Card style={{ flex: 1, textAlign: 'center', backgroundColor: COLORS.accent, color: COLORS.dark }}>
+            <Img src={staticFile('img/energy-balls-mix.jpeg')} style={{ width: 80, height: 80, borderRadius: '50%', margin: '0 auto 15px', border: '2px solid black' }} />
+            <div style={{ fontSize: 18, fontWeight: 900 }}>ENERGY BALLS</div>
+            <div style={{ fontSize: 12, fontWeight: 700, opacity: 0.8, marginTop: 5 }}>Le snack fit par excellence.</div>
+          </Card>
         </div>
 
-        {/* 5. SITE INFO - How it works */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 15 }}>
+        {/* 5. INFOS PRATIQUES (Le Site) */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 15 }}>
           {[
-            { label: 'ZONES', text: 'Tout Dakar', icon: '📍' },
-            { label: 'HORAIRES', text: '6h - 23h', icon: '⏰' },
-            { label: 'PAIEMENT', text: 'Wave/OM/Cash', icon: '💳' },
-            { label: 'LIVRAISON', text: 'Express', icon: '🚀' },
+            { icon: '🚀', label: 'LIVRAISON', text: 'Express' },
+            { icon: '💳', label: 'PAIEMENT', text: 'Wave / OM' },
+            { icon: '⏰', label: 'HORAIRES', text: '6h - 23h' },
           ].map((item) => (
-            <div key={item.label} style={{ backgroundColor: 'rgba(255,255,255,0.05)', padding: '15px 20px', borderRadius: 20, border: '1px solid rgba(255,255,255,0.1)' }}>
-              <div style={{ fontSize: 20, marginBottom: 5 }}>{item.icon}</div>
-              <div style={{ fontSize: 10, fontWeight: 900, color: COLORS.secondary, letterSpacing: '0.1em' }}>{item.label}</div>
-              <div style={{ fontSize: 14, fontWeight: 800 }}>{item.text}</div>
+            <div key={item.label} style={{ textAlign: 'center', backgroundColor: 'rgba(255,255,255,0.05)', padding: '15px', borderRadius: 20 }}>
+              <div style={{ fontSize: 24, marginBottom: 5 }}>{item.icon}</div>
+              <div style={{ fontSize: 10, fontWeight: 900, color: COLORS.secondary }}>{item.label}</div>
+              <div style={{ fontSize: 13, fontWeight: 800 }}>{item.text}</div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* 6. CTA FOOTER - The Action */}
+      {/* 6. MASTER FOOTER - CONVERSION */}
       <div style={{ 
         marginTop: 'auto', 
         backgroundColor: COLORS.white, 
-        padding: '50px 60px 80px', 
-        borderTopLeftRadius: 60, 
-        borderTopRightRadius: 60, 
+        padding: '60px 50px 80px', 
+        borderTopLeftRadius: 70, 
+        borderTopRightRadius: 70, 
         display: 'flex', 
         flexDirection: 'column', 
         alignItems: 'center', 
-        gap: 35 
+        gap: 40 
       }}>
         <div style={{ textAlign: 'center' }}>
           <div style={{ position: 'relative', display: 'inline-block' }}>
             <div style={{ 
-              fontSize: 52, 
+              fontSize: 56, 
               fontWeight: 950, 
               color: COLORS.primary,
               backgroundColor: COLORS.cream,
-              padding: '12px 40px',
+              padding: '15px 45px',
               borderRadius: '25px',
               border: `3px solid ${COLORS.primary}`,
               boxShadow: `0 10px 30px rgba(0,0,0,0.1)`,
@@ -216,7 +191,7 @@ export const FlyerSocial: React.FC = () => {
               <MouseCursor size={40} />
             </div>
           </div>
-          <div style={{ fontSize: 18, color: COLORS.primary, fontWeight: 800, letterSpacing: '0.1em', marginTop: 25 }}>COMMANDEZ VOTRE SANTÉ EN LIGNE</div>
+          <div style={{ fontSize: 20, color: COLORS.primary, fontWeight: 800, letterSpacing: '0.1em', marginTop: 30 }}>COMMANDEZ VOTRE SANTÉ EN LIGNE</div>
         </div>
         
         <div style={{ display: 'flex', gap: 40, alignItems: 'center' }}>
@@ -224,7 +199,7 @@ export const FlyerSocial: React.FC = () => {
           <div style={{ textAlign: 'left', color: COLORS.primary }}>
             <div style={{ fontSize: 24, fontWeight: 950 }}>📞 78 598 71 43</div>
             <div style={{ fontSize: 14, fontWeight: 700, opacity: 0.7, marginTop: 5 }}>Cuisiné le matin • 100% Halal</div>
-            <div style={{ fontSize: 14, fontWeight: 800, color: COLORS.secondary, marginTop: 10 }}>Suivez-nous @healthy.sn</div>
+            <div style={{ fontSize: 14, fontWeight: 800, color: COLORS.secondary, marginTop: 10 }}>#HealthyDakar #NutritionPro</div>
           </div>
         </div>
       </div>
