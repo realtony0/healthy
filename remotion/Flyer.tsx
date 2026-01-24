@@ -12,12 +12,12 @@ import {
 // ============================================
 
 const COLORS = {
-  primary: '#1a472a',
-  secondary: '#10b981',
-  accent: '#f59e0b',
-  dark: '#0f172a',
+  primary: '#0d2818',   // Deeper, more premium green
+  secondary: '#00ff87', // Neon green for punch
+  accent: '#ffbe0b',    // Vibrant gold
+  dark: '#050505',      // True black
   light: '#f8fafc',
-  cream: '#fffbf5',
+  cream: '#fffdfa',     // Cleaner cream
 };
 
 const SectionTitle: React.FC<{ text: string; color?: string }> = ({ text, color = COLORS.primary }) => (
@@ -182,7 +182,7 @@ export const FlyerSocial: React.FC = () => {
         <QRCode size={220} color={COLORS.primary} />
         
         <div style={{ textAlign: 'center', color: 'white' }}>
-          <div style={{ fontSize: 24, fontWeight: 800, marginBottom: 5 }}>📞 +221 XX XXX XX XX</div>
+          <div style={{ fontSize: 28, fontWeight: 900, marginBottom: 5 }}>📞 +221 78 598 71 43</div>
           <div style={{ fontSize: 16, opacity: 0.7 }}>Livraison 6h - 23h • Partout à Dakar</div>
         </div>
       </div>
