@@ -2,950 +2,301 @@ import {
   AbsoluteFill,
   interpolate,
   useCurrentFrame,
+  useVideoConfig,
   spring,
   Img,
   staticFile,
   Easing,
   Sequence,
 } from 'remotion';
+import React from 'react';
 
 // ============================================
-// DA: EDITORIAL BRUTALIST × KINETIC TYPE
+// DA: PASTEL / FUN / CALM
 // ============================================
-// Inspiration: Balenciaga, Off-White, Apple, Spotify Wrapped
-// Style: Raw, Bold, Typographic, Unexpected
-// Colors: Monochrome + Neon accents
-// Motion: Kinetic, Rhythmic, Impactful
-// ============================================
-
 const COLORS = {
-  black: '#000000',
+  bgGreen: '#e6f5ed',
+  bgYellow: '#fff9e6',
+  primary: '#1a472a',
+  secondary: '#10b981',
+  accent: '#ffbe0b',
+  text: '#1a472a',
   white: '#ffffff',
-  neon: '#00ff87',
-  hot: '#ff3366',
-  electric: '#00d4ff',
-  yellow: '#ffee00',
 };
 
-// Glitch effect component
-const Glitch: React.FC<{ frame: number; children: React.ReactNode }> = ({
-  frame,
-  children,
-}) => {
-  const glitchActive = frame % 30 < 3;
-  const offsetX = glitchActive ? Math.sin(frame * 10) * 8 : 0;
-  const offsetY = glitchActive ? Math.cos(frame * 10) * 4 : 0;
+// --- Helper Components ---
 
-  return (
-    <div style={{ position: 'relative' }}>
-      {glitchActive && (
-        <>
-          <div
-            style={{
-              position: 'absolute',
-              top: offsetY,
-              left: offsetX,
-              color: COLORS.hot,
-              opacity: 0.8,
-              mixBlendMode: 'screen',
-            }}
-          >
-            {children}
-          </div>
-          <div
-            style={{
-              position: 'absolute',
-              top: -offsetY,
-              left: -offsetX,
-              color: COLORS.electric,
-              opacity: 0.8,
-              mixBlendMode: 'screen',
-            }}
-          >
-            {children}
-          </div>
-        </>
-      )}
-      <div style={{ position: 'relative' }}>{children}</div>
-    </div>
-  );
-};
-
-// Kinetic text - text that moves with energy
-const KineticText: React.FC<{
-  frame: number;
-  text: string;
-  delay?: number;
-  size?: number;
-  color?: string;
-  direction?: 'left' | 'right' | 'up' | 'down';
-  duration?: number;
-}> = ({
-  frame,
-  text,
-  delay = 0,
-  size = 200,
-  color = COLORS.white,
-  direction = 'up',
-  duration = 20,
-}) => {
+const FloatingIngredient: React.FC<{ 
+  icon: string; 
+  frame: number; 
+  top: string; 
+  left: string; 
+  delay: number 
+}> = ({ icon, frame, top, left, delay }) => {
   const f = frame - delay;
-
-  const getTransform = () => {
-    const progress = interpolate(f, [0, duration], [0, 1], {
-      extrapolateLeft: 'clamp',
-      extrapolateRight: 'clamp',
-      easing: Easing.out(Easing.exp),
-    });
-
-    switch (direction) {
-      case 'left':
-        return `translateX(${(1 - progress) * 100}%)`;
-      case 'right':
-        return `translateX(${(1 - progress) * -100}%)`;
-      case 'down':
-        return `translateY(${(1 - progress) * -100}%)`;
-      default:
-        return `translateY(${(1 - progress) * 100}%)`;
-    }
-  };
-
-  const opacity = interpolate(f, [0, 10], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
-
+  const float = Math.sin(f / 20) * 10;
+  const opacity = interpolate(f, [0, 20], [0, 1], { extrapolateRight: 'clamp' });
+  
   return (
-    <div
-      style={{
-        fontSize: size,
-        fontWeight: 900,
-        color,
-        letterSpacing: '-0.06em',
-        lineHeight: 0.85,
-        fontFamily: 'system-ui, -apple-system, sans-serif',
-        textTransform: 'uppercase',
-        opacity,
-        transform: getTransform(),
-        overflow: 'hidden',
-      }}
-    >
-      {text}
-    </div>
-  );
-};
-
-// Counter animation
-const Counter: React.FC<{
-  frame: number;
-  from: number;
-  to: number;
-  delay?: number;
-  duration?: number;
-  suffix?: string;
-  size?: number;
-  color?: string;
-}> = ({
-  frame,
-  from,
-  to,
-  delay = 0,
-  duration = 30,
-  suffix = '',
-  size = 200,
-  color = COLORS.neon,
-}) => {
-  const f = frame - delay;
-  const value = Math.round(
-    interpolate(f, [0, duration], [from, to], {
-      extrapolateLeft: 'clamp',
-      extrapolateRight: 'clamp',
-      easing: Easing.out(Easing.cubic),
-    })
-  );
-
-  const opacity = interpolate(f, [0, 10], [0, 1], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-  });
-
-  return (
-    <div
-      style={{
-        fontSize: size,
-        fontWeight: 900,
-        color,
-        letterSpacing: '-0.04em',
-        fontFamily: 'system-ui, -apple-system, sans-serif',
-        fontVariantNumeric: 'tabular-nums',
-        opacity,
-      }}
-    >
-      {value.toLocaleString()}
-      {suffix}
-    </div>
-  );
-};
-
-// Split screen component
-const SplitScreen: React.FC<{
-  frame: number;
-  left: React.ReactNode;
-  right: React.ReactNode;
-  splitPosition?: number;
-}> = ({ frame, left, right, splitPosition = 50 }) => {
-  const split = interpolate(frame, [0, 25], [100, splitPosition], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-    easing: Easing.out(Easing.cubic),
-  });
-
-  return (
-    <AbsoluteFill>
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: `${split}%`,
-          height: '100%',
-          overflow: 'hidden',
-        }}
-      >
-        {left}
-      </div>
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          right: 0,
-          width: `${100 - split}%`,
-          height: '100%',
-          overflow: 'hidden',
-        }}
-      >
-        {right}
-      </div>
-      {/* Split line */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: `${split}%`,
-          width: 4,
-          height: '100%',
-          backgroundColor: COLORS.neon,
-          boxShadow: `0 0 30px ${COLORS.neon}`,
-        }}
-      />
-    </AbsoluteFill>
-  );
-};
-
-// Stripe pattern
-const Stripes: React.FC<{ color?: string; opacity?: number }> = ({
-  color = COLORS.white,
-  opacity = 0.03,
-}) => (
-  <div
-    style={{
+    <div style={{
       position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      backgroundImage: `repeating-linear-gradient(
-        -45deg,
-        ${color} 0px,
-        ${color} 1px,
-        transparent 1px,
-        transparent 20px
-      )`,
+      top,
+      left,
+      fontSize: 40,
       opacity,
-      pointerEvents: 'none',
-    }}
-  />
-);
+      transform: `translateY(${float}px)`,
+    }}>
+      {icon}
+    </div>
+  );
+};
 
-// ============================================
-// SCENE 1: EXPLOSIVE INTRO (3s)
-// ============================================
-const Scene1: React.FC<{ frame: number }> = ({ frame }) => {
-  const flash = frame < 5 ? 1 : 0;
+const MobileFrame: React.FC<{ children: React.ReactNode; frame: number }> = ({ children, frame }) => {
   const scale = spring({
     frame,
     fps: 30,
-    config: { damping: 8, stiffness: 200 },
+    config: { damping: 12 },
   });
 
   return (
-    <AbsoluteFill style={{ backgroundColor: COLORS.black }}>
-      <Stripes />
-      {/* Flash */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: COLORS.white,
-          opacity: flash,
-        }}
-      />
-      <AbsoluteFill
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          transform: `scale(${0.5 + scale * 0.5})`,
-        }}
-      >
-        <Glitch frame={frame}>
-          <div style={{ textAlign: 'center' }}>
-            <KineticText frame={frame} text="HEALTHY" size={180} delay={5} />
-            <div
-              style={{
-                fontSize: 32,
-                fontWeight: 500,
-                color: COLORS.neon,
-                letterSpacing: '0.5em',
-                marginTop: 30,
-              }}
-            >
-              DAKAR
-            </div>
-          </div>
-        </Glitch>
-      </AbsoluteFill>
-    </AbsoluteFill>
+    <div style={{
+      width: '85%',
+      height: '80%',
+      backgroundColor: 'white',
+      borderRadius: 40,
+      border: `8px solid ${COLORS.primary}`,
+      overflow: 'hidden',
+      position: 'relative',
+      transform: `scale(${scale})`,
+      boxShadow: '0 30px 60px rgba(0,0,0,0.1)',
+    }}>
+      {/* Notch */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: '50%',
+        transform: 'translateX(-50%)',
+        width: 120,
+        height: 25,
+        backgroundColor: COLORS.primary,
+        borderBottomLeftRadius: 15,
+        borderBottomRightRadius: 15,
+        zIndex: 10,
+      }} />
+      {children}
+    </div>
   );
 };
 
 // ============================================
-// SCENE 2: MANIFESTO (4s)
+// SCENES
 // ============================================
-const Scene2: React.FC<{ frame: number }> = ({ frame }) => {
-  const words = ['FRAIS.', 'HALAL.', 'LIVRÉ.'];
-  const wordIndex = Math.min(Math.floor(frame / 40), words.length - 1);
-  const wordFrame = frame % 40;
 
-  const bgColors = [COLORS.neon, COLORS.hot, COLORS.electric];
-  const textColors = [COLORS.black, COLORS.white, COLORS.black];
+// 1. Intro (0-5s)
+const Scene1: React.FC<{ frame: number }> = ({ frame }) => {
+  const logoZoom = interpolate(frame, [0, 150], [0.8, 1.1], {
+    extrapolateRight: 'clamp',
+    easing: Easing.out(Easing.quad),
+  });
+  const opacity = interpolate(frame, [0, 30], [0, 1], { extrapolateRight: 'clamp' });
+  const textOpacity = interpolate(frame, [30, 60], [0, 1], { extrapolateRight: 'clamp' });
 
   return (
-    <AbsoluteFill style={{ backgroundColor: bgColors[wordIndex] }}>
-      <Stripes color={COLORS.black} opacity={0.1} />
-      <AbsoluteFill
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <KineticText
-          frame={wordFrame}
-          text={words[wordIndex]}
-          size={220}
-          color={textColors[wordIndex]}
-          direction={wordIndex % 2 === 0 ? 'left' : 'right'}
-        />
-      </AbsoluteFill>
-    </AbsoluteFill>
-  );
-};
-
-// ============================================
-// SCENE 3: SPLIT SCREEN DISHES (6s)
-// ============================================
-const Scene3: React.FC<{ frame: number }> = ({ frame }) => {
-  const dish1 = 'img/bowl-poulet-mais.jpeg';
-  const dish2 = 'img/boeuf-puree-patate-douce.jpeg';
-
-  const zoom1 = interpolate(frame, [0, 180], [1, 1.2], {
-    extrapolateRight: 'clamp',
-  });
-  const zoom2 = interpolate(frame, [0, 180], [1.2, 1], {
-    extrapolateRight: 'clamp',
-  });
-
-  return (
-    <SplitScreen
-      frame={frame}
-      left={
-        <AbsoluteFill style={{ backgroundColor: COLORS.black }}>
-          <Img
-            src={staticFile(dish1)}
-            style={{
-              width: '200%',
-              height: '100%',
-              objectFit: 'cover',
-              transform: `scale(${zoom1})`,
-              filter: 'contrast(1.1) saturate(1.2)',
-            }}
-          />
-          <div
-            style={{
-              position: 'absolute',
-              bottom: 100,
-              left: 40,
-              right: 0,
-            }}
-          >
-            <div
-              style={{
-                fontSize: 72,
-                fontWeight: 900,
-                color: COLORS.white,
-                textShadow: '0 4px 30px rgba(0,0,0,0.8)',
-              }}
-            >
-              BOWL
-            </div>
-            <div
-              style={{
-                fontSize: 48,
-                fontWeight: 900,
-                color: COLORS.neon,
-              }}
-            >
-              3500F
-            </div>
-          </div>
-        </AbsoluteFill>
-      }
-      right={
-        <AbsoluteFill style={{ backgroundColor: COLORS.black }}>
-          <Img
-            src={staticFile(dish2)}
-            style={{
-              width: '200%',
-              height: '100%',
-              objectFit: 'cover',
-              marginLeft: '-100%',
-              transform: `scale(${zoom2})`,
-              filter: 'contrast(1.1) saturate(1.2)',
-            }}
-          />
-          <div
-            style={{
-              position: 'absolute',
-              bottom: 100,
-              right: 40,
-              textAlign: 'right',
-            }}
-          >
-            <div
-              style={{
-                fontSize: 72,
-                fontWeight: 900,
-                color: COLORS.white,
-                textShadow: '0 4px 30px rgba(0,0,0,0.8)',
-              }}
-            >
-              BŒUF
-            </div>
-            <div
-              style={{
-                fontSize: 48,
-                fontWeight: 900,
-                color: COLORS.hot,
-              }}
-            >
-              4200F
-            </div>
-          </div>
-        </AbsoluteFill>
-      }
-    />
-  );
-};
-
-// ============================================
-// SCENE 4: STATISTICS (5s)
-// ============================================
-const Scene4: React.FC<{ frame: number }> = ({ frame }) => {
-  return (
-    <AbsoluteFill style={{ backgroundColor: COLORS.black }}>
-      <Stripes />
-      <AbsoluteFill
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          flexDirection: 'column',
-          gap: 60,
-        }}
-      >
-        <div style={{ textAlign: 'center' }}>
-          <Counter
-            frame={frame}
-            from={0}
-            to={80}
-            delay={0}
-            suffix="+"
-            size={180}
-            color={COLORS.neon}
-          />
-          <div
-            style={{
-              fontSize: 36,
-              fontWeight: 600,
-              color: COLORS.white,
-              letterSpacing: '0.2em',
-              marginTop: 10,
-            }}
-          >
-            CLIENTS SATISFAITS
-          </div>
-        </div>
-
-        <div style={{ textAlign: 'center' }}>
-          <Counter
-            frame={frame}
-            from={0}
-            to={100}
-            delay={20}
-            suffix="%"
-            size={120}
-            color={COLORS.hot}
-          />
-          <div
-            style={{
-              fontSize: 28,
-              fontWeight: 600,
-              color: COLORS.white,
-              letterSpacing: '0.2em',
-              marginTop: 10,
-            }}
-          >
-            HALAL CERTIFIÉ
-          </div>
-        </div>
-
-        <div style={{ textAlign: 'center' }}>
-          <Counter
-            frame={frame}
-            from={0}
-            to={6}
-            delay={40}
-            suffix="H"
-            size={120}
-            color={COLORS.electric}
-          />
-          <div
-            style={{
-              fontSize: 28,
-              fontWeight: 600,
-              color: COLORS.white,
-              letterSpacing: '0.2em',
-              marginTop: 10,
-            }}
-          >
-            CUISINÉS CE MATIN
-          </div>
-        </div>
-      </AbsoluteFill>
-    </AbsoluteFill>
-  );
-};
-
-// ============================================
-// SCENE 5: RAPID FIRE DISHES (6s)
-// ============================================
-const Scene5: React.FC<{ frame: number }> = ({ frame }) => {
-  const dishes = [
-    { img: 'img/poisson-blanc-herbes.jpeg', name: 'POISSON', color: COLORS.electric },
-    { img: 'img/energy-balls-mix.jpeg', name: 'ENERGY', color: COLORS.yellow },
-    { img: 'img/smoothie-proteine.jpeg', name: 'SMOOTHIE', color: COLORS.hot },
-    { img: 'img/poulet-grille-legumes.jpeg', name: 'POULET', color: COLORS.neon },
-  ];
-
-  const dishDuration = 45;
-  const currentDish = Math.min(
-    Math.floor(frame / dishDuration),
-    dishes.length - 1
-  );
-  const dishFrame = frame % dishDuration;
-  const dish = dishes[currentDish];
-
-  const scale = interpolate(dishFrame, [0, 10], [1.3, 1], {
-    extrapolateRight: 'clamp',
-    easing: Easing.out(Easing.cubic),
-  });
-
-  const textY = interpolate(dishFrame, [5, 20], [100, 0], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-    easing: Easing.out(Easing.exp),
-  });
-
-  return (
-    <AbsoluteFill style={{ backgroundColor: COLORS.black }}>
-      <Img
-        src={staticFile(dish.img)}
-        style={{
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-          transform: `scale(${scale})`,
-          filter: 'contrast(1.2) brightness(0.8)',
-        }}
-      />
-      {/* Overlay */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: `linear-gradient(to top, ${COLORS.black} 0%, transparent 60%)`,
-        }}
-      />
-      {/* Text */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: 150,
-          left: 0,
-          right: 0,
-          textAlign: 'center',
-          transform: `translateY(${textY}px)`,
-        }}
-      >
-        <div
-          style={{
-            fontSize: 140,
-            fontWeight: 900,
-            color: dish.color,
-            letterSpacing: '-0.04em',
-            textShadow: `0 0 60px ${dish.color}`,
-          }}
-        >
-          {dish.name}
+    <AbsoluteFill style={{ backgroundColor: COLORS.bgGreen, justifyContent: 'center', alignItems: 'center' }}>
+      <div style={{ opacity, transform: `scale(${logoZoom})`, textAlign: 'center', padding: 40 }}>
+        <div style={{ fontSize: 100, fontWeight: 900, color: COLORS.primary, marginBottom: 20 }}>Healthy</div>
+        <div style={{ 
+          opacity: textOpacity, 
+          fontSize: 32, 
+          fontWeight: 700, 
+          color: COLORS.primary,
+          lineHeight: 1.4 
+        }}>
+          Healthy Dakar –<br />Repas sains, simples et rapides
         </div>
       </div>
-      {/* Progress bar */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: 60,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          display: 'flex',
-          gap: 8,
-        }}
-      >
-        {dishes.map((_, i) => (
-          <div
-            key={i}
-            style={{
-              width: i === currentDish ? 60 : 20,
-              height: 6,
-              backgroundColor:
-                i === currentDish ? dishes[i].color : 'rgba(255,255,255,0.3)',
-              borderRadius: 3,
-            }}
-          />
+    </AbsoluteFill>
+  );
+};
+
+// 2. Découverte du site (5-20s)
+const Scene2: React.FC<{ frame: number }> = ({ frame }) => {
+  const scrollY = interpolate(frame, [0, 450], [0, -800], { extrapolateRight: 'clamp' });
+  const textOpacity = interpolate(frame, [30, 60], [0, 1], { extrapolateRight: 'clamp' });
+  
+  const dishes = [
+    { name: 'Bowl Poulet', img: 'img/bowl-poulet-mais.jpeg' },
+    { name: 'Poisson aux Herbes', img: 'img/poisson-blanc-herbes.jpeg' },
+    { name: 'Bœuf Patate', img: 'img/boeuf-puree-patate-douce.jpeg' },
+  ];
+
+  return (
+    <AbsoluteFill style={{ backgroundColor: COLORS.bgYellow, justifyContent: 'center', alignItems: 'center' }}>
+      <MobileFrame frame={frame}>
+        <div style={{ transform: `translateY(${scrollY}px)`, padding: '60px 20px' }}>
+          <div style={{ fontSize: 24, fontWeight: 900, color: COLORS.primary, marginBottom: 30, textAlign: 'center' }}>www.healthy.sn</div>
+          {dishes.map((dish, i) => (
+            <div key={i} style={{ marginBottom: 30, borderRadius: 20, overflow: 'hidden', backgroundColor: '#f9f9f9' }}>
+              <Img src={staticFile(dish.img)} style={{ width: '100%', height: 180, objectFit: 'cover' }} />
+              <div style={{ padding: 15, fontWeight: 800, color: COLORS.primary }}>{dish.name}</div>
+            </div>
+          ))}
+          <div style={{ 
+            backgroundColor: COLORS.accent, 
+            padding: '20px', 
+            borderRadius: 15, 
+            textAlign: 'center', 
+            fontWeight: 900,
+            color: COLORS.primary,
+            marginTop: 20,
+            animation: 'pulse 1s infinite'
+          }}>
+            Commander maintenant
+          </div>
+        </div>
+      </MobileFrame>
+      
+      <div style={{
+        position: 'absolute',
+        top: 80,
+        width: '80%',
+        textAlign: 'center',
+        opacity: textOpacity,
+        fontSize: 40,
+        fontWeight: 900,
+        color: COLORS.primary,
+        backgroundColor: 'rgba(255,255,255,0.8)',
+        padding: '20px',
+        borderRadius: 20,
+        backdropFilter: 'blur(10px)',
+      }}>
+        Tout ce que vous aimez,<br />à portée de clic !
+      </div>
+    </AbsoluteFill>
+  );
+};
+
+// 3. Page Concept (20-35s)
+const Scene3: React.FC<{ frame: number }> = ({ frame }) => {
+  const text1 = interpolate(frame, [0, 30], [0, 1], { extrapolateRight: 'clamp' });
+  const text2 = interpolate(frame, [90, 120], [0, 1], { extrapolateRight: 'clamp' });
+  const text3 = interpolate(frame, [180, 210], [0, 1], { extrapolateRight: 'clamp' });
+
+  return (
+    <AbsoluteFill style={{ backgroundColor: COLORS.bgGreen, padding: 60, justifyContent: 'center' }}>
+      <div style={{ fontSize: 40, fontWeight: 900, color: COLORS.primary, marginBottom: 60, textAlign: 'center' }}>Notre Concept</div>
+      
+      <div style={{ spaceY: 40 }}>
+        {[
+          { text: "Repas frais et équilibrés préparés chaque jour", opacity: text1, icon: '🥗' },
+          { text: "100% Halal et nutritifs", opacity: text2, icon: '✅' },
+          { text: "Livraison rapide partout à Dakar", opacity: text3, icon: '🚀' },
+        ].map((v, i) => (
+          <div key={i} style={{ opacity: v.opacity, display: 'flex', gap: 20, alignItems: 'center', marginBottom: 40 }}>
+            <div style={{ fontSize: 50 }}>{v.icon}</div>
+            <div style={{ fontSize: 28, fontWeight: 700, color: COLORS.primary, lineHeight: 1.3 }}>{v.text}</div>
+          </div>
         ))}
       </div>
+
+      <FloatingIngredient icon="🍅" frame={frame} top="15%" left="10%" delay={0} />
+      <FloatingIngredient icon="🥑" frame={frame} top="20%" left="80%" delay={30} />
+      <FloatingIngredient icon="🥕" frame={frame} top="75%" left="15%" delay={60} />
+      <FloatingIngredient icon="🥦" frame={frame} top="80%" left="75%" delay={90} />
     </AbsoluteFill>
   );
 };
 
-// ============================================
-// SCENE 6: DELIVERY ZONES GRID (4s)
-// ============================================
-const Scene6: React.FC<{ frame: number }> = ({ frame }) => {
-  const zones = [
-    'ALMADIES',
-    'MERMOZ',
-    'OUAKAM',
-    'PLATEAU',
-    'POINT E',
-    'FANN',
-    'LIBERTÉ',
-    'YOFF',
-    'PARCELLES',
+// 4. Fonctionnalités (35-45s)
+const Scene4: React.FC<{ frame: number }> = ({ frame }) => {
+  const items = [
+    { icon: '💳', title: 'Paiement facile', desc: 'Cash, Wave, Orange Money', delay: 0 },
+    { icon: '🚚', title: 'Livraison rapide', desc: 'À domicile ou au bureau', delay: 20 },
+    { icon: '🍱', title: 'Choix variés', desc: 'Pour tous les goûts', delay: 40 },
   ];
 
   return (
-    <AbsoluteFill style={{ backgroundColor: COLORS.black }}>
-      <Stripes />
-      <AbsoluteFill
-        style={{
-          padding: 60,
-          flexDirection: 'column',
-        }}
-      >
-        <div style={{ marginBottom: 40 }}>
-          <KineticText
-            frame={frame}
-            text="LIVRAISON"
-            size={80}
-            color={COLORS.neon}
-            delay={0}
-          />
-          <KineticText
-            frame={frame}
-            text="EXPRESS"
-            size={80}
-            color={COLORS.white}
-            delay={10}
-          />
-        </div>
-
-        <div
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: 12,
-            flex: 1,
-            alignContent: 'center',
-          }}
-        >
-          {zones.map((zone, i) => {
-            const delay = 20 + i * 5;
-            const f = frame - delay;
-            const opacity = interpolate(f, [0, 10], [0, 1], {
-              extrapolateLeft: 'clamp',
-              extrapolateRight: 'clamp',
-            });
-            const x = interpolate(f, [0, 15], [50, 0], {
-              extrapolateLeft: 'clamp',
-              extrapolateRight: 'clamp',
-              easing: Easing.out(Easing.exp),
-            });
-
-            return (
-              <div
-                key={i}
-                style={{
-                  opacity,
-                  transform: `translateX(${x}px)`,
-                  backgroundColor: 'rgba(255,255,255,0.1)',
-                  border: `2px solid ${COLORS.neon}`,
-                  padding: '18px 28px',
-                  fontSize: 22,
-                  fontWeight: 800,
-                  color: COLORS.white,
-                  letterSpacing: '0.05em',
-                }}
-              >
-                {zone}
-              </div>
-            );
-          })}
-        </div>
-      </AbsoluteFill>
-    </AbsoluteFill>
-  );
-};
-
-// ============================================
-// SCENE 7: BUILD YOUR BOWL (4s)
-// ============================================
-const Scene7: React.FC<{ frame: number }> = ({ frame }) => {
-  const ingredients = ['FÉCULENT', 'PROTÉINE', 'LÉGUMES', 'SAUCE'];
-  
-  return (
-    <AbsoluteFill style={{ backgroundColor: COLORS.neon }}>
-      <Stripes color={COLORS.black} opacity={0.15} />
-      <AbsoluteFill
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          flexDirection: 'column',
-        }}
-      >
-        <div
-          style={{
-            fontSize: 28,
-            fontWeight: 800,
-            color: COLORS.black,
-            letterSpacing: '0.3em',
-            marginBottom: 20,
-          }}
-        >
-          CRÉE TON
-        </div>
-        <Glitch frame={frame}>
-          <KineticText
-            frame={frame}
-            text="BOWL"
-            size={200}
-            color={COLORS.black}
-            delay={10}
-          />
-        </Glitch>
-
-        <div
-          style={{
-            display: 'flex',
-            gap: 20,
-            marginTop: 60,
-          }}
-        >
-          {ingredients.map((ing, i) => {
-            const delay = 30 + i * 10;
-            const f = frame - delay;
-            const scale = spring({
-              frame: f,
-              fps: 30,
-              config: { damping: 10 },
-            });
-            const opacity = interpolate(f, [0, 10], [0, 1], {
-              extrapolateLeft: 'clamp',
-              extrapolateRight: 'clamp',
-            });
-
-            return (
-              <div
-                key={i}
-                style={{
-                  opacity,
-                  transform: `scale(${0.5 + scale * 0.5})`,
-                  backgroundColor: COLORS.black,
-                  color: COLORS.neon,
-                  padding: '16px 20px',
-                  fontSize: 16,
-                  fontWeight: 900,
-                  letterSpacing: '0.05em',
-                }}
-              >
-                {ing}
-              </div>
-            );
-          })}
-        </div>
-      </AbsoluteFill>
-    </AbsoluteFill>
-  );
-};
-
-// ============================================
-// SCENE 8: FINAL CTA (4s)
-// ============================================
-const Scene8: React.FC<{ frame: number }> = ({ frame }) => {
-  const pulse = Math.sin(frame * 0.15) * 0.05 + 1;
-
-  return (
-    <AbsoluteFill style={{ backgroundColor: COLORS.black }}>
-      <Stripes />
-      {/* Animated gradient */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: 800,
-          height: 800,
-          borderRadius: '50%',
-          background: `radial-gradient(circle, ${COLORS.neon}30 0%, transparent 70%)`,
-          animation: 'pulse 2s infinite',
-        }}
-      />
-
-      <AbsoluteFill
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          flexDirection: 'column',
-        }}
-      >
-        <KineticText
-          frame={frame}
-          text="COMMANDE"
-          size={100}
-          color={COLORS.white}
-          delay={0}
-        />
-        <KineticText
-          frame={frame}
-          text="MAINTENANT"
-          size={100}
-          color={COLORS.neon}
-          delay={10}
-        />
-
-        <div
-          style={{
-            marginTop: 60,
-            transform: `scale(${pulse})`,
-          }}
-        >
-          <div
-            style={{
-              backgroundColor: COLORS.neon,
-              padding: '30px 60px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 20,
-            }}
-          >
-            <div
-              style={{
-                width: 20,
-                height: 20,
-                backgroundColor: COLORS.black,
-                borderRadius: '50%',
-              }}
-            />
-            <div
-              style={{
-                fontSize: 48,
-                fontWeight: 900,
-                color: COLORS.black,
-                letterSpacing: '-0.02em',
-              }}
-            >
-              HEALTHY.SN
+    <AbsoluteFill style={{ backgroundColor: COLORS.bgYellow, justifyContent: 'center', alignItems: 'center', padding: 40 }}>
+      <div style={{ width: '100%', spaceY: 40 }}>
+        {items.map((item, i) => {
+          const f = frame - item.delay;
+          const opacity = interpolate(f, [0, 20], [0, 1], { extrapolateRight: 'clamp' });
+          const y = interpolate(f, [0, 20], [30, 0], { extrapolateRight: 'clamp' });
+          
+          return (
+            <div key={i} style={{ opacity, transform: `translateY(${y}px)`, textAlign: 'center', marginBottom: 50 }}>
+              <div style={{ fontSize: 80, marginBottom: 10 }}>{item.icon}</div>
+              <div style={{ fontSize: 36, fontWeight: 900, color: COLORS.primary }}>{item.title}</div>
+              <div style={{ fontSize: 20, color: '#666', fontWeight: 600 }}>{item.desc}</div>
             </div>
-          </div>
+          );
+        })}
+      </div>
+      
+      {frame > 100 && (
+        <div style={{ 
+          marginTop: 20, 
+          fontSize: 40, 
+          fontWeight: 900, 
+          color: COLORS.secondary,
+          animation: 'bounce 1s infinite'
+        }}>
+          Simple, rapide et pratique !
         </div>
-
-        <div
-          style={{
-            marginTop: 40,
-            fontSize: 20,
-            fontWeight: 600,
-            color: 'rgba(255,255,255,0.5)',
-            letterSpacing: '0.2em',
-          }}
-        >
-          DAKAR • SÉNÉGAL
-        </div>
-      </AbsoluteFill>
+      )}
     </AbsoluteFill>
   );
 };
 
-// ============================================
-// MAIN COMPOSITION
-// ============================================
+// 5. Appel à l’action final (45-60s)
+const Scene5: React.FC<{ frame: number }> = ({ frame }) => {
+  const pulse = Math.sin(frame / 10) * 0.05 + 1;
+  const opacity = interpolate(frame, [0, 30], [0, 1], { extrapolateRight: 'clamp' });
+  const logoFade = interpolate(frame, [400, 450], [1, 0], { extrapolateRight: 'clamp' });
+
+  return (
+    <AbsoluteFill style={{ backgroundColor: COLORS.bgGreen, justifyContent: 'center', alignItems: 'center', opacity: logoFade }}>
+      <div style={{ opacity, textAlign: 'center', padding: 40 }}>
+        <div style={{ 
+          fontSize: 50, 
+          fontWeight: 900, 
+          color: COLORS.primary, 
+          marginBottom: 60,
+          transform: `scale(${pulse})` 
+        }}>
+          Commander maintenant
+        </div>
+        
+        <div style={{ fontSize: 36, fontWeight: 800, color: COLORS.primary, marginBottom: 20 }}>
+          Visitez www.healthy.sn et commandez dès maintenant !
+        </div>
+        
+        <div style={{ fontSize: 80, fontWeight: 900, color: COLORS.primary, marginTop: 40 }}>Healthy</div>
+      </div>
+    </AbsoluteFill>
+  );
+};
+
 export const Publicite: React.FC = () => {
   const frame = useCurrentFrame();
 
-  const scenes = [
-    { duration: 90, Component: Scene1 },   // 3s - Intro explosive
-    { duration: 120, Component: Scene2 },  // 4s - Manifesto
-    { duration: 180, Component: Scene3 },  // 6s - Split screen
-    { duration: 150, Component: Scene4 },  // 5s - Statistics
-    { duration: 180, Component: Scene5 },  // 6s - Rapid fire
-    { duration: 120, Component: Scene6 },  // 4s - Delivery grid
-    { duration: 120, Component: Scene7 },  // 4s - Build bowl
-    { duration: 120, Component: Scene8 },  // 4s - CTA
-  ];
-
-  let accumulatedFrames = 0;
-  for (let i = 0; i < scenes.length; i++) {
-    const scene = scenes[i];
-    if (frame < accumulatedFrames + scene.duration) {
-      const sceneFrame = frame - accumulatedFrames;
-      return <scene.Component frame={sceneFrame} />;
-    }
-    accumulatedFrames += scene.duration;
-  }
-
-  const lastScene = scenes[scenes.length - 1];
-  return <lastScene.Component frame={lastScene.duration - 1} />;
+  return (
+    <AbsoluteFill>
+      <Sequence from={0} durationInFrames={150}>
+        <Scene1 frame={frame} />
+      </Sequence>
+      <Sequence from={150} durationInFrames={450}>
+        <Scene2 frame={frame - 150} />
+      </Sequence>
+      <Sequence from={600} durationInFrames={450}>
+        <Scene3 frame={frame - 600} />
+      </Sequence>
+      <Sequence from={1050} durationInFrames={300}>
+        <Scene4 frame={frame - 1050} />
+      </Sequence>
+      <Sequence from={1350} durationInFrames={450}>
+        <Scene5 frame={frame - 1350} />
+      </Sequence>
+    </AbsoluteFill>
+  );
 };
