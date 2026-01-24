@@ -16,8 +16,7 @@
     "render:video": "tsx scripts/render-video.ts Publicite",
     "render:promo": "tsx scripts/render-video.ts HealthyPromo",
     "render:demo": "tsx scripts/render-video.ts SiteDemo",
-    "render:flyer": "tsx scripts/render-flyer.ts FlyerA5",
-    "render:flyer-a4": "tsx scripts/render-flyer.ts FlyerA4"
+    "render:flyers": "tsx scripts/render-flyer.ts"
   },
   "prisma": "5.15.0",
   "dependencies": {

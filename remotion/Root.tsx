@@ -2,7 +2,7 @@ import { Composition, Still } from 'remotion';
 import { HealthyPromo } from './HealthyPromo';
 import { SiteDemo } from './SiteDemo';
 import { Publicite } from './Publicite';
-import { Flyer, FlyerA5 } from './Flyer';
+import { Flyer1_Brand, Flyer2_Menu, Flyer3_Benefits, Flyer4_Subscriptions, Flyer5_HowItWorks } from './Flyer';
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -31,18 +31,36 @@ export const RemotionRoot: React.FC = () => {
         width={1080}
         height={1920}
       />
-      {/* Flyers - Images statiques */}
+      {/* 5 Flyers Professionnels - Format A4 Paysage (300 DPI) */}
       <Still
-        id="FlyerA4"
-        component={Flyer}
-        width={2480}
-        height={1748}
+        id="Flyer1-Brand"
+        component={Flyer1_Brand}
+        width={3508}
+        height={2480}
       />
       <Still
-        id="FlyerA5"
-        component={FlyerA5}
-        width={1240}
-        height={1748}
+        id="Flyer2-Menu"
+        component={Flyer2_Menu}
+        width={3508}
+        height={2480}
+      />
+      <Still
+        id="Flyer3-Benefits"
+        component={Flyer3_Benefits}
+        width={3508}
+        height={2480}
+      />
+      <Still
+        id="Flyer4-Subscriptions"
+        component={Flyer4_Subscriptions}
+        width={3508}
+        height={2480}
+      />
+      <Still
+        id="Flyer5-HowItWorks"
+        component={Flyer5_HowItWorks}
+        width={3508}
+        height={2480}
       />
     </>
   );
