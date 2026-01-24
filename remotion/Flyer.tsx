@@ -131,12 +131,19 @@ const MouseCursor: React.FC<{ size?: number }> = ({ size = 24 }) => (
 export const FlyerSocial: React.FC = () => {
   return (
     <AbsoluteFill style={{ backgroundColor: COLORS.dark, color: 'white' }}>
-      {/* Background Gradient */}
+      {/* Background Photos - Subtle & Aesthetic */}
+      <div style={{ position: 'absolute', inset: 0, opacity: 0.15, filter: 'blur(5px)' }}>
+        <Img src={staticFile('img/bowl-poulet-mais.jpeg')} style={{ position: 'absolute', top: '10%', left: '-10%', width: '60%', height: 'auto', borderRadius: '50%', transform: 'rotate(-10deg)' }} />
+        <Img src={staticFile('img/boeuf-puree-patate-douce.jpeg')} style={{ position: 'absolute', top: '40%', right: '-10%', width: '60%', height: 'auto', borderRadius: '50%', transform: 'rotate(15deg)' }} />
+        <Img src={staticFile('img/poisson-blanc-herbes.jpeg')} style={{ position: 'absolute', bottom: '10%', left: '-10%', width: '60%', height: 'auto', borderRadius: '50%', transform: 'rotate(-5deg)' }} />
+      </div>
+
+      {/* Background Gradient Overlay */}
       <div style={{
         position: 'absolute',
         inset: 0,
-        background: `radial-gradient(circle at 20% 20%, ${COLORS.primary} 0%, transparent 50%), radial-gradient(circle at 80% 80%, ${COLORS.primary} 0%, transparent 50%)`,
-        opacity: 0.6
+        background: `radial-gradient(circle at 20% 20%, ${COLORS.primary} 0%, transparent 60%), radial-gradient(circle at 80% 80%, ${COLORS.primary} 0%, transparent 60%)`,
+        opacity: 0.8
       }} />
 
       {/* 1. HEADER - BRAND PROMISE */}
@@ -151,61 +158,85 @@ export const FlyerSocial: React.FC = () => {
       <div style={{ padding: '0 50px', display: 'flex', flexDirection: 'column', gap: 35, position: 'relative' }}>
         
         {/* 2. BOWL BUILDER - INNOVATION */}
-        <div style={{ backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 45, padding: 40, border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(20px)' }}>
-          <SectionHeader text="Crée ton Bowl" />
-          <div style={{ fontSize: 36, fontWeight: 900, marginBottom: 15 }}>LE CHEF, C'EST TOI.</div>
-          <div style={{ fontSize: 18, color: 'rgba(255,255,255,0.7)', lineHeight: 1.6, marginBottom: 25 }}>
-            Choisis tes ingrédients, le site calcule instantanément tes <b>Kcal, Protéines, Glucides et Lipides.</b>
+        <div style={{ 
+          backgroundColor: 'rgba(255,255,255,0.05)', 
+          borderRadius: 45, 
+          padding: 40, 
+          border: '1px solid rgba(255,255,255,0.1)', 
+          backdropFilter: 'blur(20px)',
+          display: 'flex',
+          gap: 25,
+          alignItems: 'center'
+        }}>
+          <div style={{ flex: 1 }}>
+            <SectionHeader text="Crée ton Bowl" />
+            <div style={{ fontSize: 36, fontWeight: 900, marginBottom: 15 }}>LE CHEF, C'EST TOI.</div>
+            <div style={{ fontSize: 18, color: 'rgba(255,255,255,0.7)', lineHeight: 1.6, marginBottom: 25 }}>
+              Choisis tes ingrédients, le site calcule instantanément tes <b>macros.</b>
+            </div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+              <MacroTag text="CALCUL EN DIRECT" />
+              <MacroTag text="SUR MESURE" />
+            </div>
           </div>
-          <div style={{ display: 'flex', gap: 12 }}>
-            <MacroTag text="CALCUL EN DIRECT" />
-            <MacroTag text="SUR MESURE" />
-            <MacroTag text="TRANSPARENCE" />
+          <div style={{ width: 180, height: 180, borderRadius: 30, overflow: 'hidden', border: `3px solid ${COLORS.secondary}`, boxShadow: `0 0 30px ${COLORS.secondary}40`, flexShrink: 0 }}>
+            <Img src={staticFile('img/bowl-poulet-mais.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </div>
         </div>
 
         {/* 3. ABONNEMENTS - ROUTINE */}
-        <div style={{ backgroundColor: COLORS.primary, borderRadius: 45, padding: 40, border: `2px solid ${COLORS.secondary}40`, boxShadow: `0 20px 60px ${COLORS.primary}` }}>
-          <SectionHeader text="Abonnements" color={COLORS.secondary} />
-          <div style={{ fontSize: 36, fontWeight: 900, marginBottom: 15 }}>DISCIPLINE AUTOMATIQUE.</div>
-          <div style={{ fontSize: 18, color: 'rgba(255,255,255,0.8)', lineHeight: 1.6, marginBottom: 25 }}>
-            Planifie ta semaine (Lundi au Dimanche). Reçois tes repas sans y penser. Idéal pour atteindre tes objectifs sportifs.
+        <div style={{ 
+          backgroundColor: COLORS.primary, 
+          borderRadius: 45, 
+          padding: 40, 
+          border: `2px solid ${COLORS.secondary}40`, 
+          boxShadow: `0 20px 60px ${COLORS.primary}`,
+          display: 'flex',
+          gap: 25,
+          alignItems: 'center'
+        }}>
+          <div style={{ width: 180, height: 180, borderRadius: 30, overflow: 'hidden', border: `3px solid white`, flexShrink: 0 }}>
+            <Img src={staticFile('img/boeuf-puree-patate-douce.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div style={{ fontSize: 16, fontWeight: 900 }}>✓ ÉCONOMISE -20%</div>
-            <div style={{ fontSize: 16, fontWeight: 900 }}>✓ SANS ENGAGEMENT</div>
+          <div style={{ flex: 1 }}>
+            <SectionHeader text="Abonnements" color={COLORS.secondary} />
+            <div style={{ fontSize: 32, fontWeight: 900, marginBottom: 15 }}>PLANIFIE TA SEMAINE.</div>
+            <div style={{ fontSize: 16, color: 'rgba(255,255,255,0.8)', lineHeight: 1.6 }}>
+              Reçois tes repas sans y penser. Idéal pour tes objectifs sportifs.
+            </div>
+            <div style={{ marginTop: 15, fontSize: 14, fontWeight: 900, color: COLORS.secondary }}>✓ ÉCONOMISE -20%</div>
           </div>
         </div>
 
-        {/* 4. MENU & BOOST (Grid) */}
+        {/* 4. BOOST & SHOTS (Row) */}
         <div style={{ display: 'flex', gap: 25 }}>
-          <div style={{ flex: 1.2, backgroundColor: 'white', borderRadius: 40, padding: 30, color: COLORS.dark }}>
-            <div style={{ fontSize: 18, fontWeight: 900, color: COLORS.primary, marginBottom: 10 }}>MENU À LA CARTE</div>
-            <div style={{ fontSize: 14, fontWeight: 600, color: '#64748b', marginBottom: 20 }}>+30 plats analysés par nos nutritionnistes.</div>
-            <div style={{ width: '100%', height: 120, borderRadius: 20, overflow: 'hidden' }}>
-              <Img src={staticFile('img/bowl-poulet-mais.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-            </div>
-          </div>
-          <div style={{ flex: 1, backgroundColor: COLORS.accent, borderRadius: 40, padding: 30, color: COLORS.dark }}>
-            <div style={{ fontSize: 18, fontWeight: 900, marginBottom: 10 }}>SHOTS & ENERGY</div>
-            <div style={{ fontSize: 14, fontWeight: 700, opacity: 0.8, marginBottom: 15 }}>Booste ton énergie naturellement.</div>
-            <div style={{ width: 80, height: 80, borderRadius: 15, overflow: 'hidden' }}>
+          <div style={{ flex: 1, backgroundColor: COLORS.accent, borderRadius: 40, padding: 30, color: COLORS.dark, display: 'flex', flexDirection: 'column', gap: 15 }}>
+            <div style={{ fontSize: 20, fontWeight: 900 }}>SHOTS & ENERGY</div>
+            <div style={{ width: '100%', height: 100, borderRadius: 20, overflow: 'hidden' }}>
               <Img src={staticFile('img/shot-mix.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
+            <div style={{ fontSize: 14, fontWeight: 700, opacity: 0.8 }}>Boost naturel quotidien.</div>
+          </div>
+          <div style={{ flex: 1, backgroundColor: 'white', borderRadius: 40, padding: 30, color: COLORS.dark, display: 'flex', flexDirection: 'column', gap: 15 }}>
+            <div style={{ fontSize: 20, fontWeight: 900, color: COLORS.primary }}>SNACKS FIT</div>
+            <div style={{ width: '100%', height: 100, borderRadius: 20, overflow: 'hidden' }}>
+              <Img src={staticFile('img/energy-balls-mix.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            </div>
+            <div style={{ fontSize: 14, fontWeight: 600, color: '#64748b' }}>Energy Balls & Fit Snacks.</div>
           </div>
         </div>
 
-        {/* 5. WHY US - VALUES */}
+        {/* 5. QUICK VALUES */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
           {[
             { icon: '🥦', text: '100% Frais' },
             { icon: '✅', text: '100% Halal' },
-            { icon: '🚀', text: 'Livraison Express' },
-            { icon: '⏰', text: 'Gain de 10h/sem' },
+            { icon: '🚀', text: 'Express' },
+            { icon: '⏰', text: 'Gain Temps' },
           ].map((item, i) => (
-            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 15, backgroundColor: 'rgba(255,255,255,0.05)', padding: '15px 20px', borderRadius: 25 }}>
+            <div key={item.text} style={{ display: 'flex', alignItems: 'center', gap: 15, backgroundColor: 'rgba(255,255,255,0.05)', padding: '15px 20px', borderRadius: 25 }}>
               <span style={{ fontSize: 24 }}>{item.icon}</span>
-              <span style={{ fontSize: 14, fontWeight: 800, color: COLORS.white }}>{item.text}</span>
+              <span style={{ fontSize: 14, fontWeight: 800 }}>{item.text}</span>
             </div>
           ))}
         </div>
