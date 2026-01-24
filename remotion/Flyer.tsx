@@ -5,104 +5,82 @@ import {
 } from 'remotion';
 
 // ============================================
-// DA: CYBER-GASTRONOMY 3.0 (THE APEX)
+// DA: ORGANIC PREMIUM LUXURY (THE MASTER)
 // ============================================
-// Style: Dark Mode, Neon Overlays, 3D Depth, Data-Visuals
-// Inspiration: Cyberpunk 2077 UI, High-end Gaming Tech, Michelin Guide
+// Format: 1080x1920 (Instagram / Snapchat / TikTok)
+// Style: Clean, Fresh, Minimalist, High-End
+// Colors: Cream, Forest Green, Soft Gold
 // ============================================
 
 const COLORS = {
-  black: '#020202',
-  deep: '#0a0f0c',
-  neon: '#00ff87', // The signature mint neon
-  gold: '#ffbe0b',
-  electric: '#00d4ff',
+  primary: '#1a472a',   // Elegant Forest Green
+  secondary: '#10b981', // Fresh Mint
+  accent: '#d4a574',    // Muted Gold
+  text: '#1f2937',      // Deep Slate
+  bg: '#fffdfa',        // Warm Cream
   white: '#ffffff',
-  glass: 'rgba(255, 255, 255, 0.03)',
-  glassBorder: 'rgba(255, 255, 255, 0.1)',
 };
 
-const Glow: React.FC<{ color: string; size: number; opacity?: number }> = ({ color, size, opacity = 0.3 }) => (
-  <div style={{
-    position: 'absolute',
-    width: size,
-    height: size,
-    borderRadius: '50%',
-    backgroundColor: color,
-    filter: 'blur(100px)',
-    opacity,
-    pointerEvents: 'none',
-  }} />
-);
-
-const TechCard: React.FC<{ 
-  title: string; 
-  children: React.ReactNode; 
-  icon?: string;
-  borderColor?: string;
-}> = ({ title, children, icon, borderColor = COLORS.glassBorder }) => (
-  <div style={{
-    backgroundColor: 'rgba(255, 255, 255, 0.02)',
-    backdropFilter: 'blur(20px)',
-    borderRadius: 30,
-    padding: 30,
-    border: `1px solid ${borderColor}`,
-    position: 'relative',
-    boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
-  }}>
+const SectionTitle: React.FC<{ title: string; number: string }> = ({ title, number }) => (
+  <div style={{ display: 'flex', alignItems: 'center', gap: 15, marginBottom: 15 }}>
     <div style={{ 
-      display: 'flex', 
-      alignItems: 'center', 
-      gap: 12, 
-      marginBottom: 20,
-      borderBottom: `1px solid ${borderColor}`,
-      paddingBottom: 15
+      fontSize: 14, 
+      fontWeight: 900, 
+      color: COLORS.accent, 
+      border: `1px solid ${COLORS.accent}`,
+      width: 28,
+      height: 28,
+      borderRadius: '50%',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
     }}>
-      {icon && <span style={{ fontSize: 24 }}>{icon}</span>}
-      <div style={{ 
-        fontSize: 14, 
-        fontWeight: 900, 
-        color: COLORS.neon, 
-        letterSpacing: '0.2em',
-        textTransform: 'uppercase'
-      }}>
-        {title}
-      </div>
+      {number}
     </div>
-    {children}
+    <div style={{ fontSize: 24, fontWeight: 900, color: COLORS.primary, letterSpacing: '-0.02em' }}>
+      {title}
+    </div>
   </div>
 );
 
-const MacroDisplay: React.FC<{ label: string; value: string; color?: string }> = ({ label, value, color = COLORS.neon }) => (
-  <div style={{ flex: 1, textAlign: 'center' }}>
-    <div style={{ fontSize: 10, fontWeight: 800, color: 'rgba(255,255,255,0.4)', marginBottom: 5 }}>{label}</div>
-    <div style={{ fontSize: 24, fontWeight: 950, color }}>{value}</div>
-    <div style={{ height: 3, width: '40%', backgroundColor: color, margin: '8px auto', borderRadius: 2 }} />
+const InfoBadge: React.FC<{ icon: string; text: string }> = ({ icon, text }) => (
+  <div style={{ 
+    display: 'flex', 
+    alignItems: 'center', 
+    gap: 10, 
+    backgroundColor: 'white', 
+    padding: '12px 20px', 
+    borderRadius: 15,
+    boxShadow: '0 4px 15px rgba(0,0,0,0.03)',
+    border: '1px solid #f1f5f9'
+  }}>
+    <span style={{ fontSize: 20 }}>{icon}</span>
+    <span style={{ fontSize: 14, fontWeight: 700, color: COLORS.text }}>{text}</span>
   </div>
 );
 
-const QRCode: React.FC<{ size?: number; color?: string }> = ({ size = 180, color = COLORS.black }) => (
+const QRCode: React.FC<{ size?: number; color?: string }> = ({ size = 180, color = COLORS.primary }) => (
   <div style={{
     width: size,
     height: size,
     backgroundColor: 'white',
-    borderRadius: 25,
+    borderRadius: 24,
     padding: 15,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    boxShadow: `0 0 40px ${COLORS.neon}20`,
-    border: `2px solid ${COLORS.neon}`
+    boxShadow: '0 20px 40px rgba(0,0,0,0.05)',
+    border: `1px solid #f1f5f9`
   }}>
     <svg width={size - 30} height={size - 30} viewBox="0 0 100 100">
-      <rect fill={color} x="5" y="5" width="25" height="25" rx="2" />
-      <rect fill="white" x="10" y="10" width="15" height="15" />
+      <rect fill={color} x="5" y="5" width="25" height="25" rx="3" />
+      <rect fill="white" x="10" y="10" width="15" height="15" rx="2" />
       <rect fill={color} x="13" y="13" width="9" height="9" />
-      <rect fill={color} x="70" y="5" width="25" height="25" rx="2" />
-      <rect fill="white" x="75" y="10" width="15" height="15" />
+      <rect fill={color} x="70" y="5" width="25" height="25" rx="3" />
+      <rect fill="white" x="75" y="10" width="15" height="15" rx="2" />
       <rect fill={color} x="78" y="13" width="9" height="9" />
-      <rect fill={color} x="5" y="70" width="25" height="25" rx="2" />
-      <rect fill="white" x="10" y="75" width="15" height="15" />
+      <rect fill={color} x="5" y="70" width="25" height="25" rx="3" />
+      <rect fill="white" x="10" y="75" width="15" height="15" rx="2" />
       <rect fill={color} x="13" y="78" width="9" height="9" />
       <rect fill={color} x="35" y="5" width="8" height="8" /><rect fill={color} x="50" y="5" width="8" height="8" />
       <rect fill={color} x="35" y="20" width="8" height="8" /><rect fill={color} x="55" y="20" width="8" height="8" />
@@ -116,137 +94,146 @@ const QRCode: React.FC<{ size?: number; color?: string }> = ({ size = 180, color
   </div>
 );
 
+const MouseCursor: React.FC<{ size?: number }> = ({ size = 24 }) => (
+  <svg 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    style={{ 
+      filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))',
+      transform: 'rotate(-15deg)'
+    }}
+  >
+    <path 
+      d="M3 3L10.07 19.97L12.58 12.58L19.97 10.07L3 3Z" 
+      fill="white" 
+      stroke={COLORS.primary} 
+      strokeWidth="2" 
+    />
+  </svg>
+);
+
 export const FlyerSocial: React.FC = () => {
   return (
-    <AbsoluteFill style={{ backgroundColor: COLORS.black, color: 'white', fontFamily: 'system-ui, sans-serif' }}>
-      {/* 1. LAYERED BACKGROUND */}
-      <Glow color={COLORS.neon} size={800} opacity={0.15} />
-      <div style={{ position: 'absolute', top: '20%', right: '-10%', transform: 'rotate(5deg)' }}>
+    <AbsoluteFill style={{ backgroundColor: COLORS.bg, color: COLORS.text, fontFamily: 'system-ui, sans-serif' }}>
+      {/* 1. HERO SECTION - THE VIBE */}
+      <div style={{ height: '40%', position: 'relative', overflow: 'hidden' }}>
         <Img 
           src={staticFile('img/bowl-poulet-mais.jpeg')} 
-          style={{ width: 600, height: 600, borderRadius: 300, objectFit: 'cover', opacity: 0.4, filter: 'grayscale(0.5) contrast(1.2)' }} 
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
         />
-      </div>
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent 0%, #000 90%)' }} />
-      <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
-
-      <AbsoluteFill style={{ padding: 60, display: 'flex', flexDirection: 'column', gap: 40 }}>
+        <div style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, transparent 30%, #fffdfa 95%)'
+        }} />
         
-        {/* 2. HEADER - POWER BRANDING */}
-        <div style={{ marginTop: 20 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 15 }}>
-            <div style={{ width: 40, height: 2, backgroundColor: COLORS.neon }} />
-            <div style={{ fontSize: 20, fontWeight: 900, color: COLORS.neon, letterSpacing: '0.5em' }}>HEALTHY DAKAR</div>
-          </div>
-          <div style={{ fontSize: 110, fontWeight: 950, lineHeight: 0.85, letterSpacing: '-0.06em', marginTop: 25 }}>
-            PERFECT<br />
-            <span style={{ color: 'transparent', WebkitTextStroke: `2px ${COLORS.white}`, opacity: 0.8 }}>NUTRITION</span><br />
-            <span style={{ color: COLORS.neon }}>ENGINEERED.</span>
-          </div>
-          <div style={{ fontSize: 22, color: 'rgba(255,255,255,0.5)', marginTop: 40, maxWidth: 600, lineHeight: 1.4 }}>
-            Bienvenue dans le futur de la food. Performance, goût et technologie sur <b>www.healthy.sn</b>.
+        <div style={{ position: 'absolute', top: 80, left: 60, right: 60, textAlign: 'center' }}>
+          <div style={{ fontSize: 20, fontWeight: 800, color: 'white', letterSpacing: '0.5em', textShadow: '0 2px 10px rgba(0,0,0,0.3)' }}>HEALTHY DAKAR</div>
+          <div style={{ fontSize: 80, fontWeight: 950, color: 'white', lineHeight: 0.9, marginTop: 15, textShadow: '0 5px 20px rgba(0,0,0,0.4)' }}>
+            L'ART DE BIEN<br />MANGER.
           </div>
         </div>
+      </div>
 
-        {/* 3. TECHNOLOGY - BOWL BUILDER */}
-        <TechCard title="Tech: Bowl Builder v3.0" icon="⚡" borderColor={`${COLORS.neon}40`}>
-          <div style={{ display: 'flex', gap: 35 }}>
-            <div style={{ flex: 1.2 }}>
-              <div style={{ fontSize: 32, fontWeight: 950, marginBottom: 15 }}>LE CHEF, C'EST TOI.</div>
-              <div style={{ fontSize: 16, color: 'rgba(255,255,255,0.7)', lineHeight: 1.6, marginBottom: 25 }}>
-                Algorithme de calcul nutritionnel en temps réel. Compose ton repas idéal selon tes macros.
-              </div>
-              <div style={{ display: 'flex', gap: 15, backgroundColor: 'rgba(0,0,0,0.3)', padding: 20, borderRadius: 20 }}>
-                <MacroDisplay label="KCAL" value="450" />
-                <MacroDisplay label="PROT." value="35g" color={COLORS.gold} />
-                <MacroDisplay label="GLUC." value="42g" color={COLORS.electric} />
+      <div style={{ flex: 1, padding: '0 60px 40px', marginTop: -40, display: 'flex', flexDirection: 'column', gap: 40, position: 'relative' }}>
+        
+        {/* 2. CONCEPTS GRID */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 35 }}>
+          
+          {/* Concept 1: Bowl Builder */}
+          <div style={{ display: 'flex', gap: 30, alignItems: 'center' }}>
+            <div style={{ flex: 1 }}>
+              <SectionTitle number="1" title="CRÉE TON BOWL" />
+              <div style={{ fontSize: 16, color: '#64748b', lineHeight: 1.6 }}>
+                <b>Le chef, c'est vous.</b> Composez votre repas idéal sur le site. Nos algorithmes calculent vos <b>Kcal & Macros</b> en temps réel.
               </div>
             </div>
-            <div style={{ width: 200, height: 240, borderRadius: 25, overflow: 'hidden', border: `3px solid ${COLORS.neon}`, boxShadow: `0 0 30px ${COLORS.neon}30` }}>
+            <div style={{ width: 180, height: 180, borderRadius: 35, overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.1)', border: '4px solid white' }}>
               <Img src={staticFile('img/boeuf-puree-patate-douce.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
           </div>
-        </TechCard>
 
-        {/* 4. ECOSYSTEM - SUBS & BOOSTS */}
-        <div style={{ display: 'flex', gap: 30 }}>
-          <div style={{ flex: 1 }}>
-            <TechCard title="Abonnements" icon="🗓️">
-              <div style={{ fontSize: 24, fontWeight: 900, marginBottom: 10 }}>ROUTINE PRO.</div>
-              <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.5)', lineHeight: 1.4 }}>
-                Planification IA. Livraison auto. <b>-20% Life-time.</b>
-              </div>
-            </TechCard>
-          </div>
-          <div style={{ flex: 1 }}>
-            <TechCard title="Boost & Shots" icon="🔋" borderColor={`${COLORS.gold}40`}>
-              <div style={{ fontSize: 24, fontWeight: 900, marginBottom: 10 }}>BIO-HACKING.</div>
-              <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.5)', lineHeight: 1.4 }}>
-                Shots détox & Energy Balls pour performance ultime.
-              </div>
-            </TechCard>
-          </div>
-        </div>
-
-        {/* 5. LOGISTICS - SYSTEM STATUS */}
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'space-between', 
-          backgroundColor: 'rgba(255,255,255,0.03)', 
-          padding: '25px 40px', 
-          borderRadius: 30,
-          border: '1px solid rgba(255,255,255,0.05)'
-        }}>
-          {[
-            { label: 'STATUS', val: 'OPEN', color: COLORS.neon },
-            { label: 'DELIVERY', val: 'EXPRESS', color: COLORS.white },
-            { label: 'PAYMENT', val: 'WAVE/OM', color: COLORS.electric },
-            { label: 'DAKAR', val: 'ALL ZONES', color: COLORS.gold },
-          ].map(i => (
-            <div key={i.label} style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: 10, fontWeight: 900, opacity: 0.4, letterSpacing: '0.1em', marginBottom: 5 }}>{i.label}</div>
-              <div style={{ fontSize: 16, fontWeight: 950, color: i.color }}>{i.val}</div>
+          {/* Concept 2: Abonnements */}
+          <div style={{ display: 'flex', gap: 30, alignItems: 'center' }}>
+            <div style={{ width: 180, height: 180, borderRadius: 35, overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.1)', border: '4px solid white' }}>
+              <Img src={staticFile('img/poisson-blanc-herbes.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
-          ))}
-        </div>
-
-        {/* 6. FOOTER - THE CONVERSION TERMINAL */}
-        <div style={{ marginTop: 'auto', marginBottom: 20 }}>
-          <div style={{ 
-            backgroundColor: COLORS.white, 
-            borderRadius: 40, 
-            padding: '40px 50px', 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: 40,
-            boxShadow: `0 0 60px ${COLORS.neon}20`
-          }}>
             <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 16, fontWeight: 900, color: COLORS.primary, letterSpacing: '0.2em', marginBottom: 10 }}>ACCESS GRANTED</div>
-              <div style={{ fontSize: 64, fontWeight: 1000, color: COLORS.primary, letterSpacing: '-0.05em', lineHeight: 1 }}>www.healthy.sn</div>
-              <div style={{ fontSize: 18, color: COLORS.primary, fontWeight: 800, marginTop: 15, opacity: 0.7 }}>TON PARTENAIRE SANTÉ DIGITAL</div>
+              <SectionTitle number="2" title="ABONNEMENTS" />
+              <div style={{ fontSize: 16, color: '#64748b', lineHeight: 1.6 }}>
+                <b>Discipline simplifiée.</b> Planifiez vos repas de la semaine et recevez-les automatiquement. <b>Économisez 20%</b> sur chaque commande.
+              </div>
             </div>
-            <QRCode size={180} color={COLORS.primary} />
           </div>
-          
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 30, padding: '0 20px' }}>
-            <div style={{ fontSize: 32, fontWeight: 1000, color: COLORS.neon }}>📞 78 598 71 43</div>
-            <div style={{ display: 'flex', gap: 15 }}>
-              {['PREMIUM FRESH', '100% HALAL'].map(t => (
-                <div key={t} style={{ 
-                  fontSize: 12, 
-                  fontWeight: 900, 
-                  padding: '8px 16px', 
-                  borderRadius: 10, 
-                  border: `1px solid ${COLORS.neon}`,
-                  color: COLORS.neon
-                }}>{t}</div>
-              ))}
+
+          {/* Concept 3: Energy & Shots */}
+          <div style={{ display: 'flex', gap: 30, alignItems: 'center' }}>
+            <div style={{ flex: 1 }}>
+              <SectionTitle number="3" title="ENERGY & SHOTS" />
+              <div style={{ fontSize: 16, color: '#64748b', lineHeight: 1.6 }}>
+                <b>Boostez votre vitalité.</b> Shots détox pressés à froid, Energy Balls et Smoothies protéinés pour une performance maximale.
+              </div>
+            </div>
+            <div style={{ width: 180, height: 180, borderRadius: 35, overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.1)', border: '4px solid white' }}>
+              <Img src={staticFile('img/shot-mix.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
           </div>
         </div>
 
-      </AbsoluteFill>
+        {/* 3. SITE INFO BADGES */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 15 }}>
+          <InfoBadge icon="🚀" text="Livraison Express" />
+          <InfoBadge icon="💳" text="Wave / OM / Cash" />
+          <InfoBadge icon="📍" text="Partout à Dakar" />
+          <InfoBadge icon="⏰" text="6h00 - 23h00" />
+        </div>
+      </div>
+
+      {/* 4. FOOTER - THE CONVERSION */}
+      <div style={{ 
+        marginTop: 'auto', 
+        backgroundColor: COLORS.primary, 
+        padding: '60px 60px 80px', 
+        borderTopLeftRadius: 60, 
+        borderTopRightRadius: 60, 
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center', 
+        gap: 40 
+      }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ position: 'relative', display: 'inline-block' }}>
+            <div style={{ 
+              fontSize: 56, 
+              fontWeight: 950, 
+              color: COLORS.primary,
+              backgroundColor: COLORS.white,
+              padding: '15px 45px',
+              borderRadius: '25px',
+              boxShadow: `0 15px 30px rgba(0,0,0,0.2)`,
+              letterSpacing: '-0.02em'
+            }}>
+              www.healthy.sn
+            </div>
+            <div style={{ position: 'absolute', bottom: -20, right: -15 }}>
+              <MouseCursor size={45} />
+            </div>
+          </div>
+          <div style={{ fontSize: 18, color: COLORS.secondary, fontWeight: 800, letterSpacing: '0.15em', marginTop: 35 }}>VOTRE PARTENAIRE SANTÉ À DAKAR</div>
+        </div>
+        
+        <div style={{ display: 'flex', gap: 40, alignItems: 'center' }}>
+          <QRCode size={180} color={COLORS.primary} />
+          <div style={{ textAlign: 'left', color: 'white' }}>
+            <div style={{ fontSize: 28, fontWeight: 900, color: COLORS.secondary }}>78 598 71 43</div>
+            <div style={{ fontSize: 16, fontWeight: 600, opacity: 0.8, marginTop: 5 }}>Cuisiné frais chaque matin</div>
+            <div style={{ fontSize: 16, fontWeight: 600, opacity: 0.8 }}>100% Halal Certifié</div>
+            <div style={{ fontSize: 14, fontWeight: 800, color: COLORS.accent, marginTop: 15 }}>#HEALTHYDAKAR</div>
+          </div>
+        </div>
+      </div>
     </AbsoluteFill>
   );
 };
