@@ -5,31 +5,48 @@ import {
 } from 'remotion';
 
 // ============================================
-// DA: SOCIAL MEDIA MASTER INFOGRAPHIC (9:16)
+// DA: PREMIUM TECH-FOOD VIBRANT (Social Master)
 // ============================================
-// Style: High-Density, Editorial, Professional
-// Format: 1080x1920 (Instagram / Snapchat)
+// Format: 1080x1920 (Instagram / Snapchat / TikTok)
+// Style: High-Density, Data-Driven, Ultra-Pro
 // ============================================
 
 const COLORS = {
-  primary: '#0d2818',   // Deeper, more premium green
-  secondary: '#00ff87', // Neon green for punch
-  accent: '#ffbe0b',    // Vibrant gold
-  dark: '#050505',      // True black
+  primary: '#0d2818',   // Forest Deep
+  secondary: '#00ff87', // Neon Mint
+  accent: '#ffbe0b',    // Golden Yellow
+  dark: '#050505',
   light: '#f8fafc',
-  cream: '#fffdfa',     // Cleaner cream
+  white: '#ffffff',
+  cream: '#fffdfa',
 };
 
-const SectionTitle: React.FC<{ text: string; color?: string }> = ({ text, color = COLORS.primary }) => (
+const SectionHeader: React.FC<{ text: string; color?: string }> = ({ text, color = COLORS.secondary }) => (
   <div style={{
-    fontSize: 28,
+    fontSize: 22,
     fontWeight: 900,
     color,
-    letterSpacing: '0.05em',
-    marginBottom: 15,
-    borderLeft: `6px solid ${color}`,
-    paddingLeft: 15,
-    lineHeight: 1
+    letterSpacing: '0.15em',
+    marginBottom: 12,
+    textTransform: 'uppercase',
+    display: 'flex',
+    alignItems: 'center',
+    gap: 10
+  }}>
+    <div style={{ width: 30, height: 4, backgroundColor: color }} />
+    {text}
+  </div>
+);
+
+const MacroTag: React.FC<{ text: string }> = ({ text }) => (
+  <div style={{
+    backgroundColor: 'rgba(0, 255, 135, 0.15)',
+    color: COLORS.secondary,
+    padding: '6px 12px',
+    borderRadius: 8,
+    fontSize: 12,
+    fontWeight: 900,
+    border: `1px solid ${COLORS.secondary}40`,
   }}>
     {text}
   </div>
@@ -45,7 +62,7 @@ const QRCode: React.FC<{ size?: number; color?: string }> = ({ size = 180, color
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    boxShadow: '0 20px 40px rgba(0,0,0,0.1)'
+    boxShadow: '0 20px 40px rgba(0,0,0,0.2)'
   }}>
     <svg width={size - 30} height={size - 30} viewBox="0 0 100 100">
       <rect fill={color} x="5" y="5" width="25" height="25" rx="3" />
@@ -91,7 +108,6 @@ const QRCode: React.FC<{ size?: number; color?: string }> = ({ size = 180, color
   </div>
 );
 
-// Mouse Cursor Component
 const MouseCursor: React.FC<{ size?: number }> = ({ size = 24 }) => (
   <svg 
     width={size} 
@@ -114,114 +130,118 @@ const MouseCursor: React.FC<{ size?: number }> = ({ size = 24 }) => (
 
 export const FlyerSocial: React.FC = () => {
   return (
-    <AbsoluteFill style={{ backgroundColor: COLORS.cream }}>
-      {/* 1. HEADER (Mission) */}
-      <div style={{ backgroundColor: COLORS.primary, padding: '60px 50px 80px', color: 'white' }}>
-        <div style={{ fontSize: 18, fontWeight: 700, color: COLORS.secondary, letterSpacing: '0.3em', marginBottom: 15 }}>HEALTHY DAKAR</div>
-        <div style={{ fontSize: 72, fontWeight: 900, lineHeight: 1, marginBottom: 25 }}>TA RÉVOLUTION<br />NUTRITION.</div>
-        <div style={{ fontSize: 20, color: 'rgba(255,255,255,0.8)', lineHeight: 1.5, maxWidth: '80%' }}>
-          Plus qu'un repas, un partenaire santé qui gère tout pour toi. Du petit-déj au dîner.
+    <AbsoluteFill style={{ backgroundColor: COLORS.dark, color: 'white' }}>
+      {/* Background Gradient */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        background: `radial-gradient(circle at 20% 20%, ${COLORS.primary} 0%, transparent 50%), radial-gradient(circle at 80% 80%, ${COLORS.primary} 0%, transparent 50%)`,
+        opacity: 0.6
+      }} />
+
+      {/* 1. HEADER - BRAND PROMISE */}
+      <div style={{ padding: '80px 60px 40px', position: 'relative' }}>
+        <div style={{ fontSize: 20, fontWeight: 700, color: COLORS.secondary, letterSpacing: '0.4em', marginBottom: 15 }}>HEALTHY DAKAR</div>
+        <div style={{ fontSize: 84, fontWeight: 900, lineHeight: 0.9, letterSpacing: '-0.04em' }}>TA SANTÉ EN<br /><span style={{ color: COLORS.secondary }}>TEMPS RÉEL.</span></div>
+        <div style={{ fontSize: 22, color: 'rgba(255,255,255,0.6)', marginTop: 30, lineHeight: 1.4, maxWidth: '90%' }}>
+          La plateforme qui calcule tout pour toi. Mangez avec précision, vivez avec passion.
         </div>
       </div>
 
-      <div style={{ marginTop: -40, padding: '0 40px', display: 'flex', flexDirection: 'column', gap: 40 }}>
+      <div style={{ padding: '0 50px', display: 'flex', flexDirection: 'column', gap: 35, position: 'relative' }}>
         
-        {/* 2. LE MENU À LA CARTE (L'Essentiel) */}
-        <div style={{ backgroundColor: 'white', borderRadius: 40, padding: 35, boxShadow: '0 15px 40px rgba(0,0,0,0.05)' }}>
-          <SectionTitle text="MENU À LA CARTE" />
-          <div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 16, color: '#64748b', lineHeight: 1.6, marginBottom: 15 }}>
-                Plats gourmands cuisinés chaque matin. 100% frais, 100% Halal.
-              </div>
-              <div style={{ display: 'flex', gap: 10 }}>
-                <div style={{ fontSize: 13, fontWeight: 800, backgroundColor: COLORS.cream, color: COLORS.primary, padding: '6px 12px', borderRadius: 8 }}>+30 PLATS</div>
-                <div style={{ fontSize: 13, fontWeight: 800, backgroundColor: '#f0fdf4', color: COLORS.secondary, padding: '6px 12px', borderRadius: 8 }}>DÈS 3 500 F</div>
-              </div>
-            </div>
-            <div style={{ width: 140, height: 140, borderRadius: 24, overflow: 'hidden' }}>
-              <Img src={staticFile('img/bowl-poulet-mais.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-            </div>
+        {/* 2. BOWL BUILDER - INNOVATION */}
+        <div style={{ backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 45, padding: 40, border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(20px)' }}>
+          <SectionHeader text="Crée ton Bowl" />
+          <div style={{ fontSize: 36, fontWeight: 900, marginBottom: 15 }}>LE CHEF, C'EST TOI.</div>
+          <div style={{ fontSize: 18, color: 'rgba(255,255,255,0.7)', lineHeight: 1.6, marginBottom: 25 }}>
+            Choisis tes ingrédients, le site calcule instantanément tes <b>Kcal, Protéines, Glucides et Lipides.</b>
+          </div>
+          <div style={{ display: 'flex', gap: 12 }}>
+            <MacroTag text="CALCUL EN DIRECT" />
+            <MacroTag text="SUR MESURE" />
+            <MacroTag text="TRANSPARENCE" />
           </div>
         </div>
 
-        {/* 3. BOWL BUILDER & ENERGY (Custom & Boost) */}
-        <div style={{ display: 'flex', gap: 20 }}>
-          <div style={{ flex: 1, backgroundColor: COLORS.dark, borderRadius: 40, padding: 30, color: 'white' }}>
-            <div style={{ fontSize: 20, fontWeight: 900, color: COLORS.secondary, marginBottom: 10 }}>CRÉE TON BOWL</div>
-            <div style={{ fontSize: 14, opacity: 0.7, marginBottom: 20 }}>Ton chef c'est toi. Kcal & Macros calculés en temps réel.</div>
-            <div style={{ fontSize: 12, fontWeight: 800, border: `1px solid ${COLORS.secondary}`, padding: '8px 12px', borderRadius: 10, display: 'inline-block' }}>PERSONNALISATION TOTALE</div>
+        {/* 3. ABONNEMENTS - ROUTINE */}
+        <div style={{ backgroundColor: COLORS.primary, borderRadius: 45, padding: 40, border: `2px solid ${COLORS.secondary}40`, boxShadow: `0 20px 60px ${COLORS.primary}` }}>
+          <SectionHeader text="Abonnements" color={COLORS.secondary} />
+          <div style={{ fontSize: 36, fontWeight: 900, marginBottom: 15 }}>DISCIPLINE AUTOMATIQUE.</div>
+          <div style={{ fontSize: 18, color: 'rgba(255,255,255,0.8)', lineHeight: 1.6, marginBottom: 25 }}>
+            Planifie ta semaine (Lundi au Dimanche). Reçois tes repas sans y penser. Idéal pour atteindre tes objectifs sportifs.
           </div>
-          <div style={{ flex: 1, backgroundColor: COLORS.accent, borderRadius: 40, padding: 30, color: 'white' }}>
-            <div style={{ fontSize: 20, fontWeight: 900, color: 'white', marginBottom: 10 }}>SHOTS & ENERGY</div>
-            <div style={{ fontSize: 14, opacity: 0.9, marginBottom: 20 }}>Shots Détox, Energy Balls & Smoothies Protéinés.</div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ fontSize: 16, fontWeight: 900 }}>✓ ÉCONOMISE -20%</div>
+            <div style={{ fontSize: 16, fontWeight: 900 }}>✓ SANS ENGAGEMENT</div>
+          </div>
+        </div>
+
+        {/* 4. MENU & BOOST (Grid) */}
+        <div style={{ display: 'flex', gap: 25 }}>
+          <div style={{ flex: 1.2, backgroundColor: 'white', borderRadius: 40, padding: 30, color: COLORS.dark }}>
+            <div style={{ fontSize: 18, fontWeight: 900, color: COLORS.primary, marginBottom: 10 }}>MENU À LA CARTE</div>
+            <div style={{ fontSize: 14, fontWeight: 600, color: '#64748b', marginBottom: 20 }}>+30 plats analysés par nos nutritionnistes.</div>
+            <div style={{ width: '100%', height: 120, borderRadius: 20, overflow: 'hidden' }}>
+              <Img src={staticFile('img/bowl-poulet-mais.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            </div>
+          </div>
+          <div style={{ flex: 1, backgroundColor: COLORS.accent, borderRadius: 40, padding: 30, color: COLORS.dark }}>
+            <div style={{ fontSize: 18, fontWeight: 900, marginBottom: 10 }}>SHOTS & ENERGY</div>
+            <div style={{ fontSize: 14, fontWeight: 700, opacity: 0.8, marginBottom: 15 }}>Booste ton énergie naturellement.</div>
             <div style={{ width: 80, height: 80, borderRadius: 15, overflow: 'hidden' }}>
               <Img src={staticFile('img/shot-mix.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
           </div>
         </div>
 
-        {/* 4. ABONNEMENTS (Routine & Gain de temps) */}
-        <div style={{ backgroundColor: COLORS.cream, borderRadius: 40, padding: 35, border: `2px solid ${COLORS.primary}` }}>
-          <SectionTitle text="ABONNEMENTS" />
-          <div style={{ fontSize: 32, fontWeight: 900, color: COLORS.primary, marginBottom: 10 }}>PLANIFIE TA SEMAINE.</div>
-          <div style={{ fontSize: 16, color: '#64748b', lineHeight: 1.6, marginBottom: 20 }}>
-            Économise du temps et de l'argent. Tes repas livrés automatiquement selon tes objectifs.
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div style={{ fontSize: 14, fontWeight: 800, color: COLORS.primary }}>✓ ÉCONOMISE -20%</div>
-            <div style={{ fontSize: 14, fontWeight: 800, color: COLORS.primary }}>✓ SANS ENGAGEMENT</div>
-          </div>
-        </div>
-
-        {/* 5. L'IMPORTANCE (Le Rôle) */}
-        <div style={{ textAlign: 'center', padding: '10px 0' }}>
-          <div style={{ fontSize: 16, fontWeight: 800, color: COLORS.primary, letterSpacing: '0.15em', marginBottom: 20 }}>POURQUOI UTILISER HEALTHY.SN ?</div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 15 }}>
-            {[
-              { icon: '⏰', text: 'Gagne 10h/semaine' },
-              { icon: '📊', text: 'Suis tes Macros' },
-              { icon: '❤️', text: 'Vivre en Santé' },
-              { icon: '🚀', text: 'Boost Performance' },
-            ].map((item, i) => (
-              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, backgroundColor: 'white', padding: '15px', borderRadius: 20, border: '1px solid #f1f5f9' }}>
-                <span style={{ fontSize: 24 }}>{item.icon}</span>
-                <span style={{ fontSize: 13, fontWeight: 800, color: COLORS.dark }}>{item.text}</span>
-              </div>
-            ))}
-          </div>
+        {/* 5. WHY US - VALUES */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+          {[
+            { icon: '🥦', text: '100% Frais' },
+            { icon: '✅', text: '100% Halal' },
+            { icon: '🚀', text: 'Livraison Express' },
+            { icon: '⏰', text: 'Gain de 10h/sem' },
+          ].map((item, i) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 15, backgroundColor: 'rgba(255,255,255,0.05)', padding: '15px 20px', borderRadius: 25 }}>
+              <span style={{ fontSize: 24 }}>{item.icon}</span>
+              <span style={{ fontSize: 14, fontWeight: 800, color: COLORS.white }}>{item.text}</span>
+            </div>
+          ))}
         </div>
       </div>
 
-      {/* 6. FOOTER (CTA & QR) */}
-      <div style={{ marginTop: 'auto', backgroundColor: COLORS.primary, padding: '50px 40px', borderTopLeftRadius: 60, borderTopRightRadius: 60, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 30 }}>
-        <div style={{ textAlign: 'center', position: 'relative' }}>
-          <div style={{ 
-            fontSize: 52, 
-            fontWeight: 900, 
-            color: 'white', 
-            backgroundColor: 'rgba(255,255,255,0.1)',
-            padding: '15px 40px',
-            borderRadius: '20px',
-            border: `2px solid ${COLORS.secondary}`,
-            boxShadow: `0 0 20px ${COLORS.secondary}40`,
-            display: 'inline-block',
-            marginBottom: 15,
-            position: 'relative'
-          }}>
-            www.healthy.sn
-            <div style={{ position: 'absolute', bottom: -15, right: -10 }}>
-              <MouseCursor size={32} />
+      {/* 6. FOOTER - CONVERSION */}
+      <div style={{ marginTop: 'auto', backgroundColor: COLORS.white, padding: '60px 50px 80px', borderTopLeftRadius: 70, borderTopRightRadius: 70, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 40, position: 'relative' }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ position: 'relative', display: 'inline-block' }}>
+            <div style={{ 
+              fontSize: 56, 
+              fontWeight: 950, 
+              color: COLORS.primary,
+              backgroundColor: COLORS.cream,
+              padding: '15px 45px',
+              borderRadius: '25px',
+              border: `3px solid ${COLORS.primary}`,
+              boxShadow: `0 10px 30px rgba(0,0,0,0.1)`,
+              letterSpacing: '-0.02em'
+            }}>
+              www.healthy.sn
+            </div>
+            <div style={{ position: 'absolute', bottom: -20, right: -15 }}>
+              <MouseCursor size={40} />
             </div>
           </div>
-          <div style={{ fontSize: 18, color: COLORS.secondary, fontWeight: 700, letterSpacing: '0.1em', marginTop: 10 }}>TA PLATEFORME NUTRITION À DAKAR</div>
+          <div style={{ fontSize: 20, color: COLORS.primary, fontWeight: 800, letterSpacing: '0.1em', marginTop: 30 }}>COMMANDEZ VOTRE SANTÉ EN 1 CLIC</div>
         </div>
         
-        <QRCode size={220} color={COLORS.primary} />
-        
-        <div style={{ textAlign: 'center', color: 'white' }}>
-          <div style={{ fontSize: 28, fontWeight: 900, marginBottom: 5 }}>📞 +221 78 598 71 43</div>
-          <div style={{ fontSize: 16, opacity: 0.7 }}>Livraison 6h - 23h • Partout à Dakar</div>
+        <div style={{ display: 'flex', gap: 40, alignItems: 'center' }}>
+          <QRCode size={200} color={COLORS.primary} />
+          <div style={{ textAlign: 'left', color: COLORS.primary }}>
+            <div style={{ fontSize: 22, fontWeight: 900 }}>📞 +221 78 598 71 43</div>
+            <div style={{ fontSize: 16, fontWeight: 700, opacity: 0.7, marginTop: 5 }}>Livraison Dakar • 6h - 23h</div>
+            <div style={{ fontSize: 16, fontWeight: 700, color: COLORS.secondary, marginTop: 10 }}>#HealthyDakar #NutritionPro</div>
+          </div>
         </div>
       </div>
     </AbsoluteFill>
