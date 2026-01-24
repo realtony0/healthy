@@ -91,6 +91,27 @@ const QRCode: React.FC<{ size?: number; color?: string }> = ({ size = 180, color
   </div>
 );
 
+// Mouse Cursor Component
+const MouseCursor: React.FC<{ size?: number }> = ({ size = 24 }) => (
+  <svg 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    style={{ 
+      filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
+      transform: 'rotate(-15deg)'
+    }}
+  >
+    <path 
+      d="M3 3L10.07 19.97L12.58 12.58L19.97 10.07L3 3Z" 
+      fill="white" 
+      stroke={COLORS.primary} 
+      strokeWidth="2" 
+    />
+  </svg>
+);
+
 export const FlyerSocial: React.FC = () => {
   return (
     <AbsoluteFill style={{ backgroundColor: COLORS.cream }}>
@@ -174,9 +195,26 @@ export const FlyerSocial: React.FC = () => {
 
       {/* 6. FOOTER (CTA & QR) */}
       <div style={{ marginTop: 'auto', backgroundColor: COLORS.primary, padding: '50px 40px', borderTopLeftRadius: 60, borderTopRightRadius: 60, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 30 }}>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: 56, fontWeight: 900, color: 'white', marginBottom: 5 }}>healthy.sn</div>
-          <div style={{ fontSize: 18, color: COLORS.secondary, fontWeight: 700, letterSpacing: '0.1em' }}>TA PLATEFORME NUTRITION À DAKAR</div>
+        <div style={{ textAlign: 'center', position: 'relative' }}>
+          <div style={{ 
+            fontSize: 52, 
+            fontWeight: 900, 
+            color: 'white', 
+            backgroundColor: 'rgba(255,255,255,0.1)',
+            padding: '15px 40px',
+            borderRadius: '20px',
+            border: `2px solid ${COLORS.secondary}`,
+            boxShadow: `0 0 20px ${COLORS.secondary}40`,
+            display: 'inline-block',
+            marginBottom: 15,
+            position: 'relative'
+          }}>
+            www.healthy.sn
+            <div style={{ position: 'absolute', bottom: -15, right: -10 }}>
+              <MouseCursor size={32} />
+            </div>
+          </div>
+          <div style={{ fontSize: 18, color: COLORS.secondary, fontWeight: 700, letterSpacing: '0.1em', marginTop: 10 }}>TA PLATEFORME NUTRITION À DAKAR</div>
         </div>
         
         <QRCode size={220} color={COLORS.primary} />
