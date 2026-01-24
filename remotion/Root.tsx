@@ -31,36 +31,12 @@ export const RemotionRoot: React.FC = () => {
         width={1080}
         height={1920}
       />
-      {/* 5 Flyers Professionnels - Format A4 Paysage (300 DPI) */}
+      {/* Flyer Master Social Media - Format 9:16 (Snapchat/Instagram) */}
       <Still
-        id="Flyer1-Brand"
+        id="FlyerMaster"
         component={Flyer1_Brand}
-        width={3508}
-        height={2480}
-      />
-      <Still
-        id="Flyer2-Menu"
-        component={Flyer2_Menu}
-        width={3508}
-        height={2480}
-      />
-      <Still
-        id="Flyer3-Benefits"
-        component={Flyer3_Benefits}
-        width={3508}
-        height={2480}
-      />
-      <Still
-        id="Flyer4-Subscriptions"
-        component={Flyer4_Subscriptions}
-        width={3508}
-        height={2480}
-      />
-      <Still
-        id="Flyer5-HowItWorks"
-        component={Flyer5_HowItWorks}
-        width={3508}
-        height={2480}
+        width={1080}
+        height={1920}
       />
     </>
   );

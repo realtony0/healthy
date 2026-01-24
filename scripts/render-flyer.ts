@@ -5,11 +5,7 @@ import path from 'path';
 const compositionId = process.argv[2];
 
 const ALL_FLYERS = [
-  'Flyer1-Brand',
-  'Flyer2-Menu', 
-  'Flyer3-Benefits',
-  'Flyer4-Subscriptions',
-  'Flyer5-HowItWorks',
+  'FlyerMaster',
 ];
 
 async function renderFlyer(id: string, bundleLocation: string) {
