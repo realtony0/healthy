@@ -6,7 +6,6 @@ import {
   Img,
   staticFile,
   Easing,
-  Sequence,
   Series,
 } from 'remotion';
 import React from 'react';
@@ -38,7 +37,7 @@ const GrainOverlay: React.FC = () => (
 );
 
 const MovingGradient: React.FC<{ frame: number }> = ({ frame }) => {
-  const rot = interpolate(frame, [0, 300], [0, 360]);
+  const rot = interpolate(frame, [0, 300], [0, 360], { extrapolateRight: 'extend' });
   return (
     <div style={{
       position: 'absolute',
@@ -95,7 +94,9 @@ const ProMobile: React.FC<{ frame: number; children: React.ReactNode; scrollY?: 
   );
 };
 
-const KineticTitle: React.FC<{ text: string; frame: number; delay?: number; color?: string }> = ({ text, frame, delay = 0, color = COLORS.white }) => {
+const KineticTitle: React.FC<{ text: string; frame: number; delay?: number; color?: string; size?: number }> = ({ 
+  text, frame, delay = 0, color = COLORS.white, size = 80 
+}) => {
   const f = frame - delay;
   const opacity = interpolate(f, [0, 15], [0, 1], { extrapolateRight: 'clamp' });
   const y = interpolate(f, [0, 20], [40, 0], { 
@@ -105,7 +106,7 @@ const KineticTitle: React.FC<{ text: string; frame: number; delay?: number; colo
 
   return (
     <div style={{
-      fontSize: 80,
+      fontSize: size,
       fontWeight: 900,
       color,
       lineHeight: 0.9,
@@ -119,9 +120,33 @@ const KineticTitle: React.FC<{ text: string; frame: number; delay?: number; colo
   );
 };
 
+const MacroBadge: React.FC<{ frame: number; delay: number; text: string }> = ({ frame, delay, text }) => {
+  const f = frame - delay;
+  const scale = spring({ frame: f, fps: 30, config: { damping: 10 } });
+  const opacity = interpolate(f, [0, 10], [0, 1], { extrapolateRight: 'clamp' });
+
+  return (
+    <div style={{
+      backgroundColor: COLORS.secondary,
+      color: COLORS.primary,
+      padding: '8px 16px',
+      borderRadius: 12,
+      fontSize: 16,
+      fontWeight: 900,
+      opacity,
+      transform: `scale(${scale})`,
+      display: 'inline-block',
+      boxShadow: '0 4px 15px rgba(0,255,135,0.3)'
+    }}>
+      {text}
+    </div>
+  );
+};
+
 // --- Scenes ---
 
-const Intro: React.FC<{ frame: number }> = ({ frame }) => {
+const Intro: React.FC = () => {
+  const frame = useCurrentFrame();
   return (
     <AbsoluteFill style={{ backgroundColor: COLORS.dark }}>
       <MovingGradient frame={frame} />
@@ -148,7 +173,7 @@ const Intro: React.FC<{ frame: number }> = ({ frame }) => {
             lineHeight: 1.2,
             opacity: interpolate(frame, [50, 70], [0, 1], { extrapolateRight: 'clamp' })
           }}>
-            REPAS SAINS, SIMPLES<br />ET ULTRA-RAPIDES
+            L'EXCELLENCE NUTRITIONNELLE<br />À CHAQUE REPAS
           </div>
         </div>
       </AbsoluteFill>
@@ -156,91 +181,148 @@ const Intro: React.FC<{ frame: number }> = ({ frame }) => {
   );
 };
 
-const Discovery: React.FC<{ frame: number }> = ({ frame }) => {
-  const scrollY = interpolate(frame, [30, 400], [0, -1200], { 
+const NutritionDetail: React.FC = () => {
+  const frame = useCurrentFrame();
+  const scrollY = interpolate(frame, [30, 300], [0, -400], { 
     extrapolateRight: 'clamp',
     easing: Easing.inOut(Easing.quad)
   });
 
-  const dishes = [
-    { name: 'Bowl Poulet Signature', price: '3 500 F', img: 'img/bowl-poulet-mais.jpeg' },
-    { name: 'Poisson aux Herbes', price: '3 900 F', img: 'img/poisson-blanc-herbes.jpeg' },
-    { name: 'Bœuf Patate Douce', price: '4 200 F', img: 'img/boeuf-puree-patate-douce.jpeg' },
-    { name: 'Energy Balls Mix', price: '2 500 F', img: 'img/energy-balls-mix.jpeg' },
-  ];
-
   return (
     <AbsoluteFill style={{ backgroundColor: COLORS.primary }}>
       <MovingGradient frame={frame} />
-      <div style={{ 
-        position: 'absolute', 
-        top: 100, 
-        left: 0, 
-        right: 0, 
-        textAlign: 'center',
-        zIndex: 10 
-      }}>
-        <div style={{ 
-          fontSize: 48, 
-          fontWeight: 900, 
-          color: COLORS.white,
-          opacity: interpolate(frame, [0, 20], [0, 1], { extrapolateRight: 'clamp' })
-        }}>
-          TOUT À PORTÉE DE CLIC
+      <div style={{ padding: '80px 60px' }}>
+        <KineticTitle text="Nutrition" frame={frame} delay={0} size={60} />
+        <KineticTitle text="Maîtrisée" frame={frame} delay={10} color={COLORS.secondary} size={100} />
+        <div style={{ height: 30 }} />
+        <div style={{ fontSize: 24, color: COLORS.white, opacity: 0.8, maxWidth: 500, fontWeight: 500 }}>
+          Chaque plat est analysé. Kcal, protéines, glucides : vous savez exactement ce que vous mangez.
         </div>
-        <div style={{ 
-          fontSize: 24, 
-          color: COLORS.secondary, 
-          fontWeight: 700,
-          marginTop: 10,
-          opacity: interpolate(frame, [15, 35], [0, 1], { extrapolateRight: 'clamp' })
-        }}>
-          www.healthy.sn
+      </div>
+
+      <AbsoluteFill style={{ justifyContent: 'flex-end', alignItems: 'center', bottom: -100 }}>
+        <ProMobile frame={frame} scrollY={scrollY}>
+          <div style={{ padding: '80px 30px' }}>
+            <div style={{ borderRadius: 30, overflow: 'hidden', boxShadow: '0 20px 40px rgba(0,0,0,0.1)', marginBottom: 30 }}>
+              <Img src={staticFile('img/bowl-poulet-mais.jpeg')} style={{ width: '100%', height: 300, objectFit: 'cover' }} />
+            </div>
+            <div style={{ fontSize: 28, fontWeight: 900, color: COLORS.primary, marginBottom: 20 }}>Bowl Poulet Signature</div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 15 }}>
+              <MacroBadge frame={frame} delay={60} text="450 kcal" />
+              <MacroBadge frame={frame} delay={70} text="35g Protéines" />
+              <MacroBadge frame={frame} delay={80} text="42g Glucides" />
+            </div>
+          </div>
+        </ProMobile>
+      </AbsoluteFill>
+    </AbsoluteFill>
+  );
+};
+
+const BowlBuilder: React.FC = () => {
+  const frame = useCurrentFrame();
+  return (
+    <AbsoluteFill style={{ backgroundColor: COLORS.dark }}>
+      <MovingGradient frame={frame} />
+      <div style={{ padding: 80, textAlign: 'right' }}>
+        <KineticTitle text="Crée ton" frame={frame} delay={0} size={60} />
+        <KineticTitle text="Bowl" frame={frame} delay={10} color={COLORS.secondary} size={120} />
+        <div style={{ height: 30 }} />
+        <div style={{ fontSize: 24, color: COLORS.white, opacity: 0.8, fontWeight: 500 }}>
+          Le chef, c'est vous. Choisissez vos ingrédients,<br />nous calculons vos macros en temps réel.
+        </div>
+      </div>
+
+      <AbsoluteFill style={{ justifyContent: 'center', alignItems: 'flex-start', left: 60, top: 250 }}>
+        <ProMobile frame={frame}>
+          <div style={{ padding: '80px 20px' }}>
+            <div style={{ fontSize: 24, fontWeight: 900, color: COLORS.primary, marginBottom: 30 }}>Composez votre Bowl</div>
+            {['Base: Riz Complet', 'Protéine: Bœuf', 'Légumes: Brocolis', 'Sauce: Healthy'].map((item, i) => (
+              <div key={i} style={{ 
+                padding: 20, 
+                backgroundColor: i === (Math.floor(frame / 30) % 4) ? COLORS.secondary : '#f1f5f9', 
+                borderRadius: 15, 
+                marginBottom: 10,
+                fontWeight: 800,
+                color: COLORS.primary,
+                transition: 'all 0.3s'
+              }}>
+                {item}
+              </div>
+            ))}
+            <div style={{ marginTop: 40, padding: 25, backgroundColor: COLORS.primary, borderRadius: 20, color: 'white' }}>
+              <div style={{ fontSize: 14, opacity: 0.7 }}>TOTAL CALCULÉ</div>
+              <div style={{ fontSize: 32, fontWeight: 900 }}>520 kcal</div>
+              <div style={{ fontSize: 20, fontWeight: 700, color: COLORS.secondary }}>42g Protéines</div>
+            </div>
+          </div>
+        </ProMobile>
+      </AbsoluteFill>
+    </AbsoluteFill>
+  );
+};
+
+const Subscriptions: React.FC = () => {
+  const frame = useCurrentFrame();
+  return (
+    <AbsoluteFill style={{ backgroundColor: COLORS.primary }}>
+      <MovingGradient frame={frame} />
+      <div style={{ padding: 80 }}>
+        <KineticTitle text="Abonnements" frame={frame} delay={0} color={COLORS.secondary} size={80} />
+        <div style={{ height: 20 }} />
+        <div style={{ fontSize: 32, color: COLORS.white, fontWeight: 800, lineHeight: 1.2 }}>
+          PLANIFIEZ VOTRE SEMAINE,<br />ON S'OCCUPE DU RESTE.
         </div>
       </div>
 
       <AbsoluteFill style={{ justifyContent: 'center', alignItems: 'center', top: 150 }}>
-        <ProMobile frame={frame} scrollY={scrollY}>
-          {/* Mock Site Content */}
-          <div style={{ padding: '80px 20px' }}>
-            <div style={{ fontSize: 32, fontWeight: 900, color: COLORS.primary, marginBottom: 40 }}>Menu du Jour</div>
-            {dishes.map((dish, i) => (
-              <div key={i} style={{ marginBottom: 40, borderRadius: 30, overflow: 'hidden', backgroundColor: COLORS.light, boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}>
-                <Img src={staticFile(dish.img)} style={{ width: '100%', height: 240, objectFit: 'cover' }} />
-                <div style={{ padding: 25 }}>
-                  <div style={{ fontSize: 22, fontWeight: 900, color: COLORS.primary }}>{dish.name}</div>
-                  <div style={{ fontSize: 28, fontWeight: 900, color: COLORS.secondary, marginTop: 10 }}>{dish.price}</div>
-                </div>
+        <div style={{ display: 'flex', gap: 30, transform: `scale(${spring({ frame, fps: 30 })})` }}>
+          {[
+            { day: 'LUN', dish: 'Bowl Poulet' },
+            { day: 'MAR', dish: 'Poisson Herbes' },
+            { day: 'MER', dish: 'Bœuf Patate' },
+          ].map((item, i) => (
+            <div key={i} style={{ 
+              width: 180, 
+              backgroundColor: 'white', 
+              borderRadius: 30, 
+              padding: 25, 
+              textAlign: 'center',
+              boxShadow: '0 20px 40px rgba(0,0,0,0.2)'
+            }}>
+              <div style={{ fontSize: 20, fontWeight: 900, color: COLORS.secondary, marginBottom: 10 }}>{item.day}</div>
+              <div style={{ width: 100, height: 100, borderRadius: 20, overflow: 'hidden', margin: '0 auto 15px' }}>
+                <Img src={staticFile('img/bowl-poulet-mais.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
-            ))}
-          </div>
-        </ProMobile>
+              <div style={{ fontSize: 16, fontWeight: 800, color: COLORS.primary }}>{item.dish}</div>
+            </div>
+          ))}
+        </div>
       </AbsoluteFill>
-      
-      {/* Floating Badge */}
-      <div style={{
-        position: 'absolute',
-        bottom: 80,
-        backgroundColor: COLORS.white,
-        padding: '25px 50px',
-        borderRadius: 50,
-        fontSize: 32,
-        fontWeight: 900,
-        color: COLORS.primary,
-        boxShadow: `0 20px 50px ${COLORS.secondary}40`,
-        opacity: interpolate(frame, [20, 40], [0, 1], { extrapolateRight: 'clamp' }),
-        transform: `scale(${spring({ frame: frame - 20, fps: 30 })})`,
-      }}>
-        COMMANDER MAINTENANT
+
+      <div style={{ position: 'absolute', bottom: 100, left: 0, right: 0, textAlign: 'center' }}>
+        <div style={{ 
+          display: 'inline-block', 
+          padding: '20px 40px', 
+          backgroundColor: COLORS.white, 
+          borderRadius: 50, 
+          fontSize: 24, 
+          fontWeight: 900, 
+          color: COLORS.primary,
+          boxShadow: `0 10px 30px ${COLORS.secondary}40`
+        }}>
+          LIVRAISON AUTOMATIQUE 🚀
+        </div>
       </div>
     </AbsoluteFill>
   );
 };
 
-const Concept: React.FC<{ frame: number }> = ({ frame }) => {
+const Concept: React.FC = () => {
+  const frame = useCurrentFrame();
   const items = [
-    { title: 'FRAIS & ÉQUILIBRÉS', desc: 'Préparés chaque matin', icon: '🥗' },
-    { title: '100% HALAL', desc: 'Certifié & nutritif', icon: '✅' },
+    { title: '100% FRAIS', desc: 'Cuisiné chaque matin', icon: '🥗' },
+    { title: '100% HALAL', desc: 'Certifié & authentique', icon: '✅' },
     { title: 'LIVRAISON EXPRESS', desc: 'Partout à Dakar', icon: '🚀' },
   ];
 
@@ -248,9 +330,7 @@ const Concept: React.FC<{ frame: number }> = ({ frame }) => {
     <AbsoluteFill style={{ backgroundColor: COLORS.dark }}>
       <MovingGradient frame={frame} />
       <div style={{ padding: 80 }}>
-        <div style={{ fontSize: 24, fontWeight: 700, color: COLORS.secondary, letterSpacing: '0.2em', marginBottom: 20 }}>NOTRE CONCEPT</div>
-        <div style={{ fontSize: 80, fontWeight: 900, color: COLORS.white, lineHeight: 1, marginBottom: 80 }}>LA QUALITÉ<br />SANS COMPROMIS</div>
-
+        <div style={{ fontSize: 24, fontWeight: 700, color: COLORS.secondary, letterSpacing: '0.2em', marginBottom: 20 }}>NOS ENGAGEMENTS</div>
         {items.map((item, i) => {
           const f = frame - (i * 20);
           return (
@@ -281,60 +361,12 @@ const Concept: React.FC<{ frame: number }> = ({ frame }) => {
           );
         })}
       </div>
-      
-      {/* Animated Food Overlays */}
-      <div style={{ 
-        position: 'absolute', 
-        bottom: -50, 
-        right: -50, 
-        width: 400, 
-        height: 400, 
-        borderRadius: '50%', 
-        backgroundColor: COLORS.secondary, 
-        opacity: 0.1, 
-        filter: 'blur(100px)' 
-      }} />
     </AbsoluteFill>
   );
 };
 
-const Features: React.FC<{ frame: number }> = ({ frame }) => {
-  const cards = [
-    { title: 'PAIEMENT FACILE', desc: 'Cash, Wave, Orange Money', icon: '💳' },
-    { title: 'RAPIDE & PRATIQUE', desc: 'Livraison 6h - 23h', icon: '⚡' },
-  ];
-
-  return (
-    <AbsoluteFill style={{ backgroundColor: COLORS.primary }}>
-      <MovingGradient frame={frame} />
-      <AbsoluteFill style={{ justifyContent: 'center', alignItems: 'center', gap: 40 }}>
-        <div style={{ fontSize: 64, fontWeight: 900, color: COLORS.white, textAlign: 'center', marginBottom: 40 }}>SIMPLE. RAPIDE.<br />PRATIQUE.</div>
-        
-        {cards.map((card, i) => (
-          <div key={i} style={{ 
-            width: '80%', 
-            backgroundColor: COLORS.white, 
-            borderRadius: 40, 
-            padding: 40, 
-            display: 'flex', 
-            gap: 30, 
-            alignItems: 'center',
-            transform: `scale(${spring({ frame: frame - (i * 15), fps: 30 })})`,
-            boxShadow: '0 20px 40px rgba(0,0,0,0.2)'
-          }}>
-            <div style={{ fontSize: 60 }}>{card.icon}</div>
-            <div>
-              <div style={{ fontSize: 28, fontWeight: 900, color: COLORS.primary }}>{card.title}</div>
-              <div style={{ fontSize: 18, color: '#64748b', fontWeight: 600 }}>{card.desc}</div>
-            </div>
-          </div>
-        ))}
-      </AbsoluteFill>
-    </AbsoluteFill>
-  );
-};
-
-const FinalCTA: React.FC<{ frame: number }> = ({ frame }) => {
+const FinalCTA: React.FC = () => {
+  const frame = useCurrentFrame();
   return (
     <AbsoluteFill style={{ backgroundColor: COLORS.dark }}>
       <MovingGradient frame={frame} />
@@ -353,8 +385,7 @@ const FinalCTA: React.FC<{ frame: number }> = ({ frame }) => {
             fontSize: 40, 
             fontWeight: 900, 
             color: COLORS.primary,
-            boxShadow: `0 0 50px ${COLORS.secondary}60`,
-            cursor: 'pointer'
+            boxShadow: `0 0 50px ${COLORS.secondary}60`
           }}>
             www.healthy.sn
           </div>
@@ -366,7 +397,7 @@ const FinalCTA: React.FC<{ frame: number }> = ({ frame }) => {
             opacity: 0.6,
             fontWeight: 600
           }}>
-            REJOIGNEZ LE MOUVEMENT.
+            COMMANDEZ VOTRE SANTÉ EN 1 CLIC.
           </div>
         </div>
       </AbsoluteFill>
@@ -375,25 +406,26 @@ const FinalCTA: React.FC<{ frame: number }> = ({ frame }) => {
 };
 
 export const Publicite: React.FC = () => {
-  const frame = useCurrentFrame();
-
   return (
     <AbsoluteFill style={{ fontFamily: 'system-ui, sans-serif', overflow: 'hidden' }}>
       <Series>
         <Series.Sequence durationInFrames={150}>
-          <Intro frame={frame} />
+          <Intro />
         </Series.Sequence>
-        <Series.Sequence durationInFrames={450}>
-          <Discovery frame={frame - 150} />
+        <Series.Sequence durationInFrames={360}>
+          <NutritionDetail />
         </Series.Sequence>
-        <Series.Sequence durationInFrames={450}>
-          <Concept frame={frame - 600} />
+        <Series.Sequence durationInFrames={360}>
+          <BowlBuilder />
+        </Series.Sequence>
+        <Series.Sequence durationInFrames={360}>
+          <Subscriptions />
         </Series.Sequence>
         <Series.Sequence durationInFrames={300}>
-          <Features frame={frame - 1050} />
+          <Concept />
         </Series.Sequence>
-        <Series.Sequence durationInFrames={450}>
-          <FinalCTA frame={frame - 1350} />
+        <Series.Sequence durationInFrames={270}>
+          <FinalCTA />
         </Series.Sequence>
       </Series>
     </AbsoluteFill>
