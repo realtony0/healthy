@@ -350,42 +350,143 @@ export default function CheckoutPage() {
                     Instructions {formData.paymentMethod === 'WAVE' ? 'Wave' : 'Orange Money'}
                   </div>
                   
-                  <div className="space-y-4">
-                    <p className={`font-bold text-lg ${
-                      formData.paymentMethod === 'WAVE' ? 'text-blue-900' : 'text-orange-900'
-                    }`}>
-                      Transférez <span className={`text-2xl font-black ${
-                        formData.paymentMethod === 'WAVE' ? 'text-blue-600' : 'text-orange-600'
-                      }`}>{formatPrice(total)}</span> FCFA au numéro suivant :
-                    </p>
+                  <div className="space-y-5">
+                    <div>
+                      <h3 className={`text-lg font-black mb-4 ${
+                        formData.paymentMethod === 'WAVE' ? 'text-blue-900' : 'text-orange-900'
+                      }`}>
+                        Comment payer ?
+                      </h3>
+                      <div className={`space-y-3 ${
+                        formData.paymentMethod === 'WAVE' ? 'text-blue-900' : 'text-orange-900'
+                      }`}>
+                        <div className="flex items-start gap-3">
+                          <div className={`w-7 h-7 rounded-lg flex items-center justify-center font-black text-xs flex-shrink-0 ${
+                            formData.paymentMethod === 'WAVE' ? 'bg-blue-500 text-white' : 'bg-orange-500 text-white'
+                          }`}>
+                            1
+                          </div>
+                          <div>
+                            <p className="font-black text-sm">Ouvrez l'app {formData.paymentMethod === 'WAVE' ? 'Wave' : 'Orange Money'}</p>
+                            <p className="text-xs font-medium opacity-70">Sur votre téléphone</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <div className={`w-7 h-7 rounded-lg flex items-center justify-center font-black text-xs flex-shrink-0 ${
+                            formData.paymentMethod === 'WAVE' ? 'bg-blue-500 text-white' : 'bg-orange-500 text-white'
+                          }`}>
+                            2
+                          </div>
+                          <div>
+                            <p className="font-black text-sm">Allez dans "Envoyer de l'argent"</p>
+                            <p className="text-xs font-medium opacity-70">Menu principal</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <div className={`w-7 h-7 rounded-lg flex items-center justify-center font-black text-xs flex-shrink-0 ${
+                            formData.paymentMethod === 'WAVE' ? 'bg-blue-500 text-white' : 'bg-orange-500 text-white'
+                          }`}>
+                            3
+                          </div>
+                          <div>
+                            <p className="font-black text-sm">Entrez le numéro ci-dessous</p>
+                            <p className="text-xs font-medium opacity-70">Copiez-collez facilement</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <div className={`w-7 h-7 rounded-lg flex items-center justify-center font-black text-xs flex-shrink-0 ${
+                            formData.paymentMethod === 'WAVE' ? 'bg-blue-500 text-white' : 'bg-orange-500 text-white'
+                          }`}>
+                            4
+                          </div>
+                          <div>
+                            <p className="font-black text-sm">Montant : <span className={`text-xl ${
+                              formData.paymentMethod === 'WAVE' ? 'text-blue-600' : 'text-orange-600'
+                            }`}>{formatPrice(total)}</span> FCFA</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <div className={`w-7 h-7 rounded-lg flex items-center justify-center font-black text-xs flex-shrink-0 ${
+                            formData.paymentMethod === 'WAVE' ? 'bg-blue-500 text-white' : 'bg-orange-500 text-white'
+                          }`}>
+                            5
+                          </div>
+                          <div>
+                            <p className="font-black text-sm">Dans "Référence", mettez votre <strong>nom complet</strong></p>
+                            <p className="text-xs font-medium opacity-70">Ex: "Amadou Diallo"</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-3">
+                          <div className={`w-7 h-7 rounded-lg flex items-center justify-center font-black text-xs flex-shrink-0 ${
+                            formData.paymentMethod === 'WAVE' ? 'bg-blue-500 text-white' : 'bg-orange-500 text-white'
+                          }`}>
+                            6
+                          </div>
+                          <div>
+                            <p className="font-black text-sm">Confirmez le transfert</p>
+                            <p className="text-xs font-medium opacity-70">Votre commande sera validée automatiquement</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                     
                     <div className={`bg-white p-6 rounded-2xl border-2 text-center ${
-                      formData.paymentMethod === 'WAVE' ? 'border-blue-100' : 'border-orange-100'
+                      formData.paymentMethod === 'WAVE' ? 'border-blue-200' : 'border-orange-200'
                     }`}>
                       <p className={`text-xs font-black uppercase tracking-widest mb-2 ${
                         formData.paymentMethod === 'WAVE' ? 'text-blue-400' : 'text-orange-400'
                       }`}>
                         Numéro {formData.paymentMethod === 'WAVE' ? 'Wave' : 'Orange Money'}
                       </p>
-                      <p className={`text-4xl font-black tracking-tighter ${
+                      <p className={`text-4xl font-black tracking-tighter mb-2 ${
                         formData.paymentMethod === 'WAVE' ? 'text-blue-600' : 'text-orange-600'
                       }`}>
                         78 598 71 43
                       </p>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          navigator.clipboard.writeText('785987143')
+                          alert('Numéro copié !')
+                        }}
+                        className={`text-xs font-bold uppercase tracking-widest ${
+                          formData.paymentMethod === 'WAVE' ? 'text-blue-500 hover:text-blue-600' : 'text-orange-500 hover:text-orange-600'
+                        }`}
+                      >
+                        📋 Copier le numéro
+                      </button>
                     </div>
 
-                    <div className={`p-4 rounded-xl border ${
+                    <div className={`p-5 rounded-xl border-2 ${
                       formData.paymentMethod === 'WAVE' 
-                        ? 'bg-blue-100/50 border-blue-200' 
-                        : 'bg-orange-100/50 border-orange-200'
+                        ? 'bg-blue-100/70 border-blue-300' 
+                        : 'bg-orange-100/70 border-orange-300'
                     }`}>
-                      <p className={`text-sm font-bold leading-relaxed text-center ${
+                      <p className={`text-sm font-black mb-2 ${
                         formData.paymentMethod === 'WAVE' ? 'text-blue-900' : 'text-orange-900'
                       }`}>
-                        ⚠️ <strong>Important :</strong> Indiquez votre <strong>nom complet</strong> ou le <strong>numéro de commande</strong> en référence du transfert.
-                        <br />
-                        Votre commande sera validée dès réception du paiement.
+                        ⚠️ Important
                       </p>
+                      <ul className={`text-xs font-bold leading-relaxed space-y-1.5 ${
+                        formData.paymentMethod === 'WAVE' ? 'text-blue-800' : 'text-orange-800'
+                      }`}>
+                        <li className="flex items-start gap-2">
+                          <span>•</span>
+                          <span>Mettez votre <strong>nom complet</strong> en référence (OBLIGATOIRE)</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span>•</span>
+                          <span>Votre commande sera validée dès réception du paiement</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span>•</span>
+                          <span>Vous recevrez une confirmation par WhatsApp</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span>•</span>
+                          <span>En cas de problème : <strong>78 598 71 43</strong></span>
+                        </li>
+                      </ul>
                     </div>
                   </div>
                 </div>

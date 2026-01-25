@@ -96,42 +96,150 @@ export default async function OrderSuccessPage({ params }: OrderSuccessPageProps
                   </h2>
                 </div>
                 
-                <div className="space-y-4 relative z-10">
-                  <p className={`font-bold text-lg ${
-                    order.payment?.method === 'WAVE' ? 'text-blue-900' : 'text-orange-900'
-                  }`}>
-                    Transférez <span className={`text-2xl font-black ${
-                      order.payment?.method === 'WAVE' ? 'text-blue-600' : 'text-orange-600'
-                    }`}>{formatPrice(order.totalAmount)}</span> FCFA au numéro suivant :
-                  </p>
+                <div className="space-y-6 relative z-10">
+                  <div>
+                    <h3 className={`text-xl font-black mb-4 ${
+                      order.payment?.method === 'WAVE' ? 'text-blue-900' : 'text-orange-900'
+                    }`}>
+                      Instructions de paiement
+                    </h3>
+                    <div className={`space-y-3 ${
+                      order.payment?.method === 'WAVE' ? 'text-blue-900' : 'text-orange-900'
+                    }`}>
+                      <div className="flex items-start gap-3">
+                        <div className={`w-8 h-8 rounded-xl flex items-center justify-center font-black text-sm flex-shrink-0 ${
+                          order.payment?.method === 'WAVE' ? 'bg-blue-500 text-white' : 'bg-orange-500 text-white'
+                        }`}>
+                          1
+                        </div>
+                        <div>
+                          <p className="font-black mb-1">Ouvrez l'application {order.payment?.method === 'WAVE' ? 'Wave' : 'Orange Money'}</p>
+                          <p className="text-sm font-medium opacity-80">Sur votre téléphone</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className={`w-8 h-8 rounded-xl flex items-center justify-center font-black text-sm flex-shrink-0 ${
+                          order.payment?.method === 'WAVE' ? 'bg-blue-500 text-white' : 'bg-orange-500 text-white'
+                        }`}>
+                          2
+                        </div>
+                        <div>
+                          <p className="font-black mb-1">Allez dans "Envoyer de l'argent"</p>
+                          <p className="text-sm font-medium opacity-80">Menu principal de l'app</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className={`w-8 h-8 rounded-xl flex items-center justify-center font-black text-sm flex-shrink-0 ${
+                          order.payment?.method === 'WAVE' ? 'bg-blue-500 text-white' : 'bg-orange-500 text-white'
+                        }`}>
+                          3
+                        </div>
+                        <div>
+                          <p className="font-black mb-1">Entrez le numéro ci-dessous</p>
+                          <p className="text-sm font-medium opacity-80">Copiez-collez le numéro</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className={`w-8 h-8 rounded-xl flex items-center justify-center font-black text-sm flex-shrink-0 ${
+                          order.payment?.method === 'WAVE' ? 'bg-blue-500 text-white' : 'bg-orange-500 text-white'
+                        }`}>
+                          4
+                        </div>
+                        <div>
+                          <p className="font-black mb-1">Montant : <span className={`text-2xl ${
+                            order.payment?.method === 'WAVE' ? 'text-blue-600' : 'text-orange-600'
+                          }`}>{formatPrice(order.totalAmount)}</span> FCFA</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className={`w-8 h-8 rounded-xl flex items-center justify-center font-black text-sm flex-shrink-0 ${
+                          order.payment?.method === 'WAVE' ? 'bg-blue-500 text-white' : 'bg-orange-500 text-white'
+                        }`}>
+                          5
+                        </div>
+                        <div>
+                          <p className="font-black mb-1">Dans "Référence" ou "Message", écrivez :</p>
+                          <div className={`mt-2 p-3 rounded-xl bg-white border-2 ${
+                            order.payment?.method === 'WAVE' ? 'border-blue-200' : 'border-orange-200'
+                          }`}>
+                            <p className={`font-black text-lg ${
+                              order.payment?.method === 'WAVE' ? 'text-blue-600' : 'text-orange-600'
+                            }`}>
+                              #{order.orderNumber}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <div className={`w-8 h-8 rounded-xl flex items-center justify-center font-black text-sm flex-shrink-0 ${
+                          order.payment?.method === 'WAVE' ? 'bg-blue-500 text-white' : 'bg-orange-500 text-white'
+                        }`}>
+                          6
+                        </div>
+                        <div>
+                          <p className="font-black mb-1">Confirmez le transfert</p>
+                          <p className="text-sm font-medium opacity-80">Votre commande sera validée automatiquement</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   
                   <div className={`bg-white p-6 rounded-2xl border-2 text-center ${
-                    order.payment?.method === 'WAVE' ? 'border-blue-100' : 'border-orange-100'
+                    order.payment?.method === 'WAVE' ? 'border-blue-200' : 'border-orange-200'
                   }`}>
                     <p className={`text-xs font-black uppercase tracking-widest mb-2 ${
                       order.payment?.method === 'WAVE' ? 'text-blue-400' : 'text-orange-400'
                     }`}>
                       Numéro {order.payment?.method === 'WAVE' ? 'Wave' : 'Orange Money'}
                     </p>
-                    <p className={`text-4xl font-black tracking-tighter ${
+                    <p className={`text-4xl font-black tracking-tighter mb-2 ${
                       order.payment?.method === 'WAVE' ? 'text-blue-600' : 'text-orange-600'
                     }`}>
                       78 598 71 43
                     </p>
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText('785987143')
+                        alert('Numéro copié !')
+                      }}
+                      className={`text-xs font-bold uppercase tracking-widest ${
+                        order.payment?.method === 'WAVE' ? 'text-blue-500 hover:text-blue-600' : 'text-orange-500 hover:text-orange-600'
+                      }`}
+                    >
+                      📋 Copier le numéro
+                    </button>
                   </div>
 
-                  <div className={`p-4 rounded-xl border ${
+                  <div className={`p-6 rounded-xl border-2 ${
                     order.payment?.method === 'WAVE'
-                      ? 'bg-blue-100/50 border-blue-200'
-                      : 'bg-orange-100/50 border-orange-200'
+                      ? 'bg-blue-50 border-blue-300'
+                      : 'bg-orange-50 border-orange-300'
                   }`}>
-                    <p className={`text-sm font-bold leading-relaxed ${
+                    <p className={`text-sm font-black mb-2 ${
                       order.payment?.method === 'WAVE' ? 'text-blue-900' : 'text-orange-900'
                     }`}>
-                      ⚠️ <strong>Important :</strong> Indiquez le numéro de commande <strong className="text-lg">#{order.orderNumber}</strong> en référence du transfert.
-                      <br />
-                      Votre commande sera validée dès réception du paiement.
+                      ⚠️ Important
                     </p>
+                    <ul className={`text-sm font-bold leading-relaxed space-y-2 ${
+                      order.payment?.method === 'WAVE' ? 'text-blue-800' : 'text-orange-800'
+                    }`}>
+                      <li className="flex items-start gap-2">
+                        <span>•</span>
+                        <span>La référence <strong className="text-base">#{order.orderNumber}</strong> est <strong>OBLIGATOIRE</strong></span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span>•</span>
+                        <span>Votre commande sera validée dès réception du paiement</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span>•</span>
+                        <span>Vous recevrez une confirmation par WhatsApp</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span>•</span>
+                        <span>En cas de problème, contactez-nous au <strong>78 598 71 43</strong></span>
+                      </li>
+                    </ul>
                   </div>
                 </div>
                 <div className={`absolute top-[-20px] right-[-20px] w-32 h-32 rounded-full blur-[40px] ${

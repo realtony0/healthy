@@ -241,20 +241,129 @@ function CommanderAbonnementContent() {
               </div>
 
               {formData.paymentMethod !== 'CASH' && (
-                <div className="p-8 bg-blue-50 border-2 border-blue-100 rounded-[2.5rem] space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
-                  <div className="flex items-center gap-3 text-blue-700 font-black uppercase text-xs tracking-widest">
+                <div className={`p-8 border-2 rounded-[2.5rem] space-y-5 animate-in fade-in slide-in-from-top-2 duration-300 ${
+                  formData.paymentMethod === 'WAVE' 
+                    ? 'bg-blue-50 border-blue-200' 
+                    : 'bg-orange-50 border-orange-200'
+                }`}>
+                  <div className={`flex items-center gap-3 font-black uppercase text-xs tracking-widest ${
+                    formData.paymentMethod === 'WAVE' ? 'text-blue-700' : 'text-orange-700'
+                  }`}>
                     <Sparkles size={16} />
-                    Instructions {formData.paymentMethod}
+                    Instructions {formData.paymentMethod === 'WAVE' ? 'Wave' : 'Orange Money'}
                   </div>
-                  <p className="text-blue-900 font-bold italic">
-                    Pour activer votre abonnement, effectuez le transfert de <span className="text-blue-600">{formatPrice(price)}</span> au numéro :
-                  </p>
-                  <div className="bg-white p-4 rounded-xl text-center border-2 border-blue-100">
-                    <p className="text-2xl font-black text-blue-600 tracking-tighter">78 598 71 43</p>
+                  
+                  <div className="space-y-4">
+                    <div>
+                      <h3 className={`text-base font-black mb-3 ${
+                        formData.paymentMethod === 'WAVE' ? 'text-blue-900' : 'text-orange-900'
+                      }`}>
+                        Étapes de paiement
+                      </h3>
+                      <div className={`space-y-2.5 text-sm ${
+                        formData.paymentMethod === 'WAVE' ? 'text-blue-900' : 'text-orange-900'
+                      }`}>
+                        <div className="flex items-start gap-2.5">
+                          <div className={`w-6 h-6 rounded-lg flex items-center justify-center font-black text-xs flex-shrink-0 ${
+                            formData.paymentMethod === 'WAVE' ? 'bg-blue-500 text-white' : 'bg-orange-500 text-white'
+                          }`}>
+                            1
+                          </div>
+                          <p className="font-black">Ouvrez l'app {formData.paymentMethod === 'WAVE' ? 'Wave' : 'Orange Money'}</p>
+                        </div>
+                        <div className="flex items-start gap-2.5">
+                          <div className={`w-6 h-6 rounded-lg flex items-center justify-center font-black text-xs flex-shrink-0 ${
+                            formData.paymentMethod === 'WAVE' ? 'bg-blue-500 text-white' : 'bg-orange-500 text-white'
+                          }`}>
+                            2
+                          </div>
+                          <p className="font-black">Allez dans "Envoyer de l'argent"</p>
+                        </div>
+                        <div className="flex items-start gap-2.5">
+                          <div className={`w-6 h-6 rounded-lg flex items-center justify-center font-black text-xs flex-shrink-0 ${
+                            formData.paymentMethod === 'WAVE' ? 'bg-blue-500 text-white' : 'bg-orange-500 text-white'
+                          }`}>
+                            3
+                          </div>
+                          <p className="font-black">Entrez le numéro : <strong className={`text-lg ${
+                            formData.paymentMethod === 'WAVE' ? 'text-blue-600' : 'text-orange-600'
+                          }`}>78 598 71 43</strong></p>
+                        </div>
+                        <div className="flex items-start gap-2.5">
+                          <div className={`w-6 h-6 rounded-lg flex items-center justify-center font-black text-xs flex-shrink-0 ${
+                            formData.paymentMethod === 'WAVE' ? 'bg-blue-500 text-white' : 'bg-orange-500 text-white'
+                          }`}>
+                            4
+                          </div>
+                          <p className="font-black">Montant : <span className={`text-xl ${
+                            formData.paymentMethod === 'WAVE' ? 'text-blue-600' : 'text-orange-600'
+                          }`}>{formatPrice(price)}</span> FCFA</p>
+                        </div>
+                        <div className="flex items-start gap-2.5">
+                          <div className={`w-6 h-6 rounded-lg flex items-center justify-center font-black text-xs flex-shrink-0 ${
+                            formData.paymentMethod === 'WAVE' ? 'bg-blue-500 text-white' : 'bg-orange-500 text-white'
+                          }`}>
+                            5
+                          </div>
+                          <p className="font-black">Dans "Référence", mettez votre <strong>nom complet</strong></p>
+                        </div>
+                        <div className="flex items-start gap-2.5">
+                          <div className={`w-6 h-6 rounded-lg flex items-center justify-center font-black text-xs flex-shrink-0 ${
+                            formData.paymentMethod === 'WAVE' ? 'bg-blue-500 text-white' : 'bg-orange-500 text-white'
+                          }`}>
+                            6
+                          </div>
+                          <p className="font-black">Confirmez le transfert</p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className={`bg-white p-5 rounded-xl text-center border-2 ${
+                      formData.paymentMethod === 'WAVE' ? 'border-blue-200' : 'border-orange-200'
+                    }`}>
+                      <p className={`text-xs font-black uppercase tracking-widest mb-2 ${
+                        formData.paymentMethod === 'WAVE' ? 'text-blue-400' : 'text-orange-400'
+                      }`}>
+                        Numéro {formData.paymentMethod === 'WAVE' ? 'Wave' : 'Orange Money'}
+                      </p>
+                      <p className={`text-3xl font-black tracking-tighter mb-2 ${
+                        formData.paymentMethod === 'WAVE' ? 'text-blue-600' : 'text-orange-600'
+                      }`}>
+                        78 598 71 43
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          navigator.clipboard.writeText('785987143')
+                          alert('Numéro copié !')
+                        }}
+                        className={`text-xs font-bold uppercase tracking-widest ${
+                          formData.paymentMethod === 'WAVE' ? 'text-blue-500 hover:text-blue-600' : 'text-orange-500 hover:text-orange-600'
+                        }`}
+                      >
+                        📋 Copier
+                      </button>
+                    </div>
+
+                    <div className={`p-4 rounded-xl border-2 ${
+                      formData.paymentMethod === 'WAVE' 
+                        ? 'bg-blue-100/70 border-blue-300' 
+                        : 'bg-orange-100/70 border-orange-300'
+                    }`}>
+                      <p className={`text-xs font-black mb-2 ${
+                        formData.paymentMethod === 'WAVE' ? 'text-blue-900' : 'text-orange-900'
+                      }`}>
+                        ⚠️ Important
+                      </p>
+                      <ul className={`text-xs font-bold leading-relaxed space-y-1 ${
+                        formData.paymentMethod === 'WAVE' ? 'text-blue-800' : 'text-orange-800'
+                      }`}>
+                        <li>• Mettez votre <strong>nom complet</strong> en référence (OBLIGATOIRE)</li>
+                        <li>• Votre abonnement sera activé dès réception du paiement</li>
+                        <li>• Vous recevrez une confirmation par WhatsApp</li>
+                      </ul>
+                    </div>
                   </div>
-                  <p className="text-xs font-bold text-blue-700/60 leading-relaxed italic">
-                    ⚠️ Mettez votre nom en référence. Votre programme sera activé dès réception.
-                  </p>
                 </div>
               )}
             </div>
