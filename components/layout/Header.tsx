@@ -43,10 +43,16 @@ function DarkModeToggle() {
     const isDark = document.documentElement.classList.contains('dark')
     const newTheme = isDark ? 'light' : 'dark'
     
+    console.log('Toggle theme:', { isDark, newTheme }) // Debug
+    
     if (newTheme === 'dark') {
       document.documentElement.classList.add('dark')
+      document.body.style.backgroundColor = '#030712'
+      document.body.style.color = '#f9fafb'
     } else {
       document.documentElement.classList.remove('dark')
+      document.body.style.backgroundColor = '#fffdfa'
+      document.body.style.color = '#111827'
     }
     
     localStorage.setItem('theme', newTheme)
@@ -54,6 +60,11 @@ function DarkModeToggle() {
     
     // Déclencher l'événement pour synchroniser avec ThemeProvider
     window.dispatchEvent(new Event('themechange'))
+    
+    // Force re-render
+    setTimeout(() => {
+      window.dispatchEvent(new Event('resize'))
+    }, 100)
   }
   
   if (!mounted) {
