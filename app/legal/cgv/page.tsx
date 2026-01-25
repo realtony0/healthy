@@ -109,19 +109,7 @@ export default function CGVPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-black text-[#1a472a] mb-4">8. Droit de Rétractation</h2>
-            <p>
-              Conformément à la législation sénégalaise, le client dispose d'un droit de rétractation de 7 jours à compter de la réception 
-              de la commande. Cependant, ce droit ne s'applique pas aux produits alimentaires périssables (repas préparés) qui ne peuvent 
-              être retournés pour des raisons d'hygiène et de sécurité alimentaire.
-            </p>
-            <p className="mt-4">
-              Pour les abonnements, le client peut annuler son abonnement à tout moment. Les repas déjà préparés et livrés ne sont pas remboursables.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-black text-[#1a472a] mb-4">9. Réclamations et Service Client</h2>
+            <h2 className="text-2xl font-black text-[#1a472a] mb-4">8. Réclamations et Service Client</h2>
             <p className="mb-3">Pour toute réclamation :</p>
             <ul className="list-disc pl-6 space-y-2">
               <li><strong>Email :</strong> <a href="mailto:contact@healthy.sn" className="text-[#1a472a] font-semibold hover:underline">contact@healthy.sn</a></li>
@@ -134,7 +122,7 @@ export default function CGVPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-black text-[#1a472a] mb-4">10. Responsabilité</h2>
+            <h2 className="text-2xl font-black text-[#1a472a] mb-4">9. Responsabilité</h2>
             <p>
               Healthy Dakar s'engage à fournir des produits de qualité, frais et conformes aux descriptions. En cas de non-conformité, 
               nous nous réservons le droit de remplacer le produit ou de rembourser le client.
@@ -145,7 +133,7 @@ export default function CGVPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-black text-[#1a472a] mb-4">11. Propriété Intellectuelle</h2>
+            <h2 className="text-2xl font-black text-[#1a472a] mb-4">10. Propriété Intellectuelle</h2>
             <p>
               Tous les éléments du site healthy.sn (textes, images, logos, design) sont la propriété exclusive de Healthy Dakar et sont 
               protégés par les lois sur la propriété intellectuelle. Toute reproduction est interdite sans autorisation préalable.
@@ -153,7 +141,7 @@ export default function CGVPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-black text-[#1a472a] mb-4">12. Données Personnelles</h2>
+            <h2 className="text-2xl font-black text-[#1a472a] mb-4">11. Données Personnelles</h2>
             <p>
               Les données personnelles collectées sont traitées conformément à notre <a href="/legal/confidentialite" className="text-[#1a472a] font-semibold hover:underline">Politique de Confidentialité</a>. 
               En passant commande, le client accepte le traitement de ses données personnelles.
@@ -161,15 +149,7 @@ export default function CGVPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-black text-[#1a472a] mb-4">13. Droit Applicable et Juridiction</h2>
-            <p>
-              Les présentes CGV sont régies par le droit sénégalais. En cas de litige, les parties s'engagent à rechercher une solution 
-              amiable. À défaut, les tribunaux de Dakar sont seuls compétents.
-            </p>
-          </section>
-
-          <section>
-            <h2 className="text-2xl font-black text-[#1a472a] mb-4">14. Modifications</h2>
+            <h2 className="text-2xl font-black text-[#1a472a] mb-4">12. Modifications</h2>
             <p>
               Healthy Dakar se réserve le droit de modifier les présentes CGV à tout moment. Les modifications sont applicables aux 
               commandes passées après leur publication. Il est conseillé de consulter régulièrement cette page.
