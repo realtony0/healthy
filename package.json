@@ -27,6 +27,7 @@
     "@remotion/bundler": "^4.0.409",
     "@remotion/cli": "^4.0.409",
     "@remotion/player": "^4.0.409",
+    "@vercel/analytics": "^1.6.1",
     "bcryptjs": "^3.0.3",
     "better-sqlite3": "^12.6.2",
     "clsx": "^2.1.1",
