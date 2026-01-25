@@ -75,15 +75,15 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <head>
-        <link rel="icon" type="image/jpeg" href="/img/logo.jpeg?v=2" />
-        <link rel="shortcut icon" type="image/jpeg" href="/img/logo.jpeg?v=2" />
-        <link rel="icon" type="image/svg+xml" href="/icon.svg?v=2" />
+        <link rel="icon" type="image/jpeg" href="/img/logo.jpeg?v=3" sizes="32x32" />
+        <link rel="icon" type="image/svg+xml" href="/icon.svg?v=3" />
+        <link rel="shortcut icon" href="/img/logo.jpeg?v=3" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#1a472a" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Healthy Dakar" />
-        <link rel="apple-touch-icon" href="/img/logo.jpeg?v=2" />
+        <link rel="apple-touch-icon" href="/img/logo.jpeg?v=3" sizes="180x180" />
       </head>
       <body className="antialiased font-sans">
         <Providers>
