@@ -126,9 +126,14 @@ export async function POST(request: NextRequest) {
       const subtotal = totalAmount - deliveryFee
       const paymentMethodLabel = paymentMethod === 'CASH' ? 'Espèces' : paymentMethod === 'WAVE' ? 'Wave' : 'Orange Money'
       
-      const userName = session?.user?.firstName && session?.user?.lastName
-        ? `${session.user.firstName} ${session.user.lastName}`
-        : (session?.user?.email ? session.user.email.split('@')[0] : 'Invité')
+      let userName = 'Invité'
+      if (session?.user) {
+        if (session.user.firstName && session.user.lastName) {
+          userName = `${session.user.firstName} ${session.user.lastName}`
+        } else if (session.user.email) {
+          userName = session.user.email.split('@')[0]
+        }
+      }
       
       let message = `🔔 *NOUVELLE COMMANDE !*\n\n`
       message += `*Numéro:* #${order.orderNumber}\n`
