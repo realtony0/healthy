@@ -43,14 +43,30 @@ export async function GET(req: NextRequest) {
         totalAmount: true,
         deliveryAddress: true,
         deliveryPhone: true,
+        deliveryNotes: true,
+        deliveryFee: true,
         createdAt: true,
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true,
+          },
+        },
         items: {
           select: {
             id: true,
             quantity: true,
+            price: true,
             product: {
               select: {
                 name: true,
+                image: true,
+              },
+            },
+            bowlConfig: {
+              select: {
+                size: true,
               },
             },
           },
@@ -60,6 +76,13 @@ export async function GET(req: NextRequest) {
             method: true,
             status: true,
             reference: true,
+          },
+        },
+        deliveryZone: {
+          select: {
+            name: true,
+            number: true,
+            price: true,
           },
         },
       },

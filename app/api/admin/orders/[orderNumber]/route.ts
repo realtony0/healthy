@@ -36,6 +36,14 @@ export async function GET(
       },
       payment: true,
       user: true,
+      deliveryZone: {
+        select: {
+          name: true,
+          number: true,
+          price: true,
+          quartiers: true,
+        },
+      },
     },
   })
 

@@ -55,6 +55,15 @@ export async function POST(request: NextRequest) {
     }
     const totalAmount = subtotal + deliveryFee
 
+    // Récupérer la zone de livraison si elle existe
+    let deliveryZone = null
+    if (deliveryZoneId) {
+      deliveryZone = await prisma.deliveryZone.findUnique({
+        where: { id: deliveryZoneId },
+        select: { name: true, number: true, price: true },
+      })
+    }
+
     // Créer la commande
     const order = await prisma.order.create({
       data: {
@@ -90,6 +99,13 @@ export async function POST(request: NextRequest) {
             product: true,
           },
         },
+        deliveryZone: {
+          select: {
+            name: true,
+            number: true,
+            price: true,
+          },
+        },
       },
     })
 
@@ -107,20 +123,43 @@ export async function POST(request: NextRequest) {
     // Notification Admin via WhatsApp
     try {
       const itemsList = items.map(it => `- ${it.quantity}x ${it.product.name}${it.bowlConfig ? ` (Bowl ${it.bowlConfig.size})` : ''}`).join('\n')
-      const message = `🔔 *NOUVELLE COMMANDE !*
+      const subtotal = totalAmount - deliveryFee
+      const paymentMethodLabel = paymentMethod === 'CASH' ? 'Espèces' : paymentMethod === 'WAVE' ? 'Wave' : 'Orange Money'
       
-*Numéro:* #${order.orderNumber}
-*Montant:* ${totalAmount.toLocaleString('fr-FR')} FCFA
-*Client:* ${session?.user?.name || 'Invité'} (+221 ${deliveryPhone})
-*Adresse:* ${deliveryAddress}
-${deliveryNotes ? `*Notes:* ${deliveryNotes}` : ''}
-
-*Produits:*
-${itemsList}
-
-*Paiement:* ${paymentMethod} (En attente)
-
-_Gérer la commande : https://healthy.sn/mmb22115/commandes/${order.orderNumber}_`
+      const userName = session?.user?.firstName && session?.user?.lastName
+        ? `${session.user.firstName} ${session.user.lastName}`
+        : session?.user?.email?.split('@')[0] || 'Invité'
+      
+      let message = `🔔 *NOUVELLE COMMANDE !*\n\n`
+      message += `*Numéro:* #${order.orderNumber}\n`
+      message += `*Client:* ${userName} (+221 ${deliveryPhone})\n`
+      if (session?.user?.email) {
+        message += `*Email:* ${session.user.email}\n`
+      }
+      message += `\n*📍 Livraison:*\n`
+      message += `Adresse: ${deliveryAddress}\n`
+      if (order.deliveryZone) {
+        message += `Zone: ${order.deliveryZone.name} (Zone ${order.deliveryZone.number})\n`
+      }
+      if (deliveryNotes) {
+        message += `Notes: ${deliveryNotes}\n`
+      }
+      message += `\n*🛒 Produits:*\n${itemsList}\n`
+      message += `\n*💰 Montant:*\n`
+      message += `Sous-total: ${subtotal.toLocaleString('fr-FR')} FCFA\n`
+      if (deliveryFee > 0) {
+        message += `Livraison: ${deliveryFee.toLocaleString('fr-FR')} FCFA\n`
+      }
+      message += `*Total: ${totalAmount.toLocaleString('fr-FR')} FCFA*\n`
+      message += `\n*💳 Paiement:*\n`
+      message += `Méthode: ${paymentMethodLabel}\n`
+      message += `Statut: En attente\n`
+      message += `\n_Gérer : https://healthy.sn/mmb22115/commandes/${order.orderNumber}_`
+      
+      await sendWhatsAppNotification({
+        to: ADMIN_PHONE,
+        message: message
+      })
 
       await sendWhatsAppNotification({
         to: ADMIN_PHONE,
