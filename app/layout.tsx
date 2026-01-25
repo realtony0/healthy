@@ -18,13 +18,9 @@ export const metadata: Metadata = {
   creator: "Healthy Dakar",
   publisher: "Healthy Dakar",
   icons: {
-    icon: [
-      { url: '/icon.svg', type: 'image/svg+xml' },
-      { url: '/img/logo.jpeg', type: 'image/jpeg' },
-    ],
-    apple: [
-      { url: '/img/logo.jpeg', type: 'image/jpeg' },
-    ],
+    icon: '/img/logo.jpeg',
+    apple: '/img/logo.jpeg',
+    shortcut: '/img/logo.jpeg',
   },
   formatDetection: {
     email: false,
@@ -74,9 +70,8 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <head>
-        <link rel="icon" href="/icon.svg" type="image/svg+xml" sizes="any" />
-        <link rel="icon" href="/img/logo.jpeg" type="image/jpeg" sizes="32x32" />
-        <link rel="shortcut icon" href="/icon.svg" />
+        <link rel="icon" type="image/jpeg" href="/img/logo.jpeg" />
+        <link rel="shortcut icon" type="image/jpeg" href="/img/logo.jpeg" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#1a472a" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
