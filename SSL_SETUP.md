@@ -75,24 +75,76 @@ Le fichier `next.config.ts` et les headers HTTP sont configurés pour forcer HTT
 
 ## ⚠️ Problèmes Courants
 
-### Le certificat SSL n'apparaît pas
+### Le certificat SSL n'apparaît pas / Le cadenas ne s'affiche pas
 
 **Causes possibles :**
-- Les enregistrements DNS ne pointent pas vers Vercel
+- Les enregistrements DNS ne pointent pas correctement vers Vercel
 - Le domaine n'est pas ajouté dans Vercel
 - La propagation DNS n'est pas terminée (attendre 24-48h)
+- Le certificat SSL est en cours de génération (peut prendre 5-30 minutes)
+- Mixed Content : le site charge des ressources HTTP au lieu de HTTPS
 
-**Solutions :**
-1. Vérifiez les enregistrements DNS avec `dig healthy.sn` ou [mxtoolbox.com](https://mxtoolbox.com/DNSLookup.aspx)
-2. Vérifiez que le domaine est bien dans Vercel Dashboard
-3. Attendez la propagation DNS complète
+**Solutions étape par étape :**
+
+1. **Vérifier dans Vercel Dashboard :**
+   - Allez dans Settings → Domains → `healthy.sn`
+   - Vérifiez le statut SSL :
+     - ✅ "Valid" = Le certificat est actif
+     - ⏳ "Pending" = En attente (attendre 5-30 min)
+     - ❌ "Error" = Problème de configuration DNS
+
+2. **Vérifier les enregistrements DNS :**
+   - Utilisez [mxtoolbox.com](https://mxtoolbox.com/DNSLookup.aspx) ou `dig healthy.sn`
+   - Si vous utilisez les **nameservers Vercel**, vérifiez qu'ils sont bien configurés chez votre registraire
+   - Si vous utilisez des **enregistrements DNS**, vérifiez :
+     ```
+     Type: A
+     Name: @ (ou healthy.sn)
+     Value: 76.76.21.21 (ou l'IP fournie par Vercel)
+     ```
+
+3. **Vérifier la propagation DNS :**
+   - Utilisez [whatsmydns.net](https://www.whatsmydns.net/#A/healthy.sn)
+   - Tous les serveurs DNS doivent pointer vers la même IP
+   - Si certains pointent encore vers l'ancienne IP, attendez la propagation complète
+
+4. **Vérifier le certificat SSL :**
+   - Visitez `https://healthy.sn` (avec https)
+   - Ouvrez les DevTools (F12) → Onglet Security
+   - Vérifiez les erreurs de certificat
+   - Testez avec [SSL Labs](https://www.ssllabs.com/ssltest/analyze.html?d=healthy.sn)
+
+5. **Vérifier Mixed Content :**
+   - Ouvrez les DevTools (F12) → Console
+   - Cherchez les erreurs "Mixed Content" ou "blocked:mixed-content"
+   - Si vous voyez ces erreurs, le site charge des ressources HTTP au lieu de HTTPS
+   - Solution : Vérifiez que toutes les URLs dans le code utilisent `https://` ou des URLs relatives
+
+6. **Forcer le rafraîchissement :**
+   - Videz le cache du navigateur (Ctrl+Shift+Delete)
+   - Testez en navigation privée
+   - Essayez un autre navigateur
 
 ### Erreur "Certificate Pending"
 
 **Solution :**
-- Attendez 5-10 minutes après la configuration DNS
-- Vérifiez que les enregistrements DNS sont corrects
+- Attendez 5-30 minutes après la configuration DNS correcte
+- Vérifiez que les enregistrements DNS sont corrects et propagés
+- Si après 1h le statut est toujours "Pending", vérifiez les logs Vercel
 - Contactez le support Vercel si le problème persiste après 24h
+
+### Erreur "Invalid Certificate" ou "Certificate Error"
+
+**Causes :**
+- Les DNS ne pointent pas vers Vercel
+- Le domaine n'est pas correctement configuré dans Vercel
+- Conflit avec un ancien certificat
+
+**Solutions :**
+1. Vérifiez que le domaine est bien dans Vercel Dashboard → Settings → Domains
+2. Vérifiez que les DNS pointent vers Vercel (utilisez [mxtoolbox.com](https://mxtoolbox.com/DNSLookup.aspx))
+3. Supprimez et réajoutez le domaine dans Vercel si nécessaire
+4. Attendez 30 minutes après la correction DNS
 
 ### Le site fonctionne en HTTP mais pas en HTTPS
 
