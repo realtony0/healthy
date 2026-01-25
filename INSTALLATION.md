@@ -28,6 +28,9 @@ NEXTAUTH_URL="http://localhost:3000"
 # WhatsApp (optionnel pour l'instant)
 WHATSAPP_API_URL=""
 WHATSAPP_API_TOKEN=""
+
+# Admin Code (code d'accès pour le dashboard admin)
+ADMIN_CODE="280315"
 ```
 
 **Important** : Remplacez `user` et `password` par vos identifiants PostgreSQL.

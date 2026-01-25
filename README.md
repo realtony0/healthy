@@ -30,6 +30,7 @@ npm install
 DATABASE_URL="postgresql://user:password@localhost:5432/healthy"
 NEXTAUTH_SECRET="votre-secret-nextauth"
 NEXTAUTH_URL="http://localhost:3000"
+ADMIN_CODE="votre-code-admin"
 ```
 
 3. Initialiser la base de données :

@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react'
 import { Lock, ArrowRight } from 'lucide-react'
 
-const ADMIN_CODE = '280315'
 const STORAGE_KEY = 'healthy_admin_access'
 
 export default function AdminCodeGate({ children }: { children: React.ReactNode }) {
@@ -11,6 +10,7 @@ export default function AdminCodeGate({ children }: { children: React.ReactNode 
   const [code, setCode] = useState('')
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(true)
+  const [isVerifying, setIsVerifying] = useState(false)
 
   useEffect(() => {
     // Vérifier si l'utilisateur a déjà entré le code
@@ -21,16 +21,37 @@ export default function AdminCodeGate({ children }: { children: React.ReactNode 
     setIsLoading(false)
   }, [])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setIsVerifying(true)
+    setError('')
     
-    if (code === ADMIN_CODE) {
-      localStorage.setItem(STORAGE_KEY, 'true')
-      setIsAuthorized(true)
-      setError('')
-    } else {
-      setError('Code incorrect')
+    try {
+      const response = await fetch('/api/admin/verify-code', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ code }),
+      })
+
+      const data = await response.json()
+
+      if (data.valid) {
+        localStorage.setItem(STORAGE_KEY, 'true')
+        setIsAuthorized(true)
+        setError('')
+        setCode('')
+      } else {
+        setError(data.error || 'Code incorrect')
+        setCode('')
+      }
+    } catch (error) {
+      console.error('Error verifying code:', error)
+      setError('Erreur de connexion. Réessayez.')
       setCode('')
+    } finally {
+      setIsVerifying(false)
     }
   }
 
@@ -83,11 +104,11 @@ export default function AdminCodeGate({ children }: { children: React.ReactNode 
 
               <button
                 type="submit"
-                disabled={code.length < 6}
+                disabled={code.length < 6 || isVerifying}
                 className="w-full py-4 bg-[#1a472a] text-white font-bold rounded-xl hover:bg-[#143d23] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
-                Accéder
-                <ArrowRight className="w-5 h-5" />
+                {isVerifying ? 'Vérification...' : 'Accéder'}
+                {!isVerifying && <ArrowRight className="w-5 h-5" />}
               </button>
             </form>
           </div>
