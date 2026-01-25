@@ -3,6 +3,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import PWARegister from "@/components/PWARegister";
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://healthy.sn'),
@@ -62,8 +63,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr">
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#1a472a" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Healthy Dakar" />
+        <link rel="apple-touch-icon" href="/icon-192.png" />
+      </head>
       <body className="antialiased font-sans">
         <Providers>
+          <PWARegister />
           <div className="min-h-screen flex flex-col">
             <Header />
             <main className="flex-grow">

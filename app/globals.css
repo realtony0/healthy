@@ -15,7 +15,7 @@
 
 @layer base {
   body {
-    @apply bg-[#fffdfa] text-gray-900 antialiased overflow-x-hidden;
+    @apply bg-[#fffdfa] dark:bg-gray-950 text-gray-900 dark:text-gray-100 antialiased overflow-x-hidden;
     -webkit-tap-highlight-color: transparent;
   }
 }
@@ -34,7 +34,7 @@
   }
   
   .btn-outline {
-    @apply border-2 border-[#1a472a] text-[#1a472a] hover:bg-emerald-50;
+    @apply border-2 border-[#1a472a] dark:border-emerald-400 text-[#1a472a] dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/20;
   }
   
   .btn-lg {
@@ -42,11 +42,11 @@
   }
 
   .card-modern {
-    @apply bg-white border border-gray-100 rounded-[2.5rem] overflow-hidden hover:shadow-2xl hover:shadow-emerald-900/5 transition-all duration-500;
+    @apply bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-[2.5rem] overflow-hidden hover:shadow-2xl hover:shadow-emerald-900/5 dark:hover:shadow-emerald-900/20 transition-all duration-500;
   }
 
   .food-badge {
-    @apply inline-flex items-center gap-2 bg-emerald-50 text-[#1a472a] px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest border border-emerald-100;
+    @apply inline-flex items-center gap-2 bg-emerald-50 dark:bg-emerald-900/30 text-[#1a472a] dark:text-emerald-400 px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest border border-emerald-100 dark:border-emerald-800;
   }
 
   .btn-mobile {
@@ -58,7 +58,7 @@
   }
 
   .btn-soft {
-    @apply bg-emerald-50 text-[#1a472a] border border-emerald-100;
+    @apply bg-emerald-50 dark:bg-emerald-900/30 text-[#1a472a] dark:text-emerald-400 border border-emerald-100 dark:border-emerald-800;
   }
 }
 

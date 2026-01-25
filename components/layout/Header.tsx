@@ -3,9 +3,29 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
-import { ShoppingCart, User, Menu, X } from 'lucide-react'
+import { ShoppingCart, User, Menu, X, Sun, Moon } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { getLogoPath } from '@/lib/logo'
+import { useTheme } from '@/components/ThemeProvider'
+
+// Composant séparé pour le toggle dark mode (client-only)
+function DarkModeToggle() {
+  try {
+    const { theme, toggleTheme } = useTheme()
+    return (
+      <button
+        onClick={toggleTheme}
+        className="p-2 text-gray-600 dark:text-gray-300 hover:text-[#1a472a] dark:hover:text-emerald-400 transition-colors rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
+        aria-label="Toggle dark mode"
+      >
+        {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+      </button>
+    )
+  } catch {
+    // Fallback si ThemeProvider n'est pas disponible (SSR)
+    return null
+  }
+}
 
 export default function Header() {
   const { data: session } = useSession()
@@ -41,7 +61,9 @@ export default function Header() {
 
   return (
     <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-      scrolled ? 'bg-white shadow-sm' : 'bg-white'
+      scrolled 
+        ? 'bg-white dark:bg-gray-900 shadow-sm dark:shadow-gray-800/50' 
+        : 'bg-white dark:bg-gray-900'
     }`}>
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-14 md:h-16">
@@ -64,7 +86,7 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium text-gray-600 hover:text-[#1a472a] transition-colors"
+                className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-[#1a472a] dark:hover:text-emerald-400 transition-colors"
               >
                 {link.label}
               </Link>
@@ -73,9 +95,12 @@ export default function Header() {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-3">
-            <Link href="/panier" className="relative p-2 text-gray-600 hover:text-[#1a472a] transition-colors">
+            {/* Dark Mode Toggle */}
+            <DarkModeToggle />
+            
+            <Link href="/panier" className="relative p-2 text-gray-600 dark:text-gray-300 hover:text-[#1a472a] dark:hover:text-emerald-400 transition-colors">
               <ShoppingCart className="w-5 h-5" />
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#1a472a] text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#1a472a] dark:bg-emerald-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
                 0
               </span>
             </Link>
@@ -100,9 +125,11 @@ export default function Header() {
 
           {/* Mobile Actions */}
           <div className="flex md:hidden items-center gap-2">
-            <Link href="/panier" className="relative p-2 text-gray-600">
+            <DarkModeToggle />
+            
+            <Link href="/panier" className="relative p-2 text-gray-600 dark:text-gray-300">
               <ShoppingCart className="w-5 h-5" />
-              <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-[#1a472a] text-white text-[9px] font-bold rounded-full flex items-center justify-center">
+              <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-[#1a472a] dark:bg-emerald-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
                 0
               </span>
             </Link>
@@ -120,7 +147,7 @@ export default function Header() {
 
       {/* Mobile Menu - Simple & Clean */}
       {isOpen && (
-        <div className="md:hidden fixed inset-0 top-14 bg-white z-50">
+        <div className="md:hidden fixed inset-0 top-14 bg-white dark:bg-gray-900 z-50">
           <div className="flex flex-col h-full">
             {/* Navigation Links */}
             <nav className="flex-1 px-6 py-8">
@@ -128,7 +155,7 @@ export default function Header() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="block py-4 text-xl font-semibold text-gray-900 border-b border-gray-100"
+                  className="block py-4 text-xl font-semibold text-gray-900 dark:text-gray-100 border-b border-gray-100 dark:border-gray-800"
                   onClick={() => setIsOpen(false)}
                 >
                   {link.label}
@@ -137,7 +164,7 @@ export default function Header() {
             </nav>
             
             {/* Bottom Actions */}
-            <div className="px-6 py-6 border-t border-gray-100 space-y-3 bg-gray-50">
+            <div className="px-6 py-6 border-t border-gray-100 dark:border-gray-800 space-y-3 bg-gray-50 dark:bg-gray-800/50">
               <Link 
                 href="/commander" 
                 className="block w-full py-4 bg-[#1a472a] text-white text-center text-base font-bold rounded-xl" 
