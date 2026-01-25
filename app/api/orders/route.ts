@@ -128,7 +128,7 @@ export async function POST(request: NextRequest) {
       
       const userName = session?.user?.firstName && session?.user?.lastName
         ? `${session.user.firstName} ${session.user.lastName}`
-        : session?.user?.email?.split('@')[0] || 'Invité'
+        : (session?.user?.email ? session.user.email.split('@')[0] : 'Invité')
       
       let message = `🔔 *NOUVELLE COMMANDE !*\n\n`
       message += `*Numéro:* #${order.orderNumber}\n`
