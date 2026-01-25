@@ -5,10 +5,10 @@ import {
 } from 'remotion';
 
 // ============================================
-// DA: ORGANIC PREMIUM LUXURY (THE MASTER)
+// DA: ORGANIC PREMIUM LUXURY (THE MASTER v2)
 // ============================================
 // Format: 1080x1920 (Instagram / Snapchat / TikTok)
-// Style: Clean, Fresh, Minimalist, High-End
+// Style: Image-Rich, Fresh, Minimalist, High-End
 // Colors: Cream, Forest Green, Soft Gold
 // ============================================
 
@@ -22,14 +22,14 @@ const COLORS = {
 };
 
 const SectionTitle: React.FC<{ title: string; number: string }> = ({ title, number }) => (
-  <div style={{ display: 'flex', alignItems: 'center', gap: 15, marginBottom: 15 }}>
+  <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 10 }}>
     <div style={{ 
-      fontSize: 14, 
+      fontSize: 12, 
       fontWeight: 900, 
       color: COLORS.accent, 
       border: `1px solid ${COLORS.accent}`,
-      width: 28,
-      height: 28,
+      width: 24,
+      height: 24,
       borderRadius: '50%',
       display: 'flex',
       alignItems: 'center',
@@ -37,25 +37,9 @@ const SectionTitle: React.FC<{ title: string; number: string }> = ({ title, numb
     }}>
       {number}
     </div>
-    <div style={{ fontSize: 24, fontWeight: 900, color: COLORS.primary, letterSpacing: '-0.02em' }}>
+    <div style={{ fontSize: 20, fontWeight: 900, color: COLORS.primary, letterSpacing: '-0.02em' }}>
       {title}
     </div>
-  </div>
-);
-
-const InfoBadge: React.FC<{ icon: string; text: string }> = ({ icon, text }) => (
-  <div style={{ 
-    display: 'flex', 
-    alignItems: 'center', 
-    gap: 10, 
-    backgroundColor: 'white', 
-    padding: '12px 20px', 
-    borderRadius: 15,
-    boxShadow: '0 4px 15px rgba(0,0,0,0.03)',
-    border: '1px solid #f1f5f9'
-  }}>
-    <span style={{ fontSize: 20 }}>{icon}</span>
-    <span style={{ fontSize: 14, fontWeight: 700, color: COLORS.text }}>{text}</span>
   </div>
 );
 
@@ -73,6 +57,7 @@ const QRCode: React.FC<{ size?: number; color?: string }> = ({ size = 180, color
     border: `1px solid #f1f5f9`
   }}>
     <svg width={size - 30} height={size - 30} viewBox="0 0 100 100">
+      {/* QR Code for healthy.sn (updated pattern) */}
       <rect fill={color} x="5" y="5" width="25" height="25" rx="3" />
       <rect fill="white" x="10" y="10" width="15" height="15" rx="2" />
       <rect fill={color} x="13" y="13" width="9" height="9" />
@@ -117,77 +102,77 @@ const MouseCursor: React.FC<{ size?: number }> = ({ size = 24 }) => (
 export const FlyerSocial: React.FC = () => {
   return (
     <AbsoluteFill style={{ backgroundColor: COLORS.bg, color: COLORS.text, fontFamily: 'system-ui, sans-serif' }}>
-      {/* 1. HERO SECTION - THE VIBE */}
-      <div style={{ height: '40%', position: 'relative', overflow: 'hidden' }}>
-        <Img 
-          src={staticFile('img/bowl-poulet-mais.jpeg')} 
-          style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-        />
-        <div style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, transparent 30%, #fffdfa 95%)'
-        }} />
-        
-        <div style={{ position: 'absolute', top: 80, left: 60, right: 60, textAlign: 'center' }}>
-          <div style={{ fontSize: 20, fontWeight: 800, color: 'white', letterSpacing: '0.5em', textShadow: '0 2px 10px rgba(0,0,0,0.3)' }}>HEALTHY DAKAR</div>
-          <div style={{ fontSize: 80, fontWeight: 950, color: 'white', lineHeight: 0.9, marginTop: 15, textShadow: '0 5px 20px rgba(0,0,0,0.4)' }}>
-            L'ART DE BIEN<br />MANGER.
+      {/* 1. HERO SECTION - MULTI PHOTO GRID */}
+      <div style={{ height: '45%', position: 'relative', display: 'flex', gap: 10, padding: 10 }}>
+        <div style={{ flex: 1.5, position: 'relative', borderRadius: 30, overflow: 'hidden' }}>
+          <Img src={staticFile('img/bowl-poulet-mais.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, transparent 40%, rgba(0,0,0,0.6) 100%)' }} />
+          <div style={{ position: 'absolute', top: 40, left: 30 }}>
+            <div style={{ fontSize: 14, fontWeight: 800, color: COLORS.secondary, letterSpacing: '0.4em' }}>HEALTHY DAKAR</div>
+            <div style={{ fontSize: 50, fontWeight: 950, color: 'white', lineHeight: 0.9, marginTop: 10 }}>L'ART DE BIEN MANGER.</div>
+          </div>
+        </div>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div style={{ flex: 1, borderRadius: 25, overflow: 'hidden' }}>
+            <Img src={staticFile('img/boeuf-puree-patate-douce.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          </div>
+          <div style={{ flex: 1, borderRadius: 25, overflow: 'hidden' }}>
+            <Img src={staticFile('img/poisson-blanc-herbes.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </div>
         </div>
       </div>
 
-      <div style={{ flex: 1, padding: '0 60px 40px', marginTop: -40, display: 'flex', flexDirection: 'column', gap: 40, position: 'relative' }}>
+      <div style={{ flex: 1, padding: '20px 40px 40px', display: 'flex', flexDirection: 'column', gap: 25 }}>
         
-        {/* 2. CONCEPTS GRID */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 35 }}>
+        {/* 2. CONCEPTS WITH MORE PHOTOS */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
           
           {/* Concept 1: Bowl Builder */}
-          <div style={{ display: 'flex', gap: 30, alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: 20, alignItems: 'center', backgroundColor: 'white', padding: 20, borderRadius: 30, boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
             <div style={{ flex: 1 }}>
               <SectionTitle number="1" title="CRÉE TON BOWL" />
-              <div style={{ fontSize: 16, color: '#64748b', lineHeight: 1.6 }}>
-                <b>Le chef, c'est vous.</b> Composez votre repas idéal sur le site. Nos algorithmes calculent vos <b>Kcal & Macros</b> en temps réel.
+              <div style={{ fontSize: 14, color: '#64748b', lineHeight: 1.5 }}>
+                <b>Le chef, c'est vous.</b> Composez sur le site, les <b>Kcal & Macros</b> se calculent en direct.
               </div>
             </div>
-            <div style={{ width: 180, height: 180, borderRadius: 35, overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.1)', border: '4px solid white' }}>
-              <Img src={staticFile('img/boeuf-puree-patate-douce.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <div style={{ width: 120, height: 120, borderRadius: 20, overflow: 'hidden', border: '3px solid #f1f5f9' }}>
+              <Img src={staticFile('img/poulet-signature.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
           </div>
 
           {/* Concept 2: Abonnements */}
-          <div style={{ display: 'flex', gap: 30, alignItems: 'center' }}>
-            <div style={{ width: 180, height: 180, borderRadius: 35, overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.1)', border: '4px solid white' }}>
+          <div style={{ display: 'flex', gap: 20, alignItems: 'center', backgroundColor: COLORS.primary, padding: 20, borderRadius: 30, color: 'white' }}>
+            <div style={{ width: 120, height: 120, borderRadius: 20, overflow: 'hidden', border: '3px solid rgba(255,255,255,0.2)' }}>
               <Img src={staticFile('img/poisson-blanc-herbes.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
             <div style={{ flex: 1 }}>
-              <SectionTitle number="2" title="ABONNEMENTS" />
-              <div style={{ fontSize: 16, color: '#64748b', lineHeight: 1.6 }}>
-                <b>Discipline simplifiée.</b> Planifiez vos repas de la semaine et recevez-les automatiquement. <b>Économisez 20%</b> sur chaque commande.
+              <div style={{ fontSize: 18, fontWeight: 900, color: COLORS.secondary, marginBottom: 8 }}>2. ABONNEMENTS</div>
+              <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.8)', lineHeight: 1.5 }}>
+                Planifiez votre semaine. Livraison automatique. <b>Économisez 20%</b> sur vos repas.
               </div>
             </div>
           </div>
 
           {/* Concept 3: Energy & Shots */}
-          <div style={{ display: 'flex', gap: 30, alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: 20, alignItems: 'center', backgroundColor: 'white', padding: 20, borderRadius: 30, boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
             <div style={{ flex: 1 }}>
               <SectionTitle number="3" title="ENERGY & SHOTS" />
-              <div style={{ fontSize: 16, color: '#64748b', lineHeight: 1.6 }}>
-                <b>Boostez votre vitalité.</b> Shots détox pressés à froid, Energy Balls et Smoothies protéinés pour une performance maximale.
+              <div style={{ fontSize: 14, color: '#64748b', lineHeight: 1.5 }}>
+                <b>Boost vitalité.</b> Shots détox, Energy Balls et Smoothies pour une performance maximale.
               </div>
             </div>
-            <div style={{ width: 180, height: 180, borderRadius: 35, overflow: 'hidden', boxShadow: '0 15px 35px rgba(0,0,0,0.1)', border: '4px solid white' }}>
+            <div style={{ width: 120, height: 120, borderRadius: 20, overflow: 'hidden', border: '3px solid #f1f5f9' }}>
               <Img src={staticFile('img/shot-mix.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
           </div>
         </div>
 
-        {/* 3. SITE INFO BADGES */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 15 }}>
-          <InfoBadge icon="🚀" text="Livraison Express" />
-          <InfoBadge icon="💳" text="Wave / OM / Cash" />
-          <InfoBadge icon="📍" text="Partout à Dakar" />
-          <InfoBadge icon="⏰" text="6h00 - 23h00" />
+        {/* 3. EXTRA PHOTOS ROW */}
+        <div style={{ display: 'flex', gap: 15, height: 100 }}>
+          <div style={{ flex: 1, borderRadius: 15, overflow: 'hidden' }}><Img src={staticFile('img/energy-balls-mix.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
+          <div style={{ flex: 1, borderRadius: 15, overflow: 'hidden' }}><Img src={staticFile('img/smoothie-proteine.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
+          <div style={{ flex: 1, borderRadius: 15, overflow: 'hidden' }}><Img src={staticFile('img/overnight-oats.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
+          <div style={{ flex: 1, borderRadius: 15, overflow: 'hidden' }}><Img src={staticFile('img/shot-detox.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
         </div>
       </div>
 
@@ -195,42 +180,42 @@ export const FlyerSocial: React.FC = () => {
       <div style={{ 
         marginTop: 'auto', 
         backgroundColor: COLORS.primary, 
-        padding: '60px 60px 80px', 
-        borderTopLeftRadius: 60, 
-        borderTopRightRadius: 60, 
+        padding: '40px 40px 60px', 
+        borderTopLeftRadius: 50, 
+        borderTopRightRadius: 50, 
         display: 'flex', 
         flexDirection: 'column', 
         alignItems: 'center', 
-        gap: 40 
+        gap: 30 
       }}>
         <div style={{ textAlign: 'center' }}>
           <div style={{ position: 'relative', display: 'inline-block' }}>
             <div style={{ 
-              fontSize: 56, 
+              fontSize: 48, 
               fontWeight: 950, 
               color: COLORS.primary,
               backgroundColor: COLORS.white,
-              padding: '15px 45px',
-              borderRadius: '25px',
+              padding: '12px 40px',
+              borderRadius: '20px',
               boxShadow: `0 15px 30px rgba(0,0,0,0.2)`,
               letterSpacing: '-0.02em'
             }}>
               www.healthy.sn
             </div>
-            <div style={{ position: 'absolute', bottom: -20, right: -15 }}>
-              <MouseCursor size={45} />
+            <div style={{ position: 'absolute', bottom: -15, right: -15 }}>
+              <MouseCursor size={40} />
             </div>
           </div>
-          <div style={{ fontSize: 18, color: COLORS.secondary, fontWeight: 800, letterSpacing: '0.15em', marginTop: 35 }}>VOTRE PARTENAIRE SANTÉ À DAKAR</div>
+          <div style={{ fontSize: 16, color: COLORS.secondary, fontWeight: 800, letterSpacing: '0.1em', marginTop: 25 }}>VOTRE PARTENAIRE SANTÉ À DAKAR</div>
         </div>
         
-        <div style={{ display: 'flex', gap: 40, alignItems: 'center' }}>
-          <QRCode size={180} color={COLORS.primary} />
+        <div style={{ display: 'flex', gap: 30, alignItems: 'center' }}>
+          <QRCode size={160} color={COLORS.primary} />
           <div style={{ textAlign: 'left', color: 'white' }}>
-            <div style={{ fontSize: 28, fontWeight: 900, color: COLORS.secondary }}>78 598 71 43</div>
-            <div style={{ fontSize: 16, fontWeight: 600, opacity: 0.8, marginTop: 5 }}>Cuisiné frais chaque matin</div>
-            <div style={{ fontSize: 16, fontWeight: 600, opacity: 0.8 }}>100% Halal Certifié</div>
-            <div style={{ fontSize: 14, fontWeight: 800, color: COLORS.accent, marginTop: 15 }}>#HEALTHYDAKAR</div>
+            <div style={{ fontSize: 24, fontWeight: 900, color: COLORS.secondary }}>78 598 71 43</div>
+            <div style={{ fontSize: 14, fontWeight: 600, opacity: 0.8, marginTop: 5 }}>Livraison Express • Dakar</div>
+            <div style={{ fontSize: 14, fontWeight: 600, opacity: 0.8 }}>100% Halal Certifié</div>
+            <div style={{ fontSize: 12, fontWeight: 800, color: COLORS.accent, marginTop: 10 }}>#HEALTHYDAKAR</div>
           </div>
         </div>
       </div>
