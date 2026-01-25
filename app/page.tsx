@@ -1,12 +1,13 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRight, Star, ShieldCheck, Leaf, Sparkles, Plus, Clock, MapPin, Heart, ShoppingBag, ChevronRight } from 'lucide-react'
+import { getDiscountedPrice } from '@/lib/utils'
 
 export default function HomePage() {
   const bestSellers = [
-    { name: 'Bowl Poulet Signature', price: '3 500', img: '/img/bowl-poulet-mais.jpeg', tag: 'Le favori', kcal: '450' },
-    { name: 'Bœuf & Patate Douce', price: '4 200', img: '/img/boeuf-puree-patate-douce.jpeg', tag: 'Énergie', kcal: '520' },
-    { name: 'Poisson aux Herbes', price: '3 900', img: '/img/poisson-blanc-herbes.jpeg', tag: 'Léger', kcal: '410' },
+    { name: 'Bowl Poulet Signature', price: 3500, img: '/img/bowl-poulet-mais.jpeg', tag: 'Le favori', kcal: '450' },
+    { name: 'Bœuf & Patate Douce', price: 4200, img: '/img/boeuf-puree-patate-douce.jpeg', tag: 'Énergie', kcal: '520' },
+    { name: 'Poisson aux Herbes', price: 3900, img: '/img/poisson-blanc-herbes.jpeg', tag: 'Léger', kcal: '410' },
   ]
 
   return (
@@ -130,6 +131,10 @@ export default function HomePage() {
                 <Link href="/menu" className="block space-y-6">
                   <div className="aspect-[4/5] rounded-[3.5rem] overflow-hidden relative shadow-2xl shadow-gray-200/50">
                     <Image src={p.img} alt={p.name} fill className="object-cover group-hover:scale-105 transition-transform duration-700" />
+                    {/* Badge de réduction */}
+                    <div className="absolute top-8 right-8 bg-red-500 text-white px-4 py-2 rounded-full text-sm font-black shadow-xl z-10">
+                      -15%
+                    </div>
                     <div className="absolute top-8 left-8 bg-white md:bg-white/90 backdrop-blur-md px-4 py-2 rounded-2xl text-[10px] font-black uppercase tracking-widest text-[#1a472a] shadow-sm">
                       {p.tag}
                     </div>
@@ -146,7 +151,10 @@ export default function HomePage() {
                   <div className="px-4 flex justify-between items-center">
                     <div>
                       <h3 className="text-2xl font-black text-gray-900 group-hover:text-brand transition-colors">{p.name}</h3>
-                      <p className="text-2xl font-black text-emerald-600 italic font-serif tracking-tight">{p.price} <span className="text-sm font-normal text-gray-400 not-italic">FCFA</span></p>
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-lg text-gray-400 line-through">{p.price.toLocaleString('fr-FR')} FCFA</span>
+                        <p className="text-2xl font-black text-emerald-600 italic font-serif tracking-tight">{getDiscountedPrice(p.price).toLocaleString('fr-FR')} <span className="text-sm font-normal text-gray-400 not-italic">FCFA</span></p>
+                      </div>
                     </div>
                     <div className="w-12 h-12 rounded-full border border-gray-100 flex items-center justify-center text-gray-300 group-hover:bg-brand group-hover:text-white transition-all">
                       <ArrowRight size={20} />

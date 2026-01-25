@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
 import Image from 'next/image'
-import { formatPrice } from '@/lib/utils'
+import { formatPrice, getDiscountedPrice } from '@/lib/utils'
 import { ArrowRight, Flame, Dumbbell, Sparkles, Plus } from 'lucide-react'
 import { Metadata } from 'next'
 
@@ -82,6 +82,10 @@ export default async function MenuPage() {
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-gray-300">Image bientôt disponible</div>
                       )}
+                      {/* Badge de réduction */}
+                      <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1.5 rounded-full text-xs font-black shadow-lg z-10">
+                        -15%
+                      </div>
                       <div className="absolute bottom-4 left-4 flex gap-2">
                         {product.kcal && (
                           <div className="bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest text-brand border border-white flex items-center gap-1 shadow-sm">
@@ -94,7 +98,10 @@ export default async function MenuPage() {
                     <div className="space-y-2 px-2">
                       <div className="flex justify-between items-start gap-4">
                         <h3 className="font-black text-lg md:text-xl text-gray-900 group-hover:text-brand transition-colors leading-tight">{product.name}</h3>
-                        <span className="font-black text-emerald-600 italic font-serif text-lg whitespace-nowrap">{formatPrice(product.price)}</span>
+                        <div className="flex flex-col items-end whitespace-nowrap">
+                          <span className="text-xs text-gray-400 line-through">{formatPrice(product.price)}</span>
+                          <span className="font-black text-emerald-600 italic font-serif text-lg">{formatPrice(getDiscountedPrice(product.price))}</span>
+                        </div>
                       </div>
                       <p className="text-gray-400 text-xs md:text-sm font-medium line-clamp-2 leading-relaxed italic">
                         {product.description}

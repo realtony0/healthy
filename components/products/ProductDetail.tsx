@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
-import { formatPrice } from '@/lib/utils'
+import { formatPrice, getDiscountedPrice } from '@/lib/utils'
 import FruitSelector from './FruitSelector'
 import { PRODUCTS_WITH_FRUIT_CHOICE } from '@/lib/constants'
 import { ShoppingCart, Minus, Plus, Flame, Dumbbell, ShieldCheck, ArrowRight } from 'lucide-react'
@@ -102,6 +102,10 @@ export default function ProductDetail({ product }: ProductDetailProps) {
           ) : (
             <div className="w-full h-full flex items-center justify-center bg-emerald-50 text-emerald-200 font-black text-2xl lg:text-4xl">Healthy</div>
           )}
+          {/* Badge de réduction */}
+          <div className="absolute top-4 right-4 lg:top-6 lg:right-6 bg-red-500 text-white px-4 py-2 lg:px-5 lg:py-2.5 rounded-full text-sm lg:text-base font-black shadow-xl z-10">
+            -15%
+          </div>
           {product.kcal && (
               <div className="absolute bottom-4 right-4 lg:bottom-10 lg:right-10 bg-white md:bg-white/90 backdrop-blur-xl px-4 py-2 lg:px-6 lg:py-3 rounded-2xl lg:rounded-3xl shadow-xl border border-gray-100 flex items-center gap-2">
               <Flame size={16} className="lg:w-5 lg:h-5 text-orange-500" />
@@ -152,7 +156,10 @@ export default function ProductDetail({ product }: ProductDetailProps) {
           <div className="flex items-center justify-between p-6 lg:p-10 bg-[#1a472a] rounded-[2rem] lg:rounded-[3.5rem] text-white shadow-xl lg:shadow-2xl shadow-emerald-900/20 relative overflow-hidden group">
             <div className="relative z-10">
               <span className="text-[9px] lg:text-[10px] font-black text-white/50 uppercase tracking-widest">Prix de votre repas</span>
-              <div className="text-3xl lg:text-5xl font-black italic font-serif leading-none mt-1 lg:mt-2">{formatPrice(product.price * quantity)}</div>
+              <div className="flex items-baseline gap-2 lg:gap-3 mt-1 lg:mt-2">
+                <span className="text-lg lg:text-2xl text-white/60 line-through">{formatPrice(product.price * quantity)}</span>
+                <div className="text-3xl lg:text-5xl font-black italic font-serif leading-none">{formatPrice(getDiscountedPrice(product.price) * quantity)}</div>
+              </div>
             </div>
             
                 <div className="flex items-center gap-2 lg:gap-4 bg-white/20 md:bg-white/10 backdrop-blur-md p-1.5 lg:p-2 rounded-2xl lg:rounded-3xl border border-white/30 md:border-white/20 relative z-10">

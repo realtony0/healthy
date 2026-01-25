@@ -18,3 +18,8 @@ export function generateOrderNumber(): string {
   const random = Math.random().toString(36).substring(2, 6).toUpperCase()
   return `CMD-${timestamp}-${random}`
 }
+
+// Calcul du prix avec réduction (affichage uniquement, ne modifie pas le prix réel)
+export function getDiscountedPrice(price: number, discountPercent: number = 15): number {
+  return Math.round(price * (1 - discountPercent / 100))
+}
