@@ -10,21 +10,73 @@ import { useTheme } from '@/components/ThemeProvider'
 
 // Composant séparé pour le toggle dark mode (client-only)
 function DarkModeToggle() {
-  try {
-    const { theme, toggleTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+  const [currentTheme, setCurrentTheme] = useState<'light' | 'dark'>('light')
+  
+  useEffect(() => {
+    setMounted(true)
+    // Vérifier le thème actuel
+    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null
+    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+    setCurrentTheme(savedTheme || systemTheme)
+    
+    // Écouter les changements de thème
+    const handleThemeChange = () => {
+      const isDark = document.documentElement.classList.contains('dark')
+      setCurrentTheme(isDark ? 'dark' : 'light')
+    }
+    
+    window.addEventListener('themechange', handleThemeChange)
+    const observer = new MutationObserver(handleThemeChange)
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    })
+    
+    return () => {
+      window.removeEventListener('themechange', handleThemeChange)
+      observer.disconnect()
+    }
+  }, [])
+  
+  const handleToggle = () => {
+    const isDark = document.documentElement.classList.contains('dark')
+    const newTheme = isDark ? 'light' : 'dark'
+    
+    if (newTheme === 'dark') {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+    
+    localStorage.setItem('theme', newTheme)
+    setCurrentTheme(newTheme)
+    
+    // Déclencher l'événement pour synchroniser avec ThemeProvider
+    window.dispatchEvent(new Event('themechange'))
+  }
+  
+  if (!mounted) {
     return (
       <button
-        onClick={toggleTheme}
-        className="p-2 text-gray-600 dark:text-gray-300 hover:text-[#1a472a] dark:hover:text-emerald-400 transition-colors rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
+        className="p-2 text-gray-600 rounded-full"
         aria-label="Toggle dark mode"
+        disabled
       >
-        {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+        <Moon className="w-5 h-5" />
       </button>
     )
-  } catch {
-    // Fallback si ThemeProvider n'est pas disponible (SSR)
-    return null
   }
+  
+  return (
+    <button
+      onClick={handleToggle}
+      className="p-2 text-gray-600 dark:text-gray-300 hover:text-[#1a472a] dark:hover:text-emerald-400 transition-colors rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
+      aria-label="Toggle dark mode"
+    >
+      {currentTheme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+    </button>
+  )
 }
 
 export default function Header() {

@@ -39,6 +39,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setTheme(newTheme)
     localStorage.setItem('theme', newTheme)
     applyTheme(newTheme)
+    // Force re-render pour s'assurer que le changement est visible
+    window.dispatchEvent(new Event('themechange'))
   }
 
   // Éviter le flash de contenu non stylé
