@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
 import Image from 'next/image'
-import { formatPrice, getDiscountedPrice } from '@/lib/utils'
+import { formatPrice } from '@/lib/utils'
 import { ArrowRight, Flame, Dumbbell, Sparkles, Plus } from 'lucide-react'
 import { Metadata } from 'next'
 
@@ -98,10 +98,7 @@ export default async function MenuPage() {
                     <div className="space-y-2 px-2">
                       <div className="flex justify-between items-start gap-4">
                         <h3 className="font-black text-lg md:text-xl text-gray-900 group-hover:text-brand transition-colors leading-tight">{product.name}</h3>
-                        <div className="flex flex-col items-end whitespace-nowrap">
-                          <span className="text-xs text-gray-400 line-through">{formatPrice(product.price)}</span>
-                          <span className="font-black text-emerald-600 italic font-serif text-lg">{formatPrice(getDiscountedPrice(product.price))}</span>
-                        </div>
+                        <span className="font-black text-emerald-600 italic font-serif text-lg whitespace-nowrap">{formatPrice(product.price)}</span>
                       </div>
                       <p className="text-gray-400 text-xs md:text-sm font-medium line-clamp-2 leading-relaxed italic">
                         {product.description}
