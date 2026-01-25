@@ -18,9 +18,14 @@ export const metadata: Metadata = {
   creator: "Healthy Dakar",
   publisher: "Healthy Dakar",
   icons: {
-    icon: '/img/logo.jpeg',
-    apple: '/img/logo.jpeg',
-    shortcut: '/img/logo.jpeg',
+    icon: [
+      { url: '/img/logo.jpeg?v=3', type: 'image/jpeg', sizes: '32x32' },
+      { url: '/icon.svg?v=3', type: 'image/svg+xml' },
+    ],
+    apple: [
+      { url: '/img/logo.jpeg?v=3', type: 'image/jpeg', sizes: '180x180' },
+    ],
+    shortcut: '/img/logo.jpeg?v=3',
   },
   formatDetection: {
     email: false,
@@ -70,14 +75,15 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <head>
-        <link rel="icon" type="image/jpeg" href="/img/logo.jpeg" />
-        <link rel="shortcut icon" type="image/jpeg" href="/img/logo.jpeg" />
+        <link rel="icon" type="image/jpeg" href="/img/logo.jpeg?v=2" />
+        <link rel="shortcut icon" type="image/jpeg" href="/img/logo.jpeg?v=2" />
+        <link rel="icon" type="image/svg+xml" href="/icon.svg?v=2" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#1a472a" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Healthy Dakar" />
-        <link rel="apple-touch-icon" href="/img/logo.jpeg" />
+        <link rel="apple-touch-icon" href="/img/logo.jpeg?v=2" />
       </head>
       <body className="antialiased font-sans">
         <Providers>
