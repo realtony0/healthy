@@ -372,7 +372,7 @@ const FinalCTA: React.FC = () => {
       <MovingGradient frame={frame} />
       <AbsoluteFill style={{ justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
         <div style={{ 
-          transform: `scale(${interpolate(frame, [0, 30], [0.8, 1], { extrapolateRight: 'clamp', easing: Easing.out(Easing.back) })})`,
+          transform: `scale(${interpolate(frame, [0, 30], [0.8, 1], { extrapolateRight: 'clamp', easing: Easing.out(Easing.exp) })})`,
           opacity: interpolate(frame, [0, 20], [0, 1])
         }}>
           <div style={{ fontSize: 120, fontWeight: 900, color: COLORS.secondary, letterSpacing: '-0.05em' }}>HEALTHY</div>
