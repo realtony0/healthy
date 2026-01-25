@@ -1,5 +1,5 @@
 // Service Worker pour PWA
-const CACHE_NAME = 'healthy-dakar-v1'
+const CACHE_NAME = 'healthy-dakar-v2'
 const urlsToCache = [
   '/',
   '/menu',
@@ -39,17 +39,25 @@ self.addEventListener('activate', (event) => {
 
 // Stratégie: Network First, puis Cache
 self.addEventListener('fetch', (event) => {
+  // Forcer HTTPS pour toutes les requêtes
+  const url = new URL(event.request.url)
+  if (url.protocol === 'http:' && url.hostname !== 'localhost') {
+    url.protocol = 'https:'
+    event.respondWith(fetch(url))
+    return
+  }
+
   event.respondWith(
     fetch(event.request)
       .then((response) => {
-        // Cloner la réponse
-        const responseToCache = response.clone()
-        
-        caches.open(CACHE_NAME)
-          .then((cache) => {
-            cache.put(event.request, responseToCache)
-          })
-        
+        // Ne mettre en cache que les réponses HTTPS réussies
+        if (response.status === 200 && event.request.url.startsWith('https://')) {
+          const responseToCache = response.clone()
+          caches.open(CACHE_NAME)
+            .then((cache) => {
+              cache.put(event.request, responseToCache)
+            })
+        }
         return response
       })
       .catch(() => {
