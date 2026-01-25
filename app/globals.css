@@ -2,16 +2,15 @@
 
 @theme {
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
-  --font-serif: "Playfair Display", Georgia, serif;
   
   --color-brand: #1a472a;
   --color-brand-light: #2d5a3d;
-  --color-accent: #22c55e;
-  --color-bg: #fffdfa;
   
-  --radius-2xl: 1.25rem;
-  --radius-3xl: 1.75rem;
-  --radius-4xl: 2.5rem;
+  --radius-2xl: 1.5rem;
+  --radius-3xl: 2rem;
+  --radius-4xl: 3rem;
+  
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
 }
 
 @layer base {
@@ -19,19 +18,35 @@
     @apply bg-[#fffdfa] text-gray-900 antialiased overflow-x-hidden;
     -webkit-tap-highlight-color: transparent;
   }
-  
-  h1, h2, h3, h4 {
-    @apply font-sans font-black tracking-tight text-brand;
-  }
 }
 
 @layer components {
-  .container-mobile {
+  .container-wide {
     @apply w-full max-w-7xl mx-auto px-5 sm:px-8;
   }
   
-  .mobile-card {
-    @apply bg-white rounded-[2rem] border border-gray-100 shadow-sm transition-all duration-300 active:scale-[0.98];
+  .btn {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-full font-bold transition-all duration-300 active:scale-95 cursor-pointer;
+  }
+  
+  .btn-primary {
+    @apply bg-[#1a472a] text-white hover:bg-[#2d5a3d] shadow-lg shadow-emerald-900/20;
+  }
+  
+  .btn-outline {
+    @apply border-2 border-[#1a472a] text-[#1a472a] hover:bg-emerald-50;
+  }
+  
+  .btn-lg {
+    @apply px-10 py-5 text-lg;
+  }
+
+  .card-modern {
+    @apply bg-white border border-gray-100 rounded-[2.5rem] overflow-hidden hover:shadow-2xl hover:shadow-emerald-900/5 transition-all duration-500;
+  }
+
+  .food-badge {
+    @apply inline-flex items-center gap-2 bg-emerald-50 text-[#1a472a] px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest border border-emerald-100;
   }
 
   .btn-mobile {
@@ -39,34 +54,46 @@
   }
 
   .btn-brand {
-    @apply bg-brand text-white shadow-lg shadow-emerald-900/10 hover:bg-brand-light;
+    @apply bg-[#1a472a] text-white shadow-lg shadow-emerald-900/10;
   }
 
   .btn-soft {
-    @apply bg-emerald-50 text-brand border border-emerald-100;
-  }
-
-  .section-title {
-    @apply text-3xl sm:text-5xl font-black mb-4 leading-tight;
-  }
-
-  .section-desc {
-    @apply text-base sm:text-xl text-gray-500 font-medium leading-relaxed;
+    @apply bg-emerald-50 text-[#1a472a] border border-emerald-100;
   }
 }
 
-/* Custom Scroll */
-.no-scrollbar::-webkit-scrollbar { display: none; }
-.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-/* Mobile Floating Bar */
-.bottom-nav {
-  @apply fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-xl border-t border-gray-100 px-6 py-3 flex justify-between items-center z-[100] lg:hidden;
+/* Hide scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-/* Animations */
-@keyframes slideUp {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+/* Background Decor */
+.bg-blob {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(26, 71, 42, 0.05) 0%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(60px);
+  z-index: -1;
+  animation: blob-float 20s ease-in-out infinite;
 }
-.animate-slide-up { animation: slideUp 0.5s ease-out forwards; }
+
+@keyframes blob-float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -50px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.9); }
+}
+
+@keyframes bounce-slow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-bounce-slow {
+  animation: bounce-slow 3s ease-in-out infinite;
+}
