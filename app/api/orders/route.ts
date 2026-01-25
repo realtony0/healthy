@@ -128,10 +128,11 @@ export async function POST(request: NextRequest) {
       
       let userName = 'Invité'
       if (session?.user) {
-        if (session.user.firstName && session.user.lastName) {
-          userName = `${session.user.firstName} ${session.user.lastName}`
-        } else if (session.user.email) {
-          userName = session.user.email.split('@')[0]
+        const user = session.user as any // Type assertion pour accéder aux champs Prisma
+        if (user.firstName && user.lastName) {
+          userName = `${user.firstName} ${user.lastName}`
+        } else if (user.email) {
+          userName = user.email.split('@')[0]
         }
       }
       
