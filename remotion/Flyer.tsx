@@ -144,19 +144,29 @@ export const FlyerSocial: React.FC = () => {
                 <b>Boostez votre performance.</b> Shots détox pressés à froid, Energy Balls protéinées et Smoothies frais. Idéal pour vos collations saines ou après votre séance de sport.
               </div>
             </div>
-            <div style={{ width: 100, height: 100, borderRadius: 20, overflow: 'hidden', border: '2px solid #f1f5f9' }}>
-              <Img src={staticFile('img/shot-mix.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <div style={{ width: 120, height: 120, borderRadius: 20, overflow: 'hidden', border: '2px solid #f1f5f9', backgroundColor: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 8 }}>
+              <Img src={staticFile('img/shot-mix.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'center' }} />
             </div>
           </div>
         </div>
 
         {/* 3. EXTRA PHOTOS ROW */}
-        <div style={{ display: 'flex', gap: 10, height: 80 }}>
-          <div style={{ flex: 1, borderRadius: 12, overflow: 'hidden' }}><Img src={staticFile('img/energy-balls-mix.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
-          <div style={{ flex: 1, borderRadius: 12, overflow: 'hidden' }}><Img src={staticFile('img/smoothie-proteine.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
-          <div style={{ flex: 1, borderRadius: 12, overflow: 'hidden' }}><Img src={staticFile('img/overnight-oats.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
-          <div style={{ flex: 1, borderRadius: 12, overflow: 'hidden' }}><Img src={staticFile('img/shot-detox.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
-          <div style={{ flex: 1, borderRadius: 12, overflow: 'hidden' }}><Img src={staticFile('img/salade-concombre-poulet.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>
+        <div style={{ display: 'flex', gap: 10, height: 100 }}>
+          <div style={{ flex: 1, borderRadius: 12, overflow: 'hidden', backgroundColor: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 5 }}>
+            <Img src={staticFile('img/energy-balls-mix.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'center' }} />
+          </div>
+          <div style={{ flex: 1, borderRadius: 12, overflow: 'hidden' }}>
+            <Img src={staticFile('img/smoothie-proteine.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }} />
+          </div>
+          <div style={{ flex: 1, borderRadius: 12, overflow: 'hidden' }}>
+            <Img src={staticFile('img/overnight-oats.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }} />
+          </div>
+          <div style={{ flex: 1, borderRadius: 12, overflow: 'hidden', backgroundColor: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 5 }}>
+            <Img src={staticFile('img/shot-detox.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'center' }} />
+          </div>
+          <div style={{ flex: 1, borderRadius: 12, overflow: 'hidden' }}>
+            <Img src={staticFile('img/salade-concombre-poulet.jpeg')} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }} />
+          </div>
         </div>
 
         {/* 4. LOGISTICS TEXT */}
