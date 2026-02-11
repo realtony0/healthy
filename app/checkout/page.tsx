@@ -30,7 +30,7 @@ export default function CheckoutPage() {
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
   const [zones, setZones] = useState<Array<{ id: string; name: string; number: number; price: number; quartiers: string[] }>>([])
-  const [selectedZoneId, setSelectedZoneId] = useState<string>('')
+  const [selectedDeliveryKey, setSelectedDeliveryKey] = useState<string>('')
   
   // Créer une liste aplatie de tous les quartiers avec leur zone
   const quartiersList = zones.flatMap(zone => 
@@ -42,6 +42,10 @@ export default function CheckoutPage() {
       price: zone.price
     }))
   ).sort((a, b) => a.quartier.localeCompare(b.quartier))
+  const selectedDelivery = quartiersList.find(
+    (item) => `${item.zoneId}::${item.quartier}` === selectedDeliveryKey
+  )
+  const selectedZoneId = selectedDelivery?.zoneId || ''
   const [formData, setFormData] = useState({
     deliveryAddress: '',
     deliveryPhone: '',
@@ -206,13 +210,13 @@ export default function CheckoutPage() {
                     <select
                       id="deliveryZone"
                       required
-                      value={selectedZoneId}
-                      onChange={(e) => setSelectedZoneId(e.target.value)}
+                      value={selectedDeliveryKey}
+                      onChange={(e) => setSelectedDeliveryKey(e.target.value)}
                       className="w-full px-6 py-5 bg-gray-50 border-2 border-transparent rounded-3xl focus:bg-white focus:border-[#1a472a] outline-none transition-all font-bold text-lg shadow-inner appearance-none"
                     >
                       <option value="">Sélectionnez votre quartier</option>
                       {quartiersList.map((item, index) => (
-                        <option key={`${item.zoneId}-${index}`} value={item.zoneId}>
+                        <option key={`${item.zoneId}-${index}`} value={`${item.zoneId}::${item.quartier}`}>
                           {item.quartier} → {formatPrice(item.price)} FCFA
                         </option>
                       ))}

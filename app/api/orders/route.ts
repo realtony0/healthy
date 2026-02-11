@@ -37,14 +37,14 @@ export async function POST(request: NextRequest) {
       paymentMethod,
       addressId,
       deliveryZoneId,
-      deliveryFee = 0,
+      deliveryFee: deliveryFeeFromClient = 0,
     } = body
 
     if (!items || items.length === 0) {
       return NextResponse.json({ error: 'Cart is empty' }, { status: 400 })
     }
 
-    // Calculer le total (sous-total + frais de livraison)
+    // Calculer le sous-total
     let subtotal = 0
     for (const item of items) {
       if (item.bowlConfig) {
@@ -53,16 +53,21 @@ export async function POST(request: NextRequest) {
         subtotal += item.product.price * item.quantity
       }
     }
-    const totalAmount = subtotal + deliveryFee
 
     // Récupérer la zone de livraison si elle existe
     let deliveryZone = null
     if (deliveryZoneId) {
-      deliveryZone = await prisma.deliveryZone.findUnique({
-        where: { id: deliveryZoneId },
+      deliveryZone = await prisma.deliveryZone.findFirst({
+        where: { id: deliveryZoneId, isActive: true },
         select: { name: true, number: true, price: true },
       })
+      if (!deliveryZone) {
+        return NextResponse.json({ error: 'Invalid delivery zone' }, { status: 400 })
+      }
     }
+
+    const deliveryFee = deliveryZone?.price ?? (deliveryZoneId ? 0 : deliveryFeeFromClient)
+    const totalAmount = subtotal + deliveryFee
 
     // Créer la commande
     const order = await prisma.order.create({

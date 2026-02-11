@@ -6,7 +6,7 @@ import { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Abonnements Nutritionnels | Votre Coach Repas à Dakar',
-  description: 'Simplifiez votre alimentation avec nos programmes hebdomadaires. Perte de poids, rééquilibrage ou prise de masse. Livraison gratuite partout à Dakar.',
+  description: 'Simplifiez votre alimentation avec nos programmes hebdomadaires. Perte de poids, rééquilibrage ou prise de masse. Livraison non incluse (frais selon la zone).',
 }
 
 export default function AbonnementsPage() {
@@ -15,21 +15,21 @@ export default function AbonnementsPage() {
       id: 'DEJEUNER_SEUL',
       name: SUBSCRIPTION_MEAL_PLANS.DEJEUNER_SEUL,
       icon: <Zap className="w-5 h-5 text-yellow-500" />,
-      features: ['1 repas par jour', 'Livraison incluse', 'Recettes variées'],
+      features: ['1 repas par jour', 'Frais de livraison en sus', 'Recettes variées'],
       popular: false
     },
     {
       id: 'DEJEUNER_DINER',
       name: SUBSCRIPTION_MEAL_PLANS.DEJEUNER_DINER,
       icon: <Target className="w-5 h-5 text-red-500" />,
-      features: ['2 repas par jour', 'Livraison incluse', 'Économie par repas'],
+      features: ['2 repas par jour', 'Frais de livraison en sus', 'Économie par repas'],
       popular: true
     },
     {
       id: 'PETIT_DEJEUNER_DEJEUNER_DINER',
       name: SUBSCRIPTION_MEAL_PLANS.PETIT_DEJEUNER_DEJEUNER_DINER,
       icon: <Calendar className="w-5 h-5 text-green-500" />,
-      features: ['3 repas par jour', 'Livraison incluse', 'Solution complète'],
+      features: ['3 repas par jour', 'Frais de livraison en sus', 'Solution complète'],
       popular: false
     }
   ]

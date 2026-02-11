@@ -392,11 +392,14 @@ function CommanderAbonnementContent() {
 
                 <div className="pt-8 border-t border-white/10 space-y-4">
                   <div className="flex justify-between items-end">
-                    <span className="text-sm font-bold uppercase tracking-widest text-emerald-400/60">Total à régler</span>
+                    <span className="text-sm font-bold uppercase tracking-widest text-emerald-400/60">Total à régler (hors livraison)</span>
                     <div className="text-right">
                       <span className="text-5xl font-black italic font-serif leading-none">{formatPrice(price)}</span>
                     </div>
                   </div>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-emerald-400/60">
+                    Frais de livraison en sus selon la zone
+                  </p>
                 </div>
               </div>
               
@@ -422,7 +425,7 @@ function CommanderAbonnementContent() {
             <div className="mt-8 bg-emerald-50 p-6 rounded-3xl border border-emerald-100 flex items-center gap-4 shadow-sm">
               <ShieldCheck className="text-emerald-600 flex-shrink-0" size={32} />
               <p className="text-xs font-bold text-emerald-900/60 leading-relaxed italic">
-                Paiement à la livraison. Notre équipe nutrition vous contactera pour valider votre planning.
+                Paiement à la livraison. Frais de livraison en sus selon la zone. Notre équipe nutrition vous contactera pour valider votre planning.
               </p>
             </div>
           </div>
