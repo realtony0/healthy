@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { generateOrderNumber } from '@/lib/utils'
+import { buildDeliveryNotes, formatDeliveryTime, generateOrderNumber, isValidDeliveryTime } from '@/lib/utils'
 import { sendWhatsAppNotification } from '@/lib/whatsapp'
 
 const ADMIN_PHONE = '221785987143'
@@ -24,6 +24,7 @@ export async function POST(request: NextRequest) {
       deliveryAddress: string
       deliveryPhone: string
       deliveryNotes?: string | null
+      deliveryTime?: string | null
       paymentMethod: 'CASH' | 'WAVE' | 'ORANGE_MONEY'
       addressId?: string | null
       deliveryZoneId?: string | null
@@ -34,6 +35,7 @@ export async function POST(request: NextRequest) {
       deliveryAddress,
       deliveryPhone,
       deliveryNotes,
+      deliveryTime,
       paymentMethod,
       addressId,
       deliveryZoneId,
@@ -42,6 +44,10 @@ export async function POST(request: NextRequest) {
 
     if (!items || items.length === 0) {
       return NextResponse.json({ error: 'Cart is empty' }, { status: 400 })
+    }
+
+    if (!deliveryTime || !isValidDeliveryTime(deliveryTime)) {
+      return NextResponse.json({ error: 'Invalid delivery time' }, { status: 400 })
     }
 
     // Calculer le sous-total
@@ -69,6 +75,8 @@ export async function POST(request: NextRequest) {
     const deliveryFee = deliveryZone?.price ?? (deliveryZoneId ? 0 : deliveryFeeFromClient)
     const totalAmount = subtotal + deliveryFee
 
+    const finalDeliveryNotes = buildDeliveryNotes(deliveryTime, deliveryNotes)
+
     // Créer la commande
     const order = await prisma.order.create({
       data: {
@@ -77,7 +85,7 @@ export async function POST(request: NextRequest) {
         totalAmount,
         deliveryAddress,
         deliveryPhone,
-        deliveryNotes,
+        deliveryNotes: finalDeliveryNotes,
         addressId,
         deliveryZoneId,
         deliveryFee,
@@ -152,6 +160,7 @@ export async function POST(request: NextRequest) {
       if (order.deliveryZone) {
         message += `Zone: ${order.deliveryZone.name} (Zone ${order.deliveryZone.number})\n`
       }
+      message += `Heure souhaitée: ${formatDeliveryTime(deliveryTime)}\n`
       if (deliveryNotes) {
         message += `Notes: ${deliveryNotes}\n`
       }

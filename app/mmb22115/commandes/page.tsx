@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState, useCallback, useRef } from 'react'
 import Link from 'next/link'
 import { Search, Filter, RefreshCcw, ChevronRight, Package, CreditCard, Clock, ChevronLeft } from 'lucide-react'
-import { formatPrice } from '@/lib/utils'
+import { extractDeliveryTimeFromNotes, formatDeliveryTime, formatPrice } from '@/lib/utils'
 
 type OrderStatus = 'PENDING' | 'CONFIRMED' | 'PREPARING' | 'READY' | 'DELIVERED' | 'CANCELLED'
 type PaymentStatus = 'PENDING' | 'CONFIRMED' | 'FAILED'
@@ -15,6 +15,7 @@ type AdminOrder = {
   totalAmount: number
   deliveryAddress: string
   deliveryPhone: string
+  deliveryNotes?: string | null
   createdAt: string
   payment: null | {
     method: 'CASH' | 'WAVE' | 'ORANGE_MONEY'
@@ -181,44 +182,52 @@ export default function AdminOrdersPage() {
             <p className="text-xl font-bold text-gray-400">Aucune commande trouvée</p>
           </div>
         ) : (
-          orders.map((o) => (
-            <Link 
-              key={o.id} 
-              href={`/mmb22115/commandes/${o.orderNumber}`}
-              className="bg-white p-8 rounded-[2.5rem] border border-gray-50 shadow-xl shadow-gray-200/30 flex flex-col lg:flex-row items-center gap-8 group hover:border-[#1a472a] hover:shadow-2xl transition-all duration-500"
-            >
-              <div className="flex items-center gap-6 flex-1 w-full">
-                <div className="w-16 h-16 bg-gray-50 rounded-2xl flex items-center justify-center text-[#1a472a] shadow-inner font-black italic">
-                  #{o.orderNumber.slice(-3)}
-                </div>
-                <div className="space-y-1">
-                  <div className="flex items-center gap-3">
-                    <h3 className="text-xl font-black text-gray-900 group-hover:text-[#1a472a] transition-colors leading-none">#{o.orderNumber}</h3>
-                    <span className={`px-3 py-1 rounded-full border text-[10px] font-black uppercase tracking-widest ${getStatusColor(o.status)}`}>
-                      {o.status}
-                    </span>
+          orders.map((o) => {
+            const deliveryTime = extractDeliveryTimeFromNotes(o.deliveryNotes)
+            return (
+              <Link 
+                key={o.id} 
+                href={`/mmb22115/commandes/${o.orderNumber}`}
+                className="bg-white p-8 rounded-[2.5rem] border border-gray-50 shadow-xl shadow-gray-200/30 flex flex-col lg:flex-row items-center gap-8 group hover:border-[#1a472a] hover:shadow-2xl transition-all duration-500"
+              >
+                <div className="flex items-center gap-6 flex-1 w-full">
+                  <div className="w-16 h-16 bg-gray-50 rounded-2xl flex items-center justify-center text-[#1a472a] shadow-inner font-black italic">
+                    #{o.orderNumber.slice(-3)}
                   </div>
-                  <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">{o.items?.length ?? 0} article(s) • {formatDate(o.createdAt)}</p>
-                </div>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-8 lg:gap-12 w-full lg:w-auto pt-6 lg:pt-0 border-t lg:border-t-0 border-gray-50">
-                <div className="flex-1 lg:flex-none">
-                  <p className="text-[10px] font-black text-gray-300 uppercase tracking-widest mb-1">Livraison</p>
-                  <p className="text-sm font-black text-gray-900 line-clamp-1">{o.deliveryAddress}</p>
-                </div>
-                
-                <div className="flex-1 lg:flex-none">
-                  <p className="text-[10px] font-black text-gray-300 uppercase tracking-widest mb-1">Total</p>
-                  <p className="text-xl font-black text-[#1a472a] italic font-serif leading-none">{formatPrice(o.totalAmount)}</p>
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-3">
+                      <h3 className="text-xl font-black text-gray-900 group-hover:text-[#1a472a] transition-colors leading-none">#{o.orderNumber}</h3>
+                      <span className={`px-3 py-1 rounded-full border text-[10px] font-black uppercase tracking-widest ${getStatusColor(o.status)}`}>
+                        {o.status}
+                      </span>
+                    </div>
+                    <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">{o.items?.length ?? 0} article(s) • {formatDate(o.createdAt)}</p>
+                  </div>
                 </div>
 
-                <div className="w-12 h-12 rounded-2xl bg-gray-50 flex items-center justify-center text-gray-300 group-hover:bg-[#1a472a] group-hover:text-white transition-all duration-300">
-                  <ChevronRight size={24} />
+                <div className="flex flex-wrap items-center gap-8 lg:gap-12 w-full lg:w-auto pt-6 lg:pt-0 border-t lg:border-t-0 border-gray-50">
+                  <div className="flex-1 lg:flex-none">
+                    <p className="text-[10px] font-black text-gray-300 uppercase tracking-widest mb-1">Livraison</p>
+                    <p className="text-sm font-black text-gray-900 line-clamp-1">{o.deliveryAddress}</p>
+                    {deliveryTime && (
+                      <p className="text-[10px] font-black text-gray-300 uppercase tracking-widest mt-1 flex items-center gap-1">
+                        <Clock size={12} /> {formatDeliveryTime(deliveryTime)}
+                      </p>
+                    )}
+                  </div>
+                  
+                  <div className="flex-1 lg:flex-none">
+                    <p className="text-[10px] font-black text-gray-300 uppercase tracking-widest mb-1">Total</p>
+                    <p className="text-xl font-black text-[#1a472a] italic font-serif leading-none">{formatPrice(o.totalAmount)}</p>
+                  </div>
+
+                  <div className="w-12 h-12 rounded-2xl bg-gray-50 flex items-center justify-center text-gray-300 group-hover:bg-[#1a472a] group-hover:text-white transition-all duration-300">
+                    <ChevronRight size={24} />
+                  </div>
                 </div>
-              </div>
-            </Link>
-          ))
+              </Link>
+            )
+          })
         )}
       </div>
 

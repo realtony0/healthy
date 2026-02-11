@@ -2,7 +2,7 @@ import { prisma } from '@/lib/prisma'
 import { notFound } from 'next/navigation'
 import { CheckCircle, Package, Truck, Clock, MapPin, Phone, MessageCircle, CreditCard } from 'lucide-react'
 import Link from 'next/link'
-import { formatPrice } from '@/lib/utils'
+import { extractDeliveryTimeFromNotes, formatDeliveryTime, formatPrice } from '@/lib/utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -31,6 +31,8 @@ export default async function OrderSuccessPage({ params }: OrderSuccessPageProps
   if (!order) {
     notFound()
   }
+
+  const deliveryTime = extractDeliveryTimeFromNotes(order.deliveryNotes)
 
   return (
     <div className="pt-16 md:pt-20 pb-32 bg-[#fffdfa]">
@@ -274,6 +276,15 @@ export default async function OrderSuccessPage({ params }: OrderSuccessPageProps
                     <p className="font-bold text-gray-900 leading-tight">+221 {order.deliveryPhone}</p>
                   </div>
                 </div>
+                {deliveryTime && (
+                  <div className="flex gap-4">
+                    <Clock className="text-gray-300 flex-shrink-0" size={20} />
+                    <div>
+                      <p className="text-xs font-black text-gray-400 uppercase tracking-widest mb-1">Heure souhaitée</p>
+                      <p className="font-bold text-gray-900 leading-tight">{formatDeliveryTime(deliveryTime)}</p>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -285,7 +296,9 @@ export default async function OrderSuccessPage({ params }: OrderSuccessPageProps
                 <h2 className="text-2xl font-black uppercase tracking-tighter">Prochaine étape</h2>
               </div>
               <p className="text-emerald-50/70 font-medium leading-relaxed italic relative z-10">
-                Un membre de notre équipe va vous contacter sur WhatsApp pour confirmer le créneau exact de livraison.
+                {deliveryTime
+                  ? `Un membre de notre équipe va vous contacter sur WhatsApp pour confirmer la livraison pour ${formatDeliveryTime(deliveryTime)}.`
+                  : 'Un membre de notre équipe va vous contacter sur WhatsApp pour confirmer le créneau exact de livraison.'}
               </p>
               <a 
                 href="https://wa.me/221785987143" 

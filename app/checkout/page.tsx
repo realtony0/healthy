@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { PAYMENT_METHODS } from '@/lib/constants'
 import { formatPrice } from '@/lib/utils'
-import { ArrowLeft, ShieldCheck, MapPin, Phone, MessageSquare, CreditCard, Wallet, Banknote, Check, Sparkles, ChevronDown } from 'lucide-react'
+import { ArrowLeft, ShieldCheck, MapPin, Phone, MessageSquare, CreditCard, Wallet, Banknote, Check, Sparkles, ChevronDown, Clock } from 'lucide-react'
 import Link from 'next/link'
 
 type CartItem = {
@@ -49,6 +49,7 @@ export default function CheckoutPage() {
   const [formData, setFormData] = useState({
     deliveryAddress: '',
     deliveryPhone: '',
+    deliveryTime: '',
     deliveryNotes: '',
     paymentMethod: 'CASH' as keyof typeof PAYMENT_METHODS,
   })
@@ -271,6 +272,31 @@ export default function CheckoutPage() {
                       placeholder="77 000 00 00"
                     />
                   </div>
+                </div>
+
+                <div className="space-y-3">
+                  <label htmlFor="deliveryTime" className="text-xs font-black text-gray-400 uppercase tracking-widest block ml-2">
+                    Heure de livraison souhaitée *
+                  </label>
+                  <div className="relative flex items-center">
+                    <div className="absolute left-6 text-gray-400">
+                      <Clock size={18} />
+                    </div>
+                    <input
+                      type="time"
+                      id="deliveryTime"
+                      required
+                      min="06:00"
+                      max="23:00"
+                      step={900}
+                      value={formData.deliveryTime}
+                      onChange={(e) => setFormData({ ...formData, deliveryTime: e.target.value })}
+                      className="w-full pl-16 pr-6 py-5 bg-gray-50 border-2 border-transparent rounded-3xl focus:bg-white focus:border-[#1a472a] outline-none transition-all font-medium text-lg shadow-inner"
+                    />
+                  </div>
+                  <p className="text-xs font-bold text-gray-400 ml-2">
+                    Créneaux disponibles: 06:00 à 23:00
+                  </p>
                 </div>
 
                 <div className="space-y-3">

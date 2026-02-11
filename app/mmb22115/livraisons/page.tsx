@@ -2,8 +2,8 @@
 
 import { useEffect, useMemo, useState, useCallback } from 'react'
 import Link from 'next/link'
-import { RefreshCcw, Truck, MapPin, ChevronRight, Package, Phone } from 'lucide-react'
-import { formatPrice } from '@/lib/utils'
+import { RefreshCcw, Truck, MapPin, ChevronRight, Package, Phone, Clock } from 'lucide-react'
+import { extractDeliveryTimeFromNotes, formatDeliveryTime, formatPrice } from '@/lib/utils'
 
 type AdminOrder = {
   id: string
@@ -11,6 +11,7 @@ type AdminOrder = {
   status: string
   deliveryAddress: string
   deliveryPhone: string
+  deliveryNotes?: string | null
   totalAmount: number
   createdAt: string
   items: Array<{ id: string; quantity: number; product: { name: string } }>
@@ -104,32 +105,41 @@ export default function AdminDeliveriesPage() {
 
               <div className="p-8">
                 <div className="space-y-4">
-                  {g.list.map((o) => (
-                    <div key={o.id} className="flex flex-col md:flex-row items-center gap-6 p-6 bg-white rounded-[2rem] border border-gray-50 shadow-sm group hover:border-[#1a472a] transition-all duration-300">
-                      <div className="flex-1 space-y-1 w-full text-center md:text-left">
-                        <div className="flex items-center justify-center md:justify-start gap-3">
-                          <p className="font-black text-gray-900">#{o.orderNumber}</p>
-                          <span className="px-2 py-0.5 rounded-lg bg-gray-100 text-[10px] font-black text-gray-400 uppercase">{o.status}</span>
+                  {g.list.map((o) => {
+                    const deliveryTime = extractDeliveryTimeFromNotes(o.deliveryNotes)
+                    return (
+                      <div key={o.id} className="flex flex-col md:flex-row items-center gap-6 p-6 bg-white rounded-[2rem] border border-gray-50 shadow-sm group hover:border-[#1a472a] transition-all duration-300">
+                        <div className="flex-1 space-y-1 w-full text-center md:text-left">
+                          <div className="flex items-center justify-center md:justify-start gap-3">
+                            <p className="font-black text-gray-900">#{o.orderNumber}</p>
+                            <span className="px-2 py-0.5 rounded-lg bg-gray-100 text-[10px] font-black text-gray-400 uppercase">{o.status}</span>
+                          </div>
+                          <div className="flex items-center justify-center md:justify-start gap-2 text-sm text-gray-500 font-medium italic">
+                            <Phone size={14} className="text-gray-300" />
+                            {o.deliveryPhone}
+                          </div>
+                          {deliveryTime && (
+                            <div className="flex items-center justify-center md:justify-start gap-2 text-sm text-gray-500 font-medium italic">
+                              <Clock size={14} className="text-gray-300" />
+                              {formatDeliveryTime(deliveryTime)}
+                            </div>
+                          )}
                         </div>
-                        <div className="flex items-center justify-center md:justify-start gap-2 text-sm text-gray-500 font-medium italic">
-                          <Phone size={14} className="text-gray-300" />
-                          {o.deliveryPhone}
+                        
+                        <div className="flex items-center gap-8">
+                          <div className="text-lg font-black text-gray-900 italic font-serif">
+                            {formatPrice(o.totalAmount)}
+                          </div>
+                          <Link 
+                            href={`/mmb22115/commandes/${o.orderNumber}`}
+                            className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center text-gray-300 group-hover:bg-[#1a472a] group-hover:text-white transition-all"
+                          >
+                            <ChevronRight size={20} />
+                          </Link>
                         </div>
                       </div>
-                      
-                      <div className="flex items-center gap-8">
-                        <div className="text-lg font-black text-gray-900 italic font-serif">
-                          {formatPrice(o.totalAmount)}
-                        </div>
-                        <Link 
-                          href={`/mmb22115/commandes/${o.orderNumber}`}
-                          className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center text-gray-300 group-hover:bg-[#1a472a] group-hover:text-white transition-all"
-                        >
-                          <ChevronRight size={20} />
-                        </Link>
-                      </div>
-                    </div>
-                  ))}
+                    )
+                  })}
                 </div>
               </div>
             </div>

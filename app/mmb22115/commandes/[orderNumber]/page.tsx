@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, Package, MapPin, Phone, MessageSquare, CreditCard, Clock, CheckCircle, Save, RefreshCcw } from 'lucide-react'
-import { formatPrice } from '@/lib/utils'
+import { extractDeliveryTimeFromNotes, formatDeliveryTime, formatPrice, stripDeliveryTimeFromNotes } from '@/lib/utils'
 
 type OrderStatus = 'PENDING' | 'CONFIRMED' | 'PREPARING' | 'READY' | 'DELIVERED' | 'CANCELLED'
 type PaymentStatus = 'PENDING' | 'CONFIRMED' | 'FAILED'
@@ -53,6 +53,9 @@ export default function AdminOrderDetailPage() {
   const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>('PENDING')
   const [paymentRef, setPaymentRef] = useState('')
   const [paymentNotes, setPaymentNotes] = useState('')
+
+  const deliveryTime = useMemo(() => extractDeliveryTimeFromNotes(order?.deliveryNotes ?? null), [order?.deliveryNotes])
+  const deliveryNotesOnly = useMemo(() => stripDeliveryTimeFromNotes(order?.deliveryNotes ?? null), [order?.deliveryNotes])
 
   const fetchOrder = async () => {
     setLoading(true)
@@ -208,13 +211,19 @@ export default function AdminOrderDetailPage() {
                     <a href={`tel:+221${order.deliveryPhone}`} className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition-all shadow-sm"><Phone size={18} /></a>
                   </div>
                 </div>
+                {deliveryTime && (
+                  <div className="space-y-1">
+                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Heure souhaitée</p>
+                    <p className="font-black text-xl text-gray-900 italic font-serif leading-none">{formatDeliveryTime(deliveryTime)}</p>
+                  </div>
+                )}
               </div>
               
               <div className="space-y-4">
                 <div className="space-y-1">
                   <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Notes complémentaires</p>
                   <p className="text-sm font-medium text-gray-500 leading-relaxed italic bg-gray-50 p-4 rounded-2xl border border-dashed border-gray-200">
-                    {order.deliveryNotes || 'Aucune instruction particulière.'}
+                    {deliveryNotesOnly || 'Aucune instruction particulière.'}
                   </p>
                 </div>
               </div>
