@@ -44,7 +44,7 @@ export default function Header() {
       scrolled ? 'bg-white shadow-sm' : 'bg-white'
     }`}>
       <div className="max-w-7xl mx-auto px-4">
-        <div className="flex items-center justify-between h-14 md:h-16">
+        <div className="flex items-center justify-between h-16 md:h-20">
           
           {/* Logo */}
           <Link href="/" className="flex-shrink-0" onClick={() => setIsOpen(false)}>
@@ -53,7 +53,7 @@ export default function Header() {
               alt="Healthy"
               width={300}
               height={120}
-              className="h-10 md:h-12 w-auto"
+              className="h-12 md:h-16 w-auto"
               priority
             />
           </Link>
@@ -120,7 +120,7 @@ export default function Header() {
 
       {/* Mobile Menu - Simple & Clean */}
       {isOpen && (
-        <div className="md:hidden fixed inset-0 top-14 bg-white z-50">
+        <div className="md:hidden fixed inset-0 top-16 bg-white z-50">
           <div className="flex flex-col h-full">
             {/* Navigation Links */}
             <nav className="flex-1 px-6 py-8">
