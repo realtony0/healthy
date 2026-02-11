@@ -102,10 +102,6 @@ export default function ProductDetail({ product }: ProductDetailProps) {
           ) : (
             <div className="w-full h-full flex items-center justify-center bg-emerald-50 text-emerald-200 font-black text-2xl lg:text-4xl">Healthy</div>
           )}
-          {/* Badge de réduction */}
-          <div className="absolute top-4 right-4 lg:top-6 lg:right-6 bg-red-500 text-white px-4 py-2 lg:px-5 lg:py-2.5 rounded-full text-sm lg:text-base font-black shadow-xl z-10">
-            -15%
-          </div>
           {product.kcal && (
               <div className="absolute bottom-4 right-4 lg:bottom-10 lg:right-10 bg-white md:bg-white/90 backdrop-blur-xl px-4 py-2 lg:px-6 lg:py-3 rounded-2xl lg:rounded-3xl shadow-xl border border-gray-100 flex items-center gap-2">
               <Flame size={16} className="lg:w-5 lg:h-5 text-orange-500" />

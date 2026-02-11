@@ -110,8 +110,8 @@ export default function CommentCaMarchePage() {
                   <p className="text-xs font-black text-emerald-900/40 uppercase tracking-widest leading-tight">Disponibilité totale</p>
                 </div>
                 <div className="bg-gray-900 rounded-[3rem] p-8 text-center space-y-4 text-white flex flex-col justify-center">
-                  <p className="text-4xl font-black italic font-serif leading-none text-emerald-400">-15%</p>
-                  <p className="text-xs font-black text-white/40 uppercase tracking-widest leading-tight">Économie moyenne</p>
+                  <p className="text-4xl font-black italic font-serif leading-none text-emerald-400">3</p>
+                  <p className="text-xs font-black text-white/40 uppercase tracking-widest leading-tight">Objectifs au choix</p>
                 </div>
                 <div className="col-span-2 bg-[#1a472a] rounded-[3rem] p-10 text-white relative overflow-hidden flex flex-col justify-center gap-2">
                   <p className="text-2xl font-black italic font-serif relative z-10">Livraison à domicile</p>

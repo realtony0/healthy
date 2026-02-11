@@ -130,10 +130,6 @@ export default function HomePage() {
                 <Link href="/menu" className="block space-y-6">
                   <div className="aspect-[4/5] rounded-[3.5rem] overflow-hidden relative shadow-2xl shadow-gray-200/50">
                     <Image src={p.img} alt={p.name} fill className="object-cover group-hover:scale-105 transition-transform duration-700" />
-                    {/* Badge de réduction */}
-                    <div className="absolute top-8 right-8 bg-red-500 text-white px-4 py-2 rounded-full text-sm font-black shadow-xl z-10">
-                      -15%
-                    </div>
                     <div className="absolute top-8 left-8 bg-white md:bg-white/90 backdrop-blur-md px-4 py-2 rounded-2xl text-[10px] font-black uppercase tracking-widest text-[#1a472a] shadow-sm">
                       {p.tag}
                     </div>

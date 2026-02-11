@@ -82,10 +82,6 @@ export default async function MenuPage() {
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-gray-300">Image bientôt disponible</div>
                       )}
-                      {/* Badge de réduction */}
-                      <div className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1.5 rounded-full text-xs font-black shadow-lg z-10">
-                        -15%
-                      </div>
                       <div className="absolute bottom-4 left-4 flex gap-2">
                         {product.kcal && (
                           <div className="bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest text-brand border border-white flex items-center gap-1 shadow-sm">
