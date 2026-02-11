@@ -286,8 +286,8 @@ export default function CheckoutPage() {
                       type="time"
                       id="deliveryTime"
                       required
-                      min="06:00"
-                      max="23:00"
+                      min="08:00"
+                      max="21:00"
                       step={900}
                       value={formData.deliveryTime}
                       onChange={(e) => setFormData({ ...formData, deliveryTime: e.target.value })}
@@ -295,7 +295,7 @@ export default function CheckoutPage() {
                     />
                   </div>
                   <p className="text-xs font-bold text-gray-400 ml-2">
-                    Créneaux disponibles: 06:00 à 23:00
+                    Créneaux disponibles: 08:00 à 21:00
                   </p>
                 </div>
 

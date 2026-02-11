@@ -34,7 +34,7 @@ export function isValidDeliveryTime(deliveryTime: string): boolean {
   if (minutes < 0 || minutes > 59) return false
 
   const totalMinutes = hours * 60 + minutes
-  return totalMinutes >= 6 * 60 && totalMinutes <= 23 * 60
+  return totalMinutes >= 8 * 60 && totalMinutes <= 21 * 60
 }
 
 export function buildDeliveryNotes(deliveryTime: string, deliveryNotes?: string | null): string {

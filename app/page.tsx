@@ -92,7 +92,7 @@ export default function HomePage() {
         <div className="container-wide">
           <div className="grid md:grid-cols-3 gap-12">
             {[
-              { title: 'Livraison Express', desc: 'Livré partout à Dakar entre 6h et 23h.', icon: <Clock />, color: 'text-blue-500 bg-blue-50' },
+              { title: 'Livraison Express', desc: 'Livré partout à Dakar entre 8h et 21h.', icon: <Clock />, color: 'text-blue-500 bg-blue-50' },
               { title: 'Produits Frais', desc: 'Ingrédients sélectionnés chaque matin.', icon: <Leaf />, color: 'text-emerald-500 bg-emerald-50' },
               { title: 'Paiement Facile', desc: 'Cash, Wave ou Orange Money à la livraison.', icon: <ShieldCheck />, color: 'text-orange-500 bg-orange-50' },
             ].map((s, i) => (

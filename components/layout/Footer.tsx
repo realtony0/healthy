@@ -58,7 +58,7 @@ export default function Footer() {
             © {new Date().getFullYear()} Healthy Dakar. Tous droits réservés.
           </p>
           <div className="flex flex-wrap justify-center gap-6 text-gray-400 text-sm font-medium">
-            <span>Ouvert de 6h à 23h</span>
+            <span>Ouvert de 8h à 21h</span>
             <span>•</span>
             <a href="https://wa.me/221785987143" className="hover:text-emerald-600 transition-colors">WhatsApp: +221 78 598 71 43</a>
           </div>
