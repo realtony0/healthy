@@ -53,7 +53,7 @@ export default function Header() {
               alt="Healthy"
               width={300}
               height={120}
-              className="h-12 md:h-16 w-auto"
+              className="h-14 md:h-18 w-auto"
               priority
             />
           </Link>
