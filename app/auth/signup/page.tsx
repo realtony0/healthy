@@ -50,7 +50,7 @@ export default function SignUpPage() {
       <div className="max-w-2xl w-full space-y-10 bg-white p-10 lg:p-16 rounded-[4rem] border border-gray-100 shadow-2xl shadow-gray-200/50 relative overflow-hidden">
         <div className="text-center space-y-4 relative z-10">
           <Link href="/" className="inline-block mb-4">
-            <Image src="/img/logo.jpeg" alt="Healthy" width={140} height={56} className="h-16 w-auto mix-blend-multiply" />
+            <Image src="/img/logo.jpeg" alt="Healthy" width={140} height={56} className="h-20 w-auto mix-blend-multiply" />
           </Link>
           <h2 className="text-4xl font-black text-[#1a472a] tracking-tight">Bienvenue parmi nous !</h2>
           <p className="text-gray-500 font-medium italic">
