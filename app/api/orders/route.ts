@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma'
 import { buildDeliveryNotes, formatDeliveryTime, generateOrderNumber, isValidDeliveryTime } from '@/lib/utils'
 import { sendWhatsAppNotification } from '@/lib/whatsapp'
 
-const ADMIN_PHONE = '221785987143'
+const ADMIN_PHONE = '221784294949'
 
 type OrderPayloadItem = {
   productId: string
@@ -176,11 +176,6 @@ export async function POST(request: NextRequest) {
       message += `Statut: En attente\n`
       message += `\n_Gérer : https://healthy.sn/mmb22115/commandes/${order.orderNumber}_`
       
-      await sendWhatsAppNotification({
-        to: ADMIN_PHONE,
-        message: message
-      })
-
       await sendWhatsAppNotification({
         to: ADMIN_PHONE,
         message: message

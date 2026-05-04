@@ -43,16 +43,33 @@ export const BOWL_UNIT_WEIGHTS = {
 export const FRUIT_CHOICES = [
   'Banane',
   'Fraise',
-  'Fruits rouges',
   'Mangue',
+  'Ananas',
+  'Kiwi',
+  'Pomme',
+  'Orange',
+  'Mandarine',
 ] as const
 
-export const PRODUCTS_WITH_SEASONAL_FRUITS = [
-  'yaourt-grec-energie',
-  'overnight-oats',
+export const TOPPINGS = [
+  'Miel',
+  'Pépites de chocolat noir',
+  'Chocolat noir',
+  'Beurre de cacahuète',
+  'Graines de chia',
+  'Noix de coco râpée',
+  'Amandes effilées',
+  'Fruits secs',
+  'Granola',
 ] as const
+
+export const TOPPING_PRICE = 500
+
+export const PRODUCTS_WITH_SEASONAL_FRUITS = [] as const
 
 export const PRODUCTS_WITH_FRUIT_CHOICE = [
+  'yogurt-bowl',
+  'overnight-oats',
   'smoothie-proteine-naturel',
 ] as const
 
@@ -76,33 +93,10 @@ export const SUBSCRIPTION_DURATIONS = {
 
 export const SUBSCRIPTION_PRICES = {
   SEVEN_DAYS: {
-    DEJEUNER_SEUL: {
-      PERTE_POIDS: 18000,
-      RE_EQUILIBRAGE: 20000,
-      PRISE_MASSE: 22000,
-    },
-    DINER_SEUL: {
-      PERTE_POIDS: 18000,
-      RE_EQUILIBRAGE: 20000,
-      PRISE_MASSE: 22000,
-    },
-    DEJEUNER_DINER: {
-      PERTE_POIDS: 31000,
-      RE_EQUILIBRAGE: 35000,
-      PRISE_MASSE: 39000,
-    },
-    PETIT_DEJEUNER_DEJEUNER_DINER: {
-      PERTE_POIDS: 39000,
-      RE_EQUILIBRAGE: 45000,
-      PRISE_MASSE: 51000,
-    },
-  },
-  FOUR_WEEKS: {
-    DEJEUNER_SEUL: {
-      PERTE_POIDS: 63000,
-      RE_EQUILIBRAGE: 71000,
-      PRISE_MASSE: 79000,
-    },
+    DEJEUNER_SEUL: 28000,
+    DINER_SEUL: 28000,
+    DEJEUNER_DINER: 52000,
+    PETIT_DEJEUNER_DEJEUNER_DINER: 73000,
   },
 } as const
 
