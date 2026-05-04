@@ -32,7 +32,7 @@ export default function FruitSelector({
       newSelection = selectedFruits.filter((f) => f !== fruit)
     } else {
       if (selectedFruits.length >= 3) {
-        setError('Vous pouvez choisir jusqu'à 3 fruits maximum')
+        setError("Vous pouvez choisir jusqu'à 3 fruits maximum")
         return
       }
       newSelection = [...selectedFruits, fruit]
