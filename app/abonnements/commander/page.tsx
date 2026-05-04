@@ -16,7 +16,7 @@ function CommanderAbonnementContent() {
   const [loading, setLoading] = useState(false)
 
   const plan = searchParams.get('plan') as keyof typeof SUBSCRIPTION_MEAL_PLANS
-  const goal = searchParams.get('goal') as keyof typeof SUBSCRIPTION_GOALS
+  const goal = 'PERTE_POIDS' as keyof typeof SUBSCRIPTION_GOALS
   const duration = searchParams.get('duration') as 'SEVEN_DAYS' | 'FOUR_WEEKS'
 
   const [formData, setFormData] = useState({
@@ -32,7 +32,7 @@ function CommanderAbonnementContent() {
     }
   }, [session, router])
 
-  if (!plan || !goal || !duration) {
+  if (!plan || !duration) {
     return (
       <div className="min-h-screen pt-16 md:pt-20 pb-32 container-wide flex flex-col items-center justify-center text-center space-y-8">
         <div className="w-24 h-24 bg-red-50 rounded-[2.5rem] flex items-center justify-center text-red-400 border-2 border-red-100 shadow-xl shadow-red-900/5">
@@ -51,12 +51,8 @@ function CommanderAbonnementContent() {
 
   const price =
     duration === 'SEVEN_DAYS'
-      ? SUBSCRIPTION_PRICES.SEVEN_DAYS[plan as keyof typeof SUBSCRIPTION_PRICES.SEVEN_DAYS]?.[
-          goal as keyof typeof SUBSCRIPTION_PRICES.SEVEN_DAYS.DEJEUNER_SEUL
-        ] || 0
-      : SUBSCRIPTION_PRICES.FOUR_WEEKS.DEJEUNER_SEUL[
-          goal as keyof typeof SUBSCRIPTION_PRICES.FOUR_WEEKS.DEJEUNER_SEUL
-        ] || 0
+      ? SUBSCRIPTION_PRICES.SEVEN_DAYS[plan as keyof typeof SUBSCRIPTION_PRICES.SEVEN_DAYS] || 0
+      : 0
 
   const endDate =
     duration === 'SEVEN_DAYS'
@@ -124,7 +120,6 @@ function CommanderAbonnementContent() {
             <div className="lg:hidden bg-[#1a472a] p-8 rounded-[3rem] text-white space-y-4">
               <p className="text-[10px] font-black uppercase tracking-widest text-emerald-400/60">Votre choix</p>
               <h2 className="text-2xl font-black">{SUBSCRIPTION_MEAL_PLANS[plan]}</h2>
-              <p className="font-bold italic font-serif text-emerald-400">{SUBSCRIPTION_GOALS[goal]}</p>
             </div>
 
             {/* Start Date */}
@@ -287,7 +282,7 @@ function CommanderAbonnementContent() {
                           </div>
                           <p className="font-black">Entrez le numéro : <strong className={`text-lg ${
                             formData.paymentMethod === 'WAVE' ? 'text-blue-600' : 'text-orange-600'
-                          }`}>78 598 71 43</strong></p>
+                          }`}>78 429 49 49</strong></p>
                         </div>
                         <div className="flex items-start gap-2.5">
                           <div className={`w-6 h-6 rounded-lg flex items-center justify-center font-black text-xs flex-shrink-0 ${
@@ -329,12 +324,12 @@ function CommanderAbonnementContent() {
                       <p className={`text-3xl font-black tracking-tighter mb-2 ${
                         formData.paymentMethod === 'WAVE' ? 'text-blue-600' : 'text-orange-600'
                       }`}>
-                        78 598 71 43
+                        78 429 49 49
                       </p>
                       <button
                         type="button"
                         onClick={() => {
-                          navigator.clipboard.writeText('785987143')
+                          navigator.clipboard.writeText('784294949')
                           alert('Numéro copié !')
                         }}
                         className={`text-xs font-bold uppercase tracking-widest ${
@@ -376,10 +371,6 @@ function CommanderAbonnementContent() {
                 <h2 className="text-2xl font-black uppercase tracking-widest text-emerald-400/60">Récapitulatif</h2>
                 
                 <div className="space-y-6">
-                  <div className="space-y-1">
-                    <p className="text-[10px] font-black text-emerald-400/60 uppercase tracking-widest">Objectif Santé</p>
-                    <p className="text-2xl font-black italic font-serif leading-none">{SUBSCRIPTION_GOALS[goal]}</p>
-                  </div>
                   <div className="space-y-1">
                     <p className="text-[10px] font-black text-emerald-400/60 uppercase tracking-widest">Formule Choisie</p>
                     <p className="text-xl font-black leading-tight">{SUBSCRIPTION_MEAL_PLANS[plan]}</p>

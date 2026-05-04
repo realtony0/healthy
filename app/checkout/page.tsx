@@ -95,14 +95,21 @@ export default function CheckoutPage() {
     setSubmitting(true)
 
     try {
-      const items = cart!.items.map((item) => ({
-        productId: item.productId,
-        quantity: item.quantity,
-        fruitChoices: item.fruitChoices || [],
-        bowlConfigId: item.bowlConfigId,
-        product: item.product,
-        bowlConfig: item.bowlConfig,
-      }))
+      const items = cart!.items.map((item) => {
+        const toppingCount = (item.fruitChoices || []).filter((f: string) => f.startsWith('topping:')).length
+        const toppingExtra = toppingCount * 500
+        return {
+          productId: item.productId,
+          quantity: item.quantity,
+          fruitChoices: item.fruitChoices || [],
+          bowlConfigId: item.bowlConfigId,
+          product: {
+            ...item.product,
+            price: item.product.price + toppingExtra,
+          },
+          bowlConfig: item.bowlConfig,
+        }
+      })
 
       const selectedZone = zones.find(z => z.id === selectedZoneId)
       const deliveryFee = selectedZone?.price || 0

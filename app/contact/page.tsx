@@ -40,8 +40,8 @@ export default function ContactPage() {
             <div className="grid gap-6">
               {[
                 { icon: <MapPin size={24} />, title: 'Adresse', value: 'Dakar, Sénégal', color: 'bg-emerald-50 text-emerald-600' },
-                { icon: <MessageCircle size={24} />, title: 'WhatsApp', value: '+221 78 598 71 43', color: 'bg-green-50 text-green-600', link: 'https://wa.me/221785987143' },
-                { icon: <Phone size={24} />, title: 'Téléphone', value: '+221 78 598 71 43', color: 'bg-blue-50 text-blue-600', link: 'tel:+221785987143' },
+                { icon: <MessageCircle size={24} />, title: 'WhatsApp', value: '+221 78 429 49 49', color: 'bg-green-50 text-green-600', link: 'https://wa.me/221784294949' },
+                { icon: <Phone size={24} />, title: 'Téléphone', value: '+221 78 429 49 49', color: 'bg-blue-50 text-blue-600', link: 'tel:+221784294949' },
                 { icon: <Mail size={24} />, title: 'Horaires', value: 'Ouvert de 8h à 21h', color: 'bg-orange-50 text-orange-600' },
               ].map((item, i) => (
                 <div key={i} className="flex items-center gap-6 p-6 bg-white rounded-[2rem] border border-gray-100 shadow-xl shadow-gray-200/50 group hover:border-[#1a472a] transition-all duration-300">

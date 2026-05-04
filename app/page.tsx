@@ -27,8 +27,8 @@ export default function HomePage() {
                 <span className="text-emerald-500 italic font-serif">Prêt.</span>
               </h1>
               
-              <p className="text-lg md:text-xl text-gray-500 max-w-lg mx-auto lg:mx-0 leading-relaxed font-medium">
-                L'excellence nutritionnelle livrée chez vous. Des repas frais, équilibrés et 100% halal préparés chaque jour.
+              <p className="text-lg md:text-xl text-gray-500 max-w-lg mx-auto lg:mx-0 leading-relaxed font-medium italic">
+                Parce que ton corps mérite mieux.
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 pt-4 px-4 sm:px-0">
@@ -155,6 +155,39 @@ export default function HomePage() {
                 </Link>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Chef Section */}
+      <section className="py-24 container-wide">
+        <div className="bg-[#1a472a] rounded-[4rem] overflow-hidden">
+          <div className="grid lg:grid-cols-2 items-center">
+            <div className="p-12 lg:p-20 space-y-8 order-2 lg:order-1">
+              <div className="inline-flex items-center gap-2 bg-emerald-400/10 text-emerald-300 px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest border border-emerald-400/20">
+                <Sparkles size={12} />
+                Cuisinée avec passion
+              </div>
+              <h2 className="text-4xl lg:text-6xl font-black text-white leading-tight tracking-tighter">
+                Derrière chaque plat,<br />
+                <span className="text-emerald-400 italic font-serif">une cheffe engagée.</span>
+              </h2>
+              <p className="text-white/60 text-lg font-medium leading-relaxed max-w-md">
+                Chaque repas est préparé avec des produits frais, sélectionnés chaque matin, pour vous offrir le meilleur de la nutrition saine à Dakar.
+              </p>
+              <Link href="/comment-ca-marche" className="inline-flex items-center gap-3 bg-white text-[#1a472a] font-black px-8 py-4 rounded-2xl hover:bg-emerald-50 transition-colors">
+                Notre concept
+                <ArrowRight size={18} />
+              </Link>
+            </div>
+            <div className="relative h-[400px] lg:h-[600px] order-1 lg:order-2">
+              <Image
+                src="/img/chef.jpeg"
+                alt="Notre cheffe cuisinière"
+                fill
+                className="object-cover object-top"
+              />
+            </div>
           </div>
         </div>
       </section>

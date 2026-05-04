@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma'
 import { addDays } from 'date-fns'
 import { sendWhatsAppNotification, formatSubscriptionNotification } from '@/lib/whatsapp'
 
-const ADMIN_PHONE = '221785987143'
+const ADMIN_PHONE = '221784294949'
 
 export async function POST(request: NextRequest) {
   try {
@@ -75,7 +75,6 @@ export async function POST(request: NextRequest) {
       
 *Client:* ${session.user.name} (+221 ${deliveryPhone})
 *Formule:* ${mealPlan}
-*Objectif:* ${goal}
 *Période:* Du ${start.toLocaleDateString('fr-FR')} au ${end.toLocaleDateString('fr-FR')}
 *Montant:* ${price.toLocaleString('fr-FR')} FCFA
 *Paiement:* ${paymentMethod}
