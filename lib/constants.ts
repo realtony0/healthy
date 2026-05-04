@@ -69,9 +69,8 @@ export const PRODUCTS_WITH_SEASONAL_FRUITS = [] as const
 
 export const PRODUCTS_WITH_FRUIT_CHOICE = [
   'yogurt-bowl',
-  'yaourt-grec-energie', // ancien slug avant renommage en base
   'overnight-oats',
-  'smoothie-proteine-naturel',
+  'smoothie-naturel',
 ] as const
 
 export const SUBSCRIPTION_GOALS = {
