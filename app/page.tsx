@@ -182,7 +182,7 @@ export default function HomePage() {
             </div>
             <div className="relative h-[400px] lg:h-[600px] order-1 lg:order-2">
               <Image
-                src="/img/chef.jpeg"
+                src="/img/chef.jpg"
                 alt="Notre cheffe cuisinière"
                 fill
                 className="object-cover object-top"
