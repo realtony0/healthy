@@ -96,9 +96,13 @@ export default function PanierPage() {
     )
   }
 
+  const getToppingCount = (fruitChoices: string[]) =>
+    fruitChoices.filter((f) => f.startsWith('topping:')).length
+
   const total = cart.items.reduce((sum: number, item) => {
-    const itemPrice = item.bowlConfig ? item.bowlConfig.price : item.product.price
-    return sum + itemPrice * item.quantity
+    const basePrice = item.bowlConfig ? item.bowlConfig.price : item.product.price
+    const toppingExtra = getToppingCount(item.fruitChoices || []) * 500
+    return sum + (basePrice + toppingExtra) * item.quantity
   }, 0)
 
   return (
@@ -123,9 +127,14 @@ export default function PanierPage() {
                   
                   {item.fruitChoices && item.fruitChoices.length > 0 && (
                     <div className="flex flex-wrap justify-center md:justify-start gap-2">
-                      {item.fruitChoices.map(fruit => (
+                      {item.fruitChoices.filter(f => !f.startsWith('topping:')).map(fruit => (
                         <span key={fruit} className="text-xs font-bold text-gray-400 bg-gray-50 px-3 py-1 rounded-lg italic">
                           + {fruit}
+                        </span>
+                      ))}
+                      {item.fruitChoices.filter(f => f.startsWith('topping:')).map(t => (
+                        <span key={t} className="text-xs font-bold text-amber-600 bg-amber-50 px-3 py-1 rounded-lg italic">
+                          + {t.replace('topping:', '')}
                         </span>
                       ))}
                     </div>
@@ -140,7 +149,7 @@ export default function PanierPage() {
 
                 <div className="flex items-center gap-8">
                   <div className="text-2xl font-black text-[#1a472a] italic font-serif">
-                    {formatPrice((item.bowlConfig ? item.bowlConfig.price : item.product.price) * item.quantity)}
+                    {formatPrice(((item.bowlConfig ? item.bowlConfig.price : item.product.price) + getToppingCount(item.fruitChoices || []) * 500) * item.quantity)}
                   </div>
                   <button
                     onClick={() => removeItem(item.id)}
