@@ -40,7 +40,7 @@ function CommanderAbonnementContent() {
         </div>
         <div className="space-y-4">
           <h1 className="text-4xl font-black text-gray-900">Choix incomplet</h1>
-          <p className="text-gray-500 font-medium max-w-sm mx-auto">Veuillez sélectionner un objectif précis sur la page des abonnements pour continuer.</p>
+          <p className="text-gray-500 font-medium max-w-sm mx-auto">Veuillez sélectionner une formule sur la page des abonnements pour continuer.</p>
         </div>
         <Link href="/abonnements" className="btn btn-primary btn-lg px-12">
           Retour aux abonnements

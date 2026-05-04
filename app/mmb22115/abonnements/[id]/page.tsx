@@ -132,11 +132,11 @@ export default function AdminSubscriptionDetailPage() {
                 <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-emerald-600 shadow-sm">
                   <Zap size={20} />
                 </div>
-                <h2 className="text-xl font-black text-gray-900 uppercase tracking-tight">Objectif</h2>
+                <h2 className="text-xl font-black text-gray-900 uppercase tracking-tight">Durée</h2>
               </div>
               <div className="space-y-1 ml-14">
-                <p className="text-2xl font-black text-[#1a472a] italic font-serif leading-none">{sub.goal}</p>
-                <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mt-2">{sub.duration === 'SEVEN_DAYS' ? '7 Jours' : '4 Semaines'}</p>
+                <p className="text-2xl font-black text-[#1a472a] italic font-serif leading-none">{sub.duration === 'SEVEN_DAYS' ? '7 Jours' : '4 Semaines'}</p>
+                <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mt-2">{sub.mealPlan}</p>
               </div>
             </div>
           </div>

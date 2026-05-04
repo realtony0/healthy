@@ -23,7 +23,7 @@ export default function AvisPage() {
     {
       name: 'Moussa Sy',
       role: 'Entrepreneur',
-      text: 'Parfait pour mon rééquilibrage alimentaire. Je commande chaque semaine depuis 3 mois et je ne m\'en lasse pas.',
+      text: 'Parfait pour manger sain au quotidien. Je commande chaque semaine depuis 3 mois et je ne m\'en lasse pas.',
       rating: 5,
       date: 'Il y a 1 semaine'
     },

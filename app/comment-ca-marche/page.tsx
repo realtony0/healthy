@@ -75,24 +75,24 @@ export default function CommentCaMarchePage() {
                     <Calendar size={32} />
                   </div>
                   <h2 className="text-4xl font-black text-[#1a472a]">Nos abonnements <br />nutritionnels</h2>
-                  <p className="text-lg text-gray-500 font-medium">La solution clé en main pour vos objectifs de santé.</p>
+                  <p className="text-lg text-gray-500 font-medium">La solution clé en main pour manger sain sans effort.</p>
                 </div>
 
                 <div className="space-y-6">
                   <p className="text-gray-500 font-medium leading-relaxed italic border-l-4 border-emerald-100 pl-6">
-                    Nos chefs s&apos;occupent de tout. Vous choisissez votre objectif calorique, et nous adaptons les portions de nos plats pour vous garantir des résultats sans frustration.
+                    Nos chefs s&apos;occupent de tout. Choisissez votre formule et recevez vos repas frais chaque jour, préparés avec les meilleurs produits de Dakar.
                   </p>
                   <div className="grid gap-4 pt-4">
                     {[
-                      { title: 'Perte de poids', desc: 'Portions légères mais nutritives.', icon: <Target className="text-emerald-500" /> },
-                      { title: 'Rééquilibrage', desc: 'Le mix parfait entre macros.', icon: <Target className="text-blue-500" /> },
-                      { title: 'Prise de masse', desc: 'Portions généreuses en protéines.', icon: <Target className="text-orange-500" /> },
-                    ].map((goal, i) => (
+                      { title: 'Déjeuner seul', desc: '1 repas par jour — 28 000 FCFA / 7j', icon: <Target className="text-emerald-500" /> },
+                      { title: 'Déjeuner + Dîner', desc: '2 repas par jour — 52 000 FCFA / 7j', icon: <Target className="text-blue-500" /> },
+                      { title: '3 repas par jour', desc: 'Formule complète — 73 000 FCFA / 7j', icon: <Target className="text-orange-500" /> },
+                    ].map((plan, i) => (
                       <div key={i} className="flex items-center gap-4 p-4 bg-white rounded-3xl border border-gray-100 shadow-sm">
-                        <div className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center">{goal.icon}</div>
+                        <div className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center">{plan.icon}</div>
                         <div>
-                          <p className="font-black text-gray-900 leading-none">{goal.title}</p>
-                          <p className="text-xs text-gray-400 font-bold uppercase mt-1 tracking-widest">{goal.desc}</p>
+                          <p className="font-black text-gray-900 leading-none">{plan.title}</p>
+                          <p className="text-xs text-gray-400 font-bold uppercase mt-1 tracking-widest">{plan.desc}</p>
                         </div>
                       </div>
                     ))}
@@ -111,7 +111,7 @@ export default function CommentCaMarchePage() {
                 </div>
                 <div className="bg-gray-900 rounded-[3rem] p-8 text-center space-y-4 text-white flex flex-col justify-center">
                   <p className="text-4xl font-black italic font-serif leading-none text-emerald-400">3</p>
-                  <p className="text-xs font-black text-white/40 uppercase tracking-widest leading-tight">Objectifs au choix</p>
+                  <p className="text-xs font-black text-white/40 uppercase tracking-widest leading-tight">Formules au choix</p>
                 </div>
                 <div className="col-span-2 bg-[#1a472a] rounded-[3rem] p-10 text-white relative overflow-hidden flex flex-col justify-center gap-2">
                   <p className="text-2xl font-black italic font-serif relative z-10">Livraison à domicile</p>

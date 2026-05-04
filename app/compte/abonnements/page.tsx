@@ -112,8 +112,8 @@ export default function CompteAbonnementsPage() {
                   </div>
                   
                   <div className="mt-8 space-y-1">
-                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Objectif</p>
-                    <p className="text-xl font-black text-[#1a472a] italic font-serif leading-none">{sub.goal}</p>
+                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Formule</p>
+                    <p className="text-xl font-black text-[#1a472a] italic font-serif leading-none">{sub.mealPlan}</p>
                   </div>
                 </div>
 
