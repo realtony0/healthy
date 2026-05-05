@@ -132,11 +132,19 @@ export default function CheckoutPage() {
         }
         router.push(`/commande/${order.orderNumber}`)
       } else {
-        alert('Erreur lors de la création de la commande')
+        const data = await response.json().catch(() => ({}))
+        const msg = data?.error || 'Erreur lors de la création de la commande'
+        if (msg.includes('non disponible')) {
+          localStorage.removeItem('healthy_guest_cart')
+          alert(msg + '\n\nVotre panier a été vidé. Veuillez sélectionner vos produits à nouveau.')
+          router.push('/menu')
+        } else {
+          alert(msg)
+        }
       }
     } catch (error) {
       console.error('Error creating order:', error)
-      alert('Erreur lors de la création de la commande')
+      alert('Erreur lors de la création de la commande. Vérifiez votre connexion et réessayez.')
     } finally {
       setSubmitting(false)
     }

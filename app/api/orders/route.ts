@@ -50,6 +50,25 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid delivery time' }, { status: 400 })
     }
 
+    // Vérifier que tous les produits existent encore dans la DB
+    const nonBowlItems = items.filter(item => !item.bowlConfigId)
+    if (nonBowlItems.length > 0) {
+      const productIds = nonBowlItems.map(item => item.productId)
+      const existingProducts = await prisma.product.findMany({
+        where: { id: { in: productIds } },
+        select: { id: true, name: true },
+      })
+      const existingIds = new Set(existingProducts.map(p => p.id))
+      const missing = nonBowlItems.filter(item => !existingIds.has(item.productId))
+      if (missing.length > 0) {
+        const names = missing.map(m => m.product.name).join(', ')
+        return NextResponse.json(
+          { error: `Produit(s) non disponible(s): ${names}. Veuillez vider votre panier et recommencer.` },
+          { status: 400 }
+        )
+      }
+    }
+
     // Calculer le sous-total
     let subtotal = 0
     for (const item of items) {
