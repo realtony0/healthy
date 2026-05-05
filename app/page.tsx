@@ -185,7 +185,9 @@ export default function HomePage() {
                 src="/img/chef.jpg"
                 alt="Notre cheffe cuisinière"
                 fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover object-top"
+                priority
               />
             </div>
           </div>
