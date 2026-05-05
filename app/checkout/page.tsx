@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { PAYMENT_METHODS } from '@/lib/constants'
-import { formatPrice } from '@/lib/utils'
-import { ArrowLeft, ShieldCheck, MapPin, Phone, MessageSquare, CreditCard, Wallet, Banknote, Check, Sparkles, ChevronDown, Clock } from 'lucide-react'
+import { DELIVERY_OPTIONS, formatPrice } from '@/lib/utils'
+import { ArrowLeft, ShieldCheck, MapPin, Phone, MessageSquare, CreditCard, Wallet, Banknote, Check, Sparkles, ChevronDown, Zap } from 'lucide-react'
 import Link from 'next/link'
 
 type CartItem = {
@@ -291,27 +291,26 @@ export default function CheckoutPage() {
 
                 <div className="space-y-3">
                   <label htmlFor="deliveryTime" className="text-xs font-black text-gray-400 uppercase tracking-widest block ml-2">
-                    Heure de livraison souhaitée *
+                    Délai de livraison *
                   </label>
-                  <div className="relative flex items-center">
-                    <div className="absolute left-6 text-gray-400">
-                      <Clock size={18} />
+                  <div className="relative">
+                    <div className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+                      <Zap size={18} />
                     </div>
-                    <input
-                      type="time"
+                    <select
                       id="deliveryTime"
                       required
-                      min="08:00"
-                      max="21:00"
-                      step={900}
                       value={formData.deliveryTime}
                       onChange={(e) => setFormData({ ...formData, deliveryTime: e.target.value })}
-                      className="w-full pl-16 pr-6 py-5 bg-gray-50 border-2 border-transparent rounded-3xl focus:bg-white focus:border-[#1a472a] outline-none transition-all font-medium text-lg shadow-inner"
-                    />
+                      className="w-full pl-16 pr-12 py-5 bg-gray-50 border-2 border-transparent rounded-3xl focus:bg-white focus:border-[#1a472a] outline-none transition-all font-bold text-lg shadow-inner appearance-none"
+                    >
+                      <option value="">Choisissez un délai</option>
+                      {DELIVERY_OPTIONS.map((opt) => (
+                        <option key={opt} value={opt}>{opt}</option>
+                      ))}
+                    </select>
+                    <ChevronDown size={20} className="absolute right-6 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
                   </div>
-                  <p className="text-xs font-bold text-gray-400 ml-2">
-                    Créneaux disponibles: 08:00 à 21:00
-                  </p>
                 </div>
 
                 <div className="space-y-3">

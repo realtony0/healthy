@@ -26,15 +26,19 @@ export function getDiscountedPrice(price: number, discountPercent: number = 15):
 
 const DELIVERY_TIME_PREFIX = 'Heure souhaitée: '
 
-export function isValidDeliveryTime(deliveryTime: string): boolean {
-  if (!/^\d{2}:\d{2}$/.test(deliveryTime)) return false
-  const [hours, minutes] = deliveryTime.split(':').map(Number)
-  if (Number.isNaN(hours) || Number.isNaN(minutes)) return false
-  if (hours < 0 || hours > 23) return false
-  if (minutes < 0 || minutes > 59) return false
+export const DELIVERY_OPTIONS = [
+  'Livraison instantanée',
+  'Dans 30 minutes',
+  'Dans 1 heure',
+  'Dans 2 heures',
+  'Ce midi (12h00)',
+  'Ce soir (18h00-20h00)',
+] as const
 
-  const totalMinutes = hours * 60 + minutes
-  return totalMinutes >= 8 * 60 && totalMinutes <= 21 * 60
+export type DeliveryOption = typeof DELIVERY_OPTIONS[number]
+
+export function isValidDeliveryTime(deliveryTime: string): boolean {
+  return (DELIVERY_OPTIONS as readonly string[]).includes(deliveryTime)
 }
 
 export function buildDeliveryNotes(deliveryTime: string, deliveryNotes?: string | null): string {
@@ -67,7 +71,5 @@ export function stripDeliveryTimeFromNotes(deliveryNotes?: string | null): strin
 }
 
 export function formatDeliveryTime(deliveryTime: string): string {
-  if (!/^\d{2}:\d{2}$/.test(deliveryTime)) return deliveryTime
-  const [h, m] = deliveryTime.split(':')
-  return m === '00' ? `${h}h` : `${h}h${m}`
+  return deliveryTime
 }
