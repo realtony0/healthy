@@ -478,12 +478,12 @@ export default function CheckoutPage() {
                       <p className={`text-4xl font-black tracking-tighter mb-2 ${
                         formData.paymentMethod === 'WAVE' ? 'text-blue-600' : 'text-orange-600'
                       }`}>
-                        78 598 71 43
+                        78 429 49 49
                       </p>
                       <button
                         type="button"
                         onClick={() => {
-                          navigator.clipboard.writeText('785987143')
+                          navigator.clipboard.writeText('784294949')
                           alert('Numéro copié !')
                         }}
                         className={`text-xs font-bold uppercase tracking-widest ${
@@ -521,7 +521,7 @@ export default function CheckoutPage() {
                         </li>
                         <li className="flex items-start gap-2">
                           <span>•</span>
-                          <span>En cas de problème : <strong>78 598 71 43</strong></span>
+                          <span>En cas de problème : <strong>78 429 49 49</strong></span>
                         </li>
                       </ul>
                     </div>
