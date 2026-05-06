@@ -130,7 +130,32 @@ export default function CheckoutPage() {
         if (!session) {
           localStorage.removeItem('healthy_guest_cart')
         }
-        router.push(`/commande/${order.orderNumber}`)
+
+        // Construire le message WhatsApp avec les détails de la commande
+        const paymentLabel = formData.paymentMethod === 'CASH' ? 'Cash à la livraison'
+          : formData.paymentMethod === 'WAVE' ? 'Wave' : 'Orange Money'
+        const itemsText = items
+          .map(it => `  - ${it.quantity}x ${it.product.name} → ${it.product.price * it.quantity} FCFA`)
+          .join('\n')
+        const total = subtotal + deliveryFee
+        const zone = zones.find(z => z.id === selectedZoneId)
+
+        const msg = `🛒 *NOUVELLE COMMANDE #${order.orderNumber}*
+
+📦 *Produits :*
+${itemsText}
+
+💰 *Total : ${total.toLocaleString('fr-FR')} FCFA*
+💳 Paiement : ${paymentLabel}
+
+📍 *Livraison :*
+  Adresse : ${formData.deliveryAddress}
+  Téléphone : +221 ${formData.deliveryPhone}
+  Délai : ${formData.deliveryTime}${zone ? `\n  Zone : ${zone.name}` : ''}
+
+Merci ! 🙏`
+
+        window.location.href = `https://wa.me/221784294949?text=${encodeURIComponent(msg)}`
       } else {
         const data = await response.json().catch(() => ({}))
         const msg = data?.error || 'Erreur lors de la création de la commande'
