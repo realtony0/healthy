@@ -5,21 +5,31 @@ export interface WhatsAppMessage {
 
 export async function sendWhatsAppNotification(message: WhatsAppMessage): Promise<boolean> {
   try {
-    const apiKey = process.env.CALLMEBOT_API_KEY
-    const phone = process.env.WHATSAPP_ADMIN_PHONE || message.to
+    const idInstance = process.env.GREENAPI_ID_INSTANCE
+    const apiToken = process.env.GREENAPI_API_TOKEN
 
-    if (!apiKey) {
-      console.warn('WhatsApp (CallMeBot) not configured: CALLMEBOT_API_KEY missing')
+    if (!idInstance || !apiToken) {
+      console.warn('WhatsApp (GreenAPI) not configured: GREENAPI_ID_INSTANCE or GREENAPI_API_TOKEN missing')
       return false
     }
 
-    const url = `https://api.callmebot.com/whatsapp.php?phone=${phone}&text=${encodeURIComponent(message.message)}&apikey=${apiKey}`
+    // Format phone: must be international without + (ex: 221784294949)
+    const phone = message.to.replace(/^\+/, '')
 
-    const response = await fetch(url, { method: 'GET' })
-    const text = await response.text()
+    const url = `https://api.green-api.com/waInstance${idInstance}/sendMessage/${apiToken}`
 
-    if (!response.ok || text.toLowerCase().includes('error')) {
-      console.error('CallMeBot error:', text)
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chatId: `${phone}@c.us`,
+        message: message.message,
+      }),
+    })
+
+    if (!response.ok) {
+      const text = await response.text()
+      console.error('GreenAPI error:', text)
       return false
     }
 
