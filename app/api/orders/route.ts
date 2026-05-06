@@ -2,10 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { buildDeliveryNotes, formatDeliveryTime, generateOrderNumber, isValidDeliveryTime } from '@/lib/utils'
-import { sendWhatsAppNotification } from '@/lib/whatsapp'
-
-const ADMIN_PHONE = '221784294949'
+import { buildDeliveryNotes, generateOrderNumber, isValidDeliveryTime } from '@/lib/utils'
 
 type OrderPayloadItem = {
   productId: string
@@ -150,57 +147,6 @@ export async function POST(request: NextRequest) {
           },
         },
       })
-    }
-
-    // Notification Admin via WhatsApp
-    try {
-      const itemsList = items.map(it => `- ${it.quantity}x ${it.product.name}${it.bowlConfig ? ` (Bowl ${it.bowlConfig.size})` : ''}`).join('\n')
-      const subtotal = totalAmount - deliveryFee
-      const paymentMethodLabel = paymentMethod === 'CASH' ? 'Espèces' : paymentMethod === 'WAVE' ? 'Wave' : 'Orange Money'
-      
-      let userName = 'Invité'
-      if (session?.user) {
-        const user = session.user as any // Type assertion pour accéder aux champs Prisma
-        if (user.firstName && user.lastName) {
-          userName = `${user.firstName} ${user.lastName}`
-        } else if (user.email) {
-          userName = user.email.split('@')[0]
-        }
-      }
-      
-      let message = `🔔 *NOUVELLE COMMANDE !*\n\n`
-      message += `*Numéro:* #${order.orderNumber}\n`
-      message += `*Client:* ${userName} (+221 ${deliveryPhone})\n`
-      if (session?.user?.email) {
-        message += `*Email:* ${session.user.email}\n`
-      }
-      message += `\n*📍 Livraison:*\n`
-      message += `Adresse: ${deliveryAddress}\n`
-      if (order.deliveryZone) {
-        message += `Zone: ${order.deliveryZone.name} (Zone ${order.deliveryZone.number})\n`
-      }
-      message += `Heure souhaitée: ${formatDeliveryTime(deliveryTime)}\n`
-      if (deliveryNotes) {
-        message += `Notes: ${deliveryNotes}\n`
-      }
-      message += `\n*🛒 Produits:*\n${itemsList}\n`
-      message += `\n*💰 Montant:*\n`
-      message += `Sous-total: ${subtotal.toLocaleString('fr-FR')} FCFA\n`
-      if (deliveryFee > 0) {
-        message += `Livraison: ${deliveryFee.toLocaleString('fr-FR')} FCFA\n`
-      }
-      message += `*Total: ${totalAmount.toLocaleString('fr-FR')} FCFA*\n`
-      message += `\n*💳 Paiement:*\n`
-      message += `Méthode: ${paymentMethodLabel}\n`
-      message += `Statut: En attente\n`
-      message += `\n_Gérer : https://healthy.sn/mmb22115/commandes/${order.orderNumber}_`
-      
-      await sendWhatsAppNotification({
-        to: ADMIN_PHONE,
-        message: message
-      })
-    } catch (notifError) {
-      console.error('Failed to send admin notification:', notifError)
     }
 
     return NextResponse.json(order)
